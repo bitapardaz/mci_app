@@ -14,6 +14,7 @@
     <th>Activation Code</th>
     <th>Download Link</th>
     <th>Rate</th>
+    <th>Image</th
   </tr>
 {% for song in songs %}
 
@@ -23,6 +24,7 @@
     <td>{{song.activation_code}}</td>
     <td><a href={{song.download_link}}>listen</a></td>
     <td>{{song.rate}}</td>
+    <td><img src={{song.image.url}}> </img></td>
    </tr>
   
 {% endfor %}
