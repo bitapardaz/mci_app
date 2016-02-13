@@ -1,0 +1,35 @@
+<html>
+
+<head>
+
+</head>
+
+<body>
+
+<table border="1" style="width:100%">
+ 
+<tr>
+    <th>Song name</th>
+    <th>Producer</th>
+    <th>Activation Code</th>
+    <th>Download Link</th>
+    <th>Rate</th>
+  </tr>
+{% for song in songs %}
+
+	<tr>
+    <td>{{song.song_name}}</td>
+    <td>{{song.producer}}</td>
+    <td>{{song.activation_code}}</td>
+    <td><a href={{song.download_link}}>listen</a></td>
+    <td>{{song.rate}}</td>
+   </tr>
+  
+{% endfor %}
+ 
+ 
+</table> 
+
+</body>
+
+</html>
