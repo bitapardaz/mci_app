@@ -23,3 +23,5 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^rbt/',include('rbt.urls')),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+
+admin.site.site_header = 'RBT CONTENT MANAGEMENT - TEAM KICKASS'
