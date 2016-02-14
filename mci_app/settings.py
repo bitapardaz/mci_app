@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'rbt',
     'rest_framework',
+    'userprofile',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -93,7 +94,6 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'Asia/Tehran'
 
 USE_I18N = True
 
@@ -107,6 +107,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-
-MEDIA_ROOT = '/home/npdroid/Workspace/mci_app/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR,"media/")
 MEDIA_URL = '/media/'

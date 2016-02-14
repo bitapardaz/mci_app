@@ -9,11 +9,13 @@ class Producer(models.Model):
     def __unicode__(self):
         return self.name
 
+
 class Category(models.Model):
     name = models.CharField(max_length=200)
 
     def __unicode__(self):
         return self.name
+
 
 class Song(models.Model):
 
@@ -25,10 +27,21 @@ class Song(models.Model):
     producer = models.ForeignKey(Producer,null=True,blank=True)
     image = models.ImageField(upload_to='images/',null=True, blank=True)
     category = models.ForeignKey(Category)
-
+    price = models.IntegerField(default=0)
+    
 
     def __unicode__(self):
         return self.song_name + " -- " + self.producer.__unicode__()
+
+
+class Category_Featured(models.Model):
+
+    category = models.ForeignKey(Category)
+    song = models.ForeignKey(Song)
+
+    def __unicode__(self):
+        return song.__unicode__() + ' -- ' + category.__unicode__()
+
 
 
 class Tag(models.Model):
@@ -36,7 +49,6 @@ class Tag(models.Model):
 
     def __unicode__(self):
         return self.name
-
 
 
 class SongTagAssociation(models.Model):

@@ -6,8 +6,9 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from serializers import SongSerializer
 
+
 @api_view(['GET','POST'])
-def list(request):
+def list(request,format=None):
     """
     List all songs.
     """
@@ -19,7 +20,7 @@ def list(request):
 
 
 @api_view(['GET','POST'])
-def list_cat(request,cat_name,page):
+def list_cat(request,cat_name,page,format=None):
     """
     List songs within the page slice.
     slice step is 10
