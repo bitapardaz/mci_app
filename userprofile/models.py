@@ -7,7 +7,7 @@ class UserProfile(models.Model):
     mobile_number = models.CharField(max_length=20)
 
     def __unicode__(self):
-        return str(mobile_number)
+        return str(self.mobile_number)
 
 
 
@@ -16,4 +16,4 @@ class RBT_Activation(models.Model):
     user = models.ForeignKey(UserProfile)
 
     def __unicode__(self):
-        return song.__unicode__ + ' -- ' + user.__unicode__()
+        return self.song.__unicode__() + ' -- ' + self.user.__unicode__()
