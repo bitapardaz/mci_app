@@ -4,7 +4,7 @@ from rbt.models import Song
 
 
 class UserProfile(models.Model):
-    mobile_number = models.IntegerField(default=0)
+    mobile_number = models.CharField(max_length=20)
 
     def __unicode__(self):
         return str(mobile_number)
