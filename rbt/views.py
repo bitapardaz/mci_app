@@ -1,3 +1,4 @@
+from rest_framework import status
 from django.shortcuts import render
 from django.http import HttpResponse
 from models import Song
@@ -5,6 +6,36 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from serializers import SongSerializer
+from userprofile.serializers import UserProfileSerializer
+from userprofile.models import UserProfile
+
+
+
+@api_view(['POST'])
+def register(request,format=None):
+    """
+    creates a new mobile phone number
+    """
+    if request.method == 'POST':
+
+        serializer = UserProfileSerializer(data=request.data)
+        if serializer.is_valid():
+            # extract mobile number
+            mobile_number = serializer.validated_data['mobile_number']
+            obj, created = UserProfile.objects.get_or_create(mobile_number=mobile_number)
+            obj.imei = serializer.validated_data['imei']
+
+            result = {}
+            if created:
+                result['outcome'] = "new_customer"
+                return Response(result,status=status.HTTP_201_CREATED)
+
+            else:
+                result['outcome'] = "returning_customer"
+                return Response(result, status=status.HTTP_200_OK)
+
+        else:
+            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET','POST'])
