@@ -1,13 +1,22 @@
 from rest_framework import status
 from django.shortcuts import render
 from django.http import HttpResponse
-from models import Song
+from models import Song,Category
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from serializers import SongSerializer
+from serializers import SongSerializer,CategorySerializer
 from userprofile.serializers import UserProfileSerializer
 from userprofile.models import UserProfile
+
+@api_view(['GET'])
+def list_all_cats(request,format=None):
+    """
+    returns the categories and their information
+    """
+    category_list = Category.objects.all()
+    serializer = CategorySerializer(category_list,many=True)
+    return Response(serializer.data)
 
 
 

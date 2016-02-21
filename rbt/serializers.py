@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from models import Song
+from models import Song,Category
 
 class SongSerializer(serializers.ModelSerializer):
 
@@ -7,3 +7,9 @@ class SongSerializer(serializers.ModelSerializer):
         model = Song
         fields = ('song_name','activation_code','download_link','rate',
                     'activated','producer','image','category')
+
+
+class CategorySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Category
