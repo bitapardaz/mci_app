@@ -30,6 +30,7 @@ class Song(models.Model):
     image = models.ImageField(upload_to='',null=True, blank=True)
     category = models.ForeignKey(Category)
     price = models.IntegerField(default=0)
+    date_published = models.DateTimeField(auto_now=True, editable=True)
 
 
     def __unicode__(self):
