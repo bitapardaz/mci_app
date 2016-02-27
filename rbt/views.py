@@ -10,6 +10,20 @@ from userprofile.serializers import UserProfileSerializer
 from userprofile.models import UserProfile
 
 
+@api_view(['GET'])
+def latest_songs(request,page,format=None):
+    """
+    returns the newest songs.
+    """
+    page_index = int(page)
+    start_index = page_index * 10
+    end_index = start_index + 9
+
+    song_list = Song.objects.all().order_by('-date_published')[start_index:end_index]
+    serializer = SongSerializer(song_list,many=True)
+    return Response(serializer.data)
+
+
 
 @api_view(['GET'])
 def popular_songs(request,page,format=None):
