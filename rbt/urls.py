@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^list_all_cats/$',views.list_all_cats),
     url(r'^popular_songs/(?P<page>[0-9]+)/$',views.popular_songs),
     url(r'^latest_songs/(?P<page>[0-9]+)/$',views.latest_songs),
+    url(r'^rbt_cats/$',views.rbt_cats),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

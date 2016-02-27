@@ -11,6 +11,18 @@ from userprofile.models import UserProfile
 
 
 @api_view(['GET'])
+def rbt_cats(request,format=None):
+    """
+    returns all categories related to rbt songs.
+    """
+
+    cat_list = Category.objects.all()
+    serializer = CategorySerializer(cat_list,many=True)
+    return Response(serializer.data)
+
+
+
+@api_view(['GET'])
 def latest_songs(request,page,format=None):
     """
     returns the newest songs.
