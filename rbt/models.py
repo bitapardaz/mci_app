@@ -11,11 +11,12 @@ class Producer(models.Model):
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=200)
+    farsi_name = models.CharField(max_length=200)
+    english_name = models.CharField(max_length=200, null=True, blank=True)
     photo = models.ImageField(upload_to='',null=True, blank=True)
 
     def __unicode__(self):
-        return self.name
+        return self.farsi_name
 
 
 class Song(models.Model):

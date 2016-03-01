@@ -112,6 +112,7 @@ def list_cat(request,cat_name,page,format=None):
     end_index = start_index + 9
 
     if request.method =='GET':
-        song_list = Song.objects.filter(category__name = cat_name)[start_index:end_index]
+        cat = Category.objects.get(english_name=cat_name)
+        song_list = Song.objects.filter(category = cat)[start_index:end_index]
         serializer = SongSerializer(song_list,many=True)
         return Response(serializer.data)

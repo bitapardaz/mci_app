@@ -46,7 +46,7 @@ def add_song_to_db(code,name,producer_farsi,category_farsi):
     producer,created = Producer.objects.get_or_create(name=producer_farsi)
 
     # get or create cateogory
-    category,created = Category.objects.get_or_create(name=category_farsi)
+    category,created = Category.objects.get_or_create(farsi_name=category_farsi)
 
     # audio download link
     audio_link = "http://rbt.mci.ir/wave/%s.wav" % code
