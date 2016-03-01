@@ -35,7 +35,6 @@ def list_all_cats(request,format=None):
     return Response(serializer.data)
 
 
-
 @api_view(['POST'])
 def register(request,format=None):
     """

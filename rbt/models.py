@@ -12,7 +12,6 @@ class Producer(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=200)
-    farsi_title = models.CharField(max_length=200)
     photo = models.ImageField(upload_to='',null=True, blank=True)
 
     def __unicode__(self):
@@ -29,12 +28,12 @@ class Song(models.Model):
     producer = models.ForeignKey(Producer,null=True,blank=True)
     image = models.ImageField(upload_to='',null=True, blank=True)
     category = models.ForeignKey(Category)
-    price = models.IntegerField(default=0)
+    price = models.IntegerField(default=300)
     date_published = models.DateTimeField(auto_now=True, editable=True)
 
 
     def __unicode__(self):
-        return self.song_name + " -- " + self.producer.__unicode__()
+        return str(self.activation_code) + " -- " + self.song_name + " -- " + self.producer.__unicode__()
 
 
 class Category_Featured(models.Model):
