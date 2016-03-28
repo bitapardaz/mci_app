@@ -3,7 +3,7 @@ from models import Producer, Song, Tag, Category, SongTagAssociation, Album
 
 class SongInline(admin.TabularInline):
     model = Song
-    fields=['song_name','song_admin_change_url','producer','price']
+    fields=['song_name','song_admin_change_url','producer','price','download_link']
     readonly_fields = ['song_admin_change_url',]
     extra = 0
 
