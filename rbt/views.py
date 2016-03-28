@@ -26,10 +26,10 @@ def cat_albums(request,cat_id,page):
     page_index = int(page)
     no_of_items = 20
     start_index = page_index * no_of_items
-    end_index = start_index + (    ((page_index+1) * no_of_items)  - 1 )
+    end_index = start_index + (    ((page_index+1) * no_of_items)   )
 
     category = Category.objects.get(pk=cat_id)
-    albums = Album.objects.filter(category=category,confirmed=True)[start_index:end_index]
+    albums = Album.objects.filter(category=category,confirmed=True).order_by('-date_published')[start_index:end_index]
     serializer = AlbumSerializer(albums,many=True)
     return Response(serializer.data)
 
