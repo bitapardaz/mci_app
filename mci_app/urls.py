@@ -23,5 +23,3 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^mcirbt/',include('rbt.urls')),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
-
-admin.site.site_header = 'RBT CONTENT MANAGEMENT - MCI APP PACKAGE'

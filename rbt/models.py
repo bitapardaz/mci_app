@@ -1,4 +1,5 @@
 from django.db import models
+from django.core import urlresolvers
 
 # Create your models here.
 
@@ -40,6 +41,13 @@ class Album(models.Model):
         song_list = Song.objects.filter(album = self)
         return "%s \t--\t(%s)" % (self.farsi_name,str(len(song_list)) )
 
+    def total_songs(self):
+        songs = Song.objects.filter(album=self);
+        return len(songs)
+
+    total_songs.allow_tags = True
+    total_songs.short_description = 'Song Count'
+
 
 
 class Song(models.Model):
@@ -57,8 +65,14 @@ class Song(models.Model):
 
 
     def __unicode__(self):
-        return str(self.activation_code) + " -- " + self.song_name + " -- " + self.producer.__unicode__()
+        return self.song_name 
 
+    def song_admin_change_url(self):
+        link = urlresolvers.reverse('admin:rbt_song_change',args=(self.id,))
+        return u'<a href="%s">%s</a>' % (link,"Link")
+
+    song_admin_change_url.allow_tags = True
+    song_admin_change_url.short_description = 'URL'
 
 class Category_Featured(models.Model):
 
