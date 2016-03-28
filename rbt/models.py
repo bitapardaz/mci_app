@@ -23,7 +23,6 @@ class Category(models.Model):
         return self.farsi_name
 
 
-
 class Album(models.Model):
     farsi_name = models.CharField(max_length=200)
     english_name = models.CharField(max_length=200, null=True, blank=True)
@@ -35,9 +34,11 @@ class Album(models.Model):
     confirmed = models.BooleanField(default=False)
 
 
-
     def __unicode__(self):
-        return self.farsi_name
+
+        # get the number of songs in the current album.
+        song_list = Song.objects.filter(album = self)
+        return "%s \t--\t(%s)" % (self.farsi_name,str(len(song_list)) )
 
 
 

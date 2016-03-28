@@ -71,7 +71,7 @@ def add_song_to_db(code,name,producer_farsi,album_farsi,category_farsi):
 ### running the downloader
 #################################################
 
-for id in range(82150,82159):
+for id in range(82000,82159):
 
     print("\n%s" % id),
 

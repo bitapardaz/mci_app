@@ -29,7 +29,7 @@ def cat_albums(request,cat_id,page):
     end_index = start_index + (    ((page_index+1) * no_of_items)  - 1 )
 
     category = Category.objects.get(pk=cat_id)
-    albums = Album.objects.filter(category=category)[start_index:end_index]
+    albums = Album.objects.filter(category=category,confirmed=True)[start_index:end_index]
     serializer = AlbumSerializer(albums,many=True)
     return Response(serializer.data)
 
