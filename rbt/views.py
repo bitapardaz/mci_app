@@ -1,11 +1,11 @@
 from rest_framework import status
 from django.shortcuts import render
 from django.http import HttpResponse
-from models import Song,Category
+from models import Song,Category,Album
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from serializers import SongSerializer,CategorySerializer
+from serializers import SongSerializer,CategorySerializer,AlbumSerializer
 from userprofile.serializers import UserProfileSerializer
 from userprofile.models import UserProfile
 
@@ -13,12 +13,51 @@ from userprofile.models import UserProfile
 @api_view(['GET'])
 def rbt_cats(request,format=None):
     """
-    returns all categories related to rbt songs.
+    returns categories related to rbt songs that have been verified.
     """
-
-    cat_list = Category.objects.all()
+    cat_list = Category.objects.filter(confirmed=True)
     serializer = CategorySerializer(cat_list,many=True)
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+def cat_albums(request,cat_id,page):
+
+    page_index = int(page)
+    no_of_items = 30
+    start_index = page_index * no_of_items
+    end_index = start_index + (    ((page_index+1) * no_of_items)  - 1 )
+
+    category = Category.objects.get(pk=cat_id)
+    albums = Album.objects.filter(category=category)[start_index:end_index]
+    serializer = AlbumSerializer(albums,many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def cat_popular_albums(request,cat_id):
+    """
+    returns the top 20 most popular albums in the given category
+    """
+    start_index = 0
+    end_index = 20
+    album_list = Album.objects.all().order_by('-rate')[start_index:end_index]
+    serializer = AlbumSerializer(album_list,many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def cat_new_albums(request,cat_id):
+    """
+    returns the top 20 most popular albums in the given category
+    """
+    start_index = 0
+    end_index = 20
+    album_list = Album.objects.all().order_by('-date_published')[start_index:end_index]
+    serializer = AlbumSerializer(album_list,many=True)
+    return Response(serializer.data)
+
+
 
 
 
@@ -36,7 +75,6 @@ def latest_songs(request,page,format=None):
     return Response(serializer.data)
 
 
-
 @api_view(['GET'])
 def popular_songs(request,page,format=None):
     """
@@ -48,16 +86,6 @@ def popular_songs(request,page,format=None):
 
     song_list = Song.objects.all().order_by('-rate')[start_index:end_index]
     serializer = SongSerializer(song_list,many=True)
-    return Response(serializer.data)
-
-
-@api_view(['GET'])
-def list_all_cats(request,format=None):
-    """
-    returns the categories and their information
-    """
-    category_list = Category.objects.all()
-    serializer = CategorySerializer(category_list,many=True)
     return Response(serializer.data)
 
 

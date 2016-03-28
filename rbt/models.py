@@ -5,6 +5,8 @@ from django.db import models
 class Producer(models.Model):
 
     name = models.CharField(max_length=200)
+    confirmed = models.BooleanField(default=False)
+
 
     def __unicode__(self):
         return self.name
@@ -14,9 +16,29 @@ class Category(models.Model):
     farsi_name = models.CharField(max_length=200)
     english_name = models.CharField(max_length=200, null=True, blank=True)
     photo = models.ImageField(upload_to='',null=True, blank=True)
+    confirmed = models.BooleanField(default=False)
+
 
     def __unicode__(self):
         return self.farsi_name
+
+
+
+class Album(models.Model):
+    farsi_name = models.CharField(max_length=200)
+    english_name = models.CharField(max_length=200, null=True, blank=True)
+    photo = models.ImageField(upload_to='',null=True, blank=True)
+    wide_photo = models.ImageField(upload_to='',null=True, blank=True)
+    rate = models.IntegerField(default=0)
+    category = models.ForeignKey(Category)
+    date_published = models.DateTimeField(auto_now=True, editable=True)
+    confirmed = models.BooleanField(default=False)
+
+
+
+    def __unicode__(self):
+        return self.farsi_name
+
 
 
 class Song(models.Model):
@@ -28,9 +50,9 @@ class Song(models.Model):
     activated = models.IntegerField(default=0)
     producer = models.ForeignKey(Producer,null=True,blank=True)
     image = models.ImageField(upload_to='',null=True, blank=True)
-    category = models.ForeignKey(Category)
     price = models.IntegerField(default=300)
-    date_published = models.DateTimeField(auto_now=True, editable=True)
+    album = models.ForeignKey(Album,null=True,blank=True)
+    confirmed = models.BooleanField(default=False)
 
 
     def __unicode__(self):

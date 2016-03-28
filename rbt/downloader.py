@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 import urllib2
-from models import Song,Category,Producer
+from models import Song, Category, Producer, Album
 
 
 def derive_song_information(html_page):
@@ -11,9 +11,10 @@ def derive_song_information(html_page):
     code = table_tag.find_all('td')[1].string.strip()
     name = table_tag.find_all('td')[3].string.strip()
     producer_farsi = table_tag.find_all('td')[5].string.strip()
+    album_farsi = table_tag.find_all('td')[13].string.strip()
     category_farsi = table_tag.find_all('td')[17].string.strip()
 
-    return (code,name,producer_farsi,category_farsi)
+    return (code,name,producer_farsi,album_farsi,category_farsi)
 
 def is_song_valid(html_page):
     '''
@@ -41,12 +42,16 @@ def download_song_html(id):
 
     return html_page
 
-def add_song_to_db(code,name,producer_farsi,category_farsi):
+def add_song_to_db(code,name,producer_farsi,album_farsi,category_farsi):
     # get or create producer
     producer,created = Producer.objects.get_or_create(name=producer_farsi)
 
     # get or create cateogory
     category,created = Category.objects.get_or_create(farsi_name=category_farsi)
+
+    # get or create the album
+    album,created = Album.objects.get_or_create(farsi_name=album_farsi,category=category)
+
 
     # audio download link
     audio_link = "http://rbt.mci.ir/wave/%s.wav" % code
@@ -56,7 +61,9 @@ def add_song_to_db(code,name,producer_farsi,category_farsi):
                 download_link=audio_link,
                 song_name=name,
                 producer=producer,
-                category=category)
+                album = album,
+                confirmed = False,
+                )
     song.save()
 
 
@@ -64,15 +71,15 @@ def add_song_to_db(code,name,producer_farsi,category_farsi):
 ### running the downloader
 #################################################
 
-for id in range(82050,82113):
+for id in range(82150,82159):
 
-    print("%s\n" % id)
+    print("\n%s" % id),
 
     html_page = download_song_html(id)
     if is_song_valid(html_page):
 
         # get the information from mci site
-        (code,name,producer_farsi,category_farsi) = derive_song_information(html_page)
+        (code,name,producer_farsi,album_farsi,category_farsi) = derive_song_information(html_page)
 
         # check if the song already exists in the database
         try:
@@ -80,5 +87,5 @@ for id in range(82050,82113):
             # the song already exists in the database.
             # Do nothing.
         except Song.DoesNotExist:
-            add_song_to_db(code,name,producer_farsi,category_farsi)
-            print( "song %s added to db." % code )
+            add_song_to_db(code,name,producer_farsi,album_farsi,category_farsi)
+            print( "- inserted.")

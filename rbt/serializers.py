@@ -1,11 +1,10 @@
 from rest_framework import serializers
-from models import Song,Category
+from models import Song,Category,Album
 
 class SongSerializer(serializers.ModelSerializer):
 
     category = serializers.StringRelatedField(read_only=True)
     producer = serializers.StringRelatedField(read_only=True)
-
 
     class Meta:
         model = Song
@@ -17,3 +16,9 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
+
+
+class AlbumSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Album
