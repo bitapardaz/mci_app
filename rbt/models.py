@@ -24,6 +24,17 @@ class Category(models.Model):
         return self.farsi_name
 
 
+
+class PseudoProducer(models.Model):
+
+    name = models.CharField(max_length=200)
+    confirmed = models.BooleanField(default=False)
+
+    def __unicode__(self):
+        return self.name
+
+
+
 class Album(models.Model):
     farsi_name = models.CharField(max_length=200)
     english_name = models.CharField(max_length=200, null=True, blank=True)
@@ -33,6 +44,8 @@ class Album(models.Model):
     category = models.ForeignKey(Category)
     date_published = models.DateTimeField(auto_now=True, editable=True)
     confirmed = models.BooleanField(default=False)
+    producer = models.ForeignKey(Producer,null=True,blank=True)
+    pseudo_producer = models.ForeignKey(PseudoProducer,null=True,blank=True)
 
 
     def __unicode__(self):
@@ -65,7 +78,7 @@ class Song(models.Model):
 
 
     def __unicode__(self):
-        return self.song_name 
+        return self.song_name
 
     def song_admin_change_url(self):
         link = urlresolvers.reverse('admin:rbt_song_change',args=(self.id,))

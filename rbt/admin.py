@@ -4,15 +4,13 @@ from models import Producer, Song, Tag, Category, SongTagAssociation, Album
 class SongInline(admin.TabularInline):
     model = Song
     fields=['song_name','song_admin_change_url','producer','price','download_link']
-    readonly_fields = ['song_admin_change_url',]
+    readonly_fields = ['song_admin_change_url']
     extra = 0
-
-
 
 
 class AlbumAdmin(admin.ModelAdmin):
         fieldsets = [
-            ('Album information',{'fields':['farsi_name','category','rate','confirmed','total_songs']}),
+            ('Album information',{'fields':['farsi_name','category','producer','pseudo_producer','rate','confirmed','total_songs']}),
             ('Photo',{'fields':['photo','wide_photo']}),
         ]
         inlines = [SongInline]
