@@ -110,3 +110,9 @@ class SongTagAssociation(models.Model):
 
     def __unicode__(self):
         return self.song.__unicode__() + ' -- ' + self.tag.__unicode__()
+
+
+
+class CatAdvert(models.Model):
+    category = models.ForeignKey(Category)
+    album = models.ForeignKey(Album)

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from models import Song,Category,Album
+from models import Song,Category,Album,CatAdvert
 
 class SongSerializer(serializers.ModelSerializer):
 
@@ -22,3 +22,8 @@ class AlbumSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Album
+
+
+class CatAdvertSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=CatAdvert

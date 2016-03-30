@@ -1,13 +1,15 @@
 from rest_framework import status
 from django.shortcuts import render
 from django.http import HttpResponse
-from models import Song,Category,Album
+from models import Song,Category,Album,CatAdvert
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from serializers import SongSerializer,CategorySerializer,AlbumSerializer
+from serializers import SongSerializer,CategorySerializer,AlbumSerializer, CatAdvertSerializer
 from userprofile.serializers import UserProfileSerializer
 from userprofile.models import UserProfile
+
+
 
 
 @api_view(['GET'])
@@ -21,7 +23,7 @@ def rbt_cats(request,format=None):
 
 
 @api_view(['GET'])
-def cat_albums(request,cat_id,page):
+def cat_albums(request,cat_id,page,format=None):
 
     page_index = int(page)
     no_of_items = 20
@@ -58,7 +60,15 @@ def cat_new_albums(request,cat_id):
     return Response(serializer.data)
 
 
-
+@api_view(['GET'])
+def cat_adverts(request,cat_id,format=None):
+    """
+    returns the adverts related to the given category.
+    """
+    ads = CatAdvert.objects.filter(category__id=cat_id)
+    albums = [ad.album for ad in ads ]
+    serializer = AlbumSerializer(albums,many=True)
+    return Response(serializer.data)
 
 
 @api_view(['GET'])

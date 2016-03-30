@@ -1,5 +1,5 @@
 from django.contrib import admin
-from models import Producer, Song, Tag, Category, SongTagAssociation, Album
+from models import Producer, Song, Tag, Category, SongTagAssociation, Album,CatAdvert
 
 class SongInline(admin.TabularInline):
     model = Song
@@ -24,6 +24,14 @@ class AlbumAdmin(admin.ModelAdmin):
         search_fields = ['farsi_name']
 
 
+class CatAdvertAdmin(admin.ModelAdmin):
+
+    list_display = ('category','album')
+    list_filter = ['category']
+    search_fields = ['category__english_name']
+
+
+
 # Register your models here.
 admin.site.register(Producer)
 admin.site.register(Song)
@@ -31,3 +39,4 @@ admin.site.register(Tag)
 admin.site.register(Category)
 admin.site.register(SongTagAssociation)
 admin.site.register(Album,AlbumAdmin)
+admin.site.register(CatAdvert,CatAdvertAdmin)
