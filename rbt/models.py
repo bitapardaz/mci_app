@@ -116,7 +116,7 @@ class CatAdvert(models.Model):
     album = models.ForeignKey(Album)
 
 
-class MainAdverts(model.Model):
+class MainAdverts(models.Model):
     category = models.ForeignKey(Category,null=True,blank=True)
     album = models.ForeignKey(Album,null=True,blank=True)
     miscellaneous = models.ImageField(upload_to='',null=True,blank=True)
