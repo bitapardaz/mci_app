@@ -30,6 +30,9 @@ class CatAdvertAdmin(admin.ModelAdmin):
     list_filter = ['category']
     search_fields = ['category__english_name']
 
+    class Media:
+        js = ("rbt/js/filter_albums.js",)
+
 
 
 # Register your models here.

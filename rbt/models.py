@@ -34,7 +34,6 @@ class PseudoProducer(models.Model):
         return self.name
 
 
-
 class Album(models.Model):
     farsi_name = models.CharField(max_length=200)
     english_name = models.CharField(max_length=200, null=True, blank=True)
@@ -51,8 +50,7 @@ class Album(models.Model):
     def __unicode__(self):
 
         # get the number of songs in the current album.
-        song_list = Song.objects.filter(album = self)
-        return "%s \t--\t(%s)" % (self.farsi_name,str(len(song_list)) )
+        return self.farsi_name
 
     def total_songs(self):
         songs = Song.objects.filter(album=self);

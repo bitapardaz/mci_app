@@ -43,7 +43,8 @@ def cat_popular_albums(request,cat_id):
     """
     start_index = 0
     end_index = 20
-    album_list = Album.objects.all().order_by('-rate')[start_index:end_index]
+
+    album_list = Album.objects.filter(category__id = cat_id).order_by('-rate')[start_index:end_index]
     serializer = AlbumSerializer(album_list,many=True)
     return Response(serializer.data)
 
@@ -69,6 +70,15 @@ def cat_adverts(request,cat_id,format=None):
     albums = [ad.album for ad in ads ]
     serializer = AlbumSerializer(albums,many=True)
     return Response(serializer.data)
+
+#@api_view(['GET'])
+#def views.filter_cat_albums():
+
+#    id = request.GET['id']
+    #category = Category.objects.get(pk=cat_id)
+    #albums = Album.objects.filter(category=category,confirmed=True).order_by('-date_published')
+    #serializer = AlbumSerializer(albums,many=True)
+    #return Response(serializer.data)
 
 
 @api_view(['GET'])
