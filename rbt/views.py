@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from serializers import SongSerializer,CategorySerializer,AlbumSerializer, CatAdvertSerializer,MainAdvertSerializer
 from userprofile.serializers import UserProfileSerializer
 from userprofile.models import UserProfile
+from forms import AlbumSelectForm
 
 
 
@@ -81,15 +82,12 @@ def main_adverts(request):
     serializer = MainAdvertSerializer(ads,many=True)
     return Response(serializer.data)
 
+@api_view(['GET'])
+def list_album_songs(request,album_id):
 
-#@api_view(['GET'])
-#def views.filter_cat_albums():
-
-#    id = request.GET['id']
-    #category = Category.objects.get(pk=cat_id)
-    #albums = Album.objects.filter(category=category,confirmed=True).order_by('-date_published')
-    #serializer = AlbumSerializer(albums,many=True)
-    #return Response(serializer.data)
+    songs = Song.objects.filter(album__id=album_id)
+    serializer = SongSerializer(songs,many=True)
+    return Response(serializer.data)
 
 
 @api_view(['GET'])
@@ -175,3 +173,27 @@ def list_cat(request,cat_name,page,format=None):
         song_list = Song.objects.filter(category = cat)[start_index:end_index]
         serializer = SongSerializer(song_list,many=True)
         return Response(serializer.data)
+
+
+def album_select(request):
+
+    if request.method == 'GET':
+
+        form = AlbumSelectForm()
+        context = {}
+        context['form'] = form
+
+        return render(request,'rbt/select_album.html',context)
+
+    if request.method == 'POST':
+        return HttpResponse("you are posting")
+
+
+@api_view(['GET'])
+def filter_albums_per_cat(request,format=None):
+
+    cat_id = int(request.GET['cat_id'])
+    category = Category.objects.get(pk=cat_id)
+    albums = Album.objects.filter(category=category,confirmed=True).order_by('-date_published')
+    serializer = AlbumSerializer(albums,many=True)
+    return Response(serializer.data)

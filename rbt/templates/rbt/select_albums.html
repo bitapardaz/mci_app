@@ -1,0 +1,57 @@
+<html>
+
+<head>
+
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+
+<script>
+
+$(document).ready(function () {
+    $('#id_category').change(function () {
+        $.getJSON('http://127.0.0.1:8000/mcirbt/filter_albums_per_cat/',{cat_id: $(this).val() , view: 'json'}, function (data) {
+            var options = '<option value="">--------&nbsp;</option>';
+            for (var i = 0; i < data.length; i++) {
+              options += '<option value="' + data[i].id + '">' + data[i].farsi_name + '</option>';
+            }
+
+            $("#id_album").html(options);
+            $("#id_album option:first").attr('selected', 'selected');
+        });
+        var options = '<option value="">Loading&nbsp;</option>';
+        $("#id_album").html(options);
+    });
+
+});
+
+</script>
+
+</head>
+
+<body>
+
+
+
+    <form method="post" action="/mcirbt/album_select/">{% csrf_token  %}
+        {{ form.non_field_errors }}
+        {{ form.category.errors }}
+        <label for="{{ form.category.id_for_label }}">category:</label>
+        {{ form.category }}
+
+        <br><br>
+
+        {{ form.album.errors }}
+        <label for="{{ form.album.id_for_label }}">album:</label>
+        {{ form.album }}
+
+        <br><br>
+
+        <input type="submit" value="submit">
+
+
+    </form>
+
+
+</body>
+
+
+</html>

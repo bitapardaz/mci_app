@@ -3,13 +3,13 @@ from models import Song,Category,Album,CatAdvert,MainAdvert
 
 class SongSerializer(serializers.ModelSerializer):
 
-    category = serializers.StringRelatedField(read_only=True)
+    #category = serializers.StringRelatedField(read_only=True)
     producer = serializers.StringRelatedField(read_only=True)
 
     class Meta:
         model = Song
         fields = ('song_name','activation_code','download_link','rate',
-                    'activated','producer','image','category')
+                    'activated','producer','image',)
 
 
 class CategorySerializer(serializers.ModelSerializer):

@@ -33,13 +33,10 @@ class CatAdvertAdmin(admin.ModelAdmin):
         js = ("rbt/js/filter_albums.js",)
 
 
-
-
 class MainAdvertAdmin(admin.ModelAdmin):
 
     list_display = ('category','album','miscellaneous','url')
     list_filter = ['category']
-
 
 
 
