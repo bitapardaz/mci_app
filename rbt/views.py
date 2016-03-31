@@ -56,7 +56,7 @@ def cat_new_albums(request,cat_id):
     """
     start_index = 0
     end_index = 20
-    album_list = Album.objects.all().order_by('-date_published')[start_index:end_index]
+    album_list = Album.objects.filter(category__id = cat_id,confirmed=True).order_by('-date_published')[start_index:end_index]
     serializer = AlbumSerializer(album_list,many=True)
     return Response(serializer.data)
 
