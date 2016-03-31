@@ -18,7 +18,6 @@ class AlbumAdmin(admin.ModelAdmin):
         #fields = ['total_songs','farsi_name']
         readonly_fields = ['total_songs']
 
-
         list_display = ('farsi_name', 'category', 'total_songs','confirmed','date_published')
         list_filter = ['category','date_published','confirmed']
         search_fields = ['farsi_name']

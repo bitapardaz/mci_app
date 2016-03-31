@@ -78,7 +78,7 @@ def main_adverts(request):
     returns the adverts that appear on the first page.
     """
     ads = MainAdvert.objects.all()
-    serializer = AlbumSerializer(ads,many=True)
+    serializer = MainAdvertSerializer(ads,many=True)
     return Response(serializer.data)
 
 
