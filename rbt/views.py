@@ -1,11 +1,11 @@
 from rest_framework import status
 from django.shortcuts import render
 from django.http import HttpResponse
-from models import Song,Category,Album,CatAdvert
+from models import Song,Category,Album,CatAdvert,MainAdvert
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from serializers import SongSerializer,CategorySerializer,AlbumSerializer, CatAdvertSerializer
+from serializers import SongSerializer,CategorySerializer,AlbumSerializer, CatAdvertSerializer,MainAdvertSerializer
 from userprofile.serializers import UserProfileSerializer
 from userprofile.models import UserProfile
 
@@ -72,12 +72,15 @@ def cat_adverts(request,cat_id,format=None):
     return Response(serializer.data)
 
 
-@api_view(['GET])
+@api_view(['GET'])
 def main_adverts(request):
     """
     returns the adverts that appear on the first page.
     """
-    
+    ads = MainAdvert.objects.all()
+    serializer = AlbumSerializer(ads,many=True)
+    return Response(serializer.data)
+
 
 #@api_view(['GET'])
 #def views.filter_cat_albums():
