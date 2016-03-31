@@ -71,6 +71,14 @@ def cat_adverts(request,cat_id,format=None):
     serializer = AlbumSerializer(albums,many=True)
     return Response(serializer.data)
 
+
+@api_view(['GET])
+def main_adverts(request):
+    """
+    returns the adverts that appear on the first page.
+    """
+    
+
 #@api_view(['GET'])
 #def views.filter_cat_albums():
 
