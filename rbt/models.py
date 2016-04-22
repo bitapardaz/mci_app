@@ -15,9 +15,11 @@ class Producer(models.Model):
 
 class Category(models.Model):
     farsi_name = models.CharField(max_length=200)
+    display_name = models.CharField(max_length=200)
     english_name = models.CharField(max_length=200, null=True, blank=True)
     photo = models.ImageField(upload_to='',null=True, blank=True)
     confirmed = models.BooleanField(default=False)
+    parent = models.ForeignKey('self',on_delete=models.CASCADE,blank=True,null=True)
 
 
     def __unicode__(self):
@@ -45,6 +47,7 @@ class Album(models.Model):
     confirmed = models.BooleanField(default=False)
     producer = models.ForeignKey(Producer,null=True,blank=True)
     pseudo_producer = models.ForeignKey(PseudoProducer,null=True,blank=True)
+
 
 
     def __unicode__(self):

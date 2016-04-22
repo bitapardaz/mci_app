@@ -36,13 +36,18 @@ class MainAdvertAdmin(admin.ModelAdmin):
     list_display = ('category','album','miscellaneous','url')
     list_filter = ['category']
 
+class CategoryAdmin(admin.ModelAdmin):
+    list_filter = ['confirmed']
+
+
+
 
 
 # Register your models here.
 admin.site.register(Producer)
 admin.site.register(Song)
 admin.site.register(Tag)
-admin.site.register(Category)
+admin.site.register(Category,CategoryAdmin)
 admin.site.register(SongTagAssociation)
 admin.site.register(Album,AlbumAdmin)
 admin.site.register(CatAdvert,CatAdvertAdmin)

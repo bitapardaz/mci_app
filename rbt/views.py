@@ -11,6 +11,23 @@ from userprofile.models import UserProfile
 from forms import AlbumSelectForm
 
 
+@api_view(['GET'])
+def rbt_ultimate_cats(request,format=None):
+    """ returns all categories at all depths related to RBT"""
+
+
+
+def get_category_by_id(cat_list, id):
+
+    for cat in cat_list:
+        if cat.id == id :
+            return cat
+
+def add_cat_to_parent(parent,child):
+    '''
+    adds a child to the list of parrent's children
+    '''
+
 
 
 @api_view(['GET'])

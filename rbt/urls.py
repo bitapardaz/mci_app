@@ -6,6 +6,7 @@ urlpatterns = [
     url(r'^register/$',views.register),
 
     url(r'^rbt_cats/$',views.rbt_cats),
+    url(r'^rbt_ultimtate_cats/$',views.rbt_ultimate_cats),
     url(r'^(?P<cat_id>[0-9]+)/(?P<page>[0-9]+)/$',views.cat_albums),
     url(r'^(?P<cat_id>[0-9]+)/popular/$',views.cat_popular_albums),
     url(r'^(?P<cat_id>[0-9]+)/new/$',views.cat_new_albums),
@@ -15,7 +16,6 @@ urlpatterns = [
     url(r'^album_select/',views.album_select),
 
     url(r'^album/(?P<album_id>[0-9]+)/',views.list_album_songs),
-
 
 
 
