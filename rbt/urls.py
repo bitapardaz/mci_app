@@ -3,6 +3,8 @@ import views
 from rest_framework.urlpatterns import format_suffix_patterns
 
 urlpatterns = [
+
+    url(r'^homepage/$',views.homepage),
     url(r'^register/$',views.register),
 
     url(r'^rbt_cats/$',views.rbt_cats),

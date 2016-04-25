@@ -3,6 +3,7 @@ from django.core.serializers import serialize as core_serialize
 from rest_framework.renderers import JSONRenderer
 from models import Song,Category,Album,CatAdvert,MainAdvert
 
+
 class SongSerializer(serializers.ModelSerializer):
 
     #category = serializers.StringRelatedField(read_only=True)

@@ -9,7 +9,16 @@ from serializers import SongSerializer,CategorySerializer,AlbumSerializer, CatAd
 from userprofile.serializers import UserProfileSerializer
 from userprofile.models import UserProfile
 from forms import AlbumSelectForm
+from django.core import serializers
 
+@api_view(['GET'])
+def homepage(request,format=None):
+
+    dict = {}
+    dict['new_items'] = Album.objects.all()[0:10].values()
+    dict['our_recommendation'] = 
+    response =  Response(dict)
+    return response
 
 def get_category_by_id(cat_list, id):
 
