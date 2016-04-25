@@ -15,8 +15,8 @@ from django.core import serializers
 def homepage(request,format=None):
 
     dict = {}
-    dict['new_items'] = Album.objects.all()[0:10].values()
-    dict['our_recommendation'] = 
+    dict['new_items'] = Album.objects.all()[0:10].order_by('date_published').values()
+    dict['our_recommendation'] =
     response =  Response(dict)
     return response
 

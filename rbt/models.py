@@ -88,6 +88,10 @@ class Song(models.Model):
     song_admin_change_url.allow_tags = True
     song_admin_change_url.short_description = 'URL'
 
+
+class MainPageFeatured(models.Model):
+    
+
 class Category_Featured(models.Model):
 
     category = models.ForeignKey(Category)
@@ -95,6 +99,7 @@ class Category_Featured(models.Model):
 
     def __unicode__(self):
         return song.__unicode__() + ' -- ' + category.__unicode__()
+
 
 
 

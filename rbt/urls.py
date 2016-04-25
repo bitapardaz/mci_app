@@ -12,15 +12,19 @@ urlpatterns = [
     url(r'^(?P<cat_id>[0-9]+)/popular/$',views.cat_popular_albums),
     url(r'^(?P<cat_id>[0-9]+)/new/$',views.cat_new_albums),
     url(r'^(?P<cat_id>[0-9]+)/ads/$',views.cat_adverts),
-    url(r'^ads/$',views.main_adverts),
+    url(r'^(?P<cat_id>[0-9]+)/featured/$',views.cat_featured),
+
     url(r'^filter_albums_per_cat/$',views.filter_albums_per_cat),
     url(r'^album_select/',views.album_select),
 
+    url(r'^ads/$',views.main_adverts),
+    url(r'^featured_albums/',views.featured_albums),
+    url(r'^latest_albums/',views.latest_albums),
+    url(r'^popular_albums/',views.popular_albums),
+
+    url(r'^latest_albums/',views.latest_albums),
+
     url(r'^album/(?P<album_id>[0-9]+)/',views.list_album_songs),
-
-
-
-#    url(r'^mcirbt/filter_cat_albums/$',views.filter_cat_albums),
 
     url(r'^list/$',views.list),
     url(r'^list_cat/(?P<cat_name>[a-zA-Z]+)/(?P<page>[0-9]+)/$',views.list_cat),
