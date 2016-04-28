@@ -90,7 +90,8 @@ class Song(models.Model):
 
 
 class MainPageFeatured(models.Model):
-    
+    pass
+
 
 class Category_Featured(models.Model):
 
