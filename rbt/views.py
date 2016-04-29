@@ -24,11 +24,11 @@ def homepage(request,format=None):
     for recom in recommendations:
         featured_albums.append(recom.album)
     serializer = AlbumSerializer(featured_albums,many=True)
-    dict['our_recommendation'] = serializer.data
+    dict['featured_albums'] = serializer.data
 
     new_items = Album.objects.filter(confirmed=True).order_by('date_published')[0:20]
     serializer = AlbumSerializer(new_items,many=True)
-    dict['new_items'] = serializer.data
+    dict['new_albums'] = serializer.data
 
     popular_albums = Album.objects.filter(confirmed=True).order_by('rate')[0:20]
     serializer = AlbumSerializer(popular_albums,many=True)
@@ -59,11 +59,12 @@ def cat_homepage(request,cat_id):
     for recom in recommendations:
         featured_albums.append(recom.album)
     serializer = AlbumSerializer(featured_albums,many=True)
-    dict['our_recommendation'] = serializer.data
+    dict['featured_albums'] = serializer.data
 
     # new albums in this category
-
-
+    album_list = Album.objects.filter(category = category,confirmed=True).order_by('-date_published')[0:20]
+    serializer = AlbumSerializer(album_list,many=True)
+    dict['new_albums'] = serializer.data
 
     # popular albums in this cateogory
 
