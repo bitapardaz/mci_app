@@ -20,7 +20,7 @@ class CategorySerializer(serializers.ModelSerializer):
     serializes a category including its children
     '''
 
-    children = serializers.SerializerMethodField('mychildren')
+    #children = serializers.SerializerMethodField('mychildren')
 
     def mychildren(self,cat):
         children = Category.objects.filter(parent = cat)
@@ -29,11 +29,11 @@ class CategorySerializer(serializers.ModelSerializer):
         else:
             return children.values()
 
-    parent = serializers.StringRelatedField(read_only=True)
+    #parent = serializers.StringRelatedField(read_only=True)
 
     class Meta:
         model = Category
-        fields = ('id','farsi_name','display_name','photo','parent','children')
+        fields = ('id','farsi_name','display_name','photo')
 
 
 
