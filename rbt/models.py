@@ -123,6 +123,8 @@ class SongTagAssociation(models.Model):
 class CatAdvert(models.Model):
     category = models.ForeignKey(Category)
     album = models.ForeignKey(Album)
+    miscellaneous = models.ImageField(upload_to='',null=True,blank=True)
+    url = models.URLField(null=True,blank=True)
 
 
 class MainAdvert(models.Model):

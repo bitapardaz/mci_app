@@ -41,6 +41,26 @@ def homepage(request,format=None):
     response =  Response(dict)
     return response
 
+@api_view(['GET']):
+def cat_homepage(request,cat_id)
+
+    dict={}
+
+    # get cat ads
+    
+
+    # get  our recommendations for the category
+
+    # new albums in this category
+
+    # popular albums in this cateogory
+
+    # children
+
+    #
+    response = Response(dict)
+    return response
+
 def get_category_by_id(cat_list, id):
 
     for cat in cat_list:
