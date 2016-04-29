@@ -33,8 +33,8 @@ class CatAdvertAdmin(admin.ModelAdmin):
 
 class MainAdvertAdmin(admin.ModelAdmin):
 
-    list_display = ('category','album','miscellaneous','url')
-    list_filter = ['category']
+    list_display = ('album','miscellaneous','url')
+
 
 class CategoryAdmin(admin.ModelAdmin):
     list_filter = ['confirmed']
