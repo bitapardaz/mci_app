@@ -17,7 +17,7 @@ def homepage(request,format=None):
     dict = {}
     dict['main_ads'] = MainAdvert.objects.all().values()
     dict['our_recommendation'] = MainPageFeatured.objects.all().order_by('date_published').values()
-    dict['new_items'] = Album.objects.filter(confirmed=True).order_by('date_published')[0:10].values()
+    dict['new_items'] = Album.objects.filter(confirmed=True).order_by('date_published')[0:20].values()
 
     cat_list = Category.objects.filter(confirmed=True,parent=None)
     serializer = CategorySerializer(cat_list,many=True)
