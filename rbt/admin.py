@@ -40,8 +40,6 @@ class CategoryAdmin(admin.ModelAdmin):
     list_filter = ['confirmed']
 
 
-
-
 # Register your models here.
 admin.site.register(Producer)
 admin.site.register(Song)
