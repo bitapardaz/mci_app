@@ -15,7 +15,9 @@ from django.core import serializers
 def homepage(request,format=None):
 
     dict = {}
-    dict['main_ads'] = MainAdvert.objects.all().values()
+    ads = MainAdvert.objects.all()
+    serializer = MainAdvertSerializer(ads,many=True)
+    dict['main_ads'] = serializer.data
 
     featured_albums = []
     recommendations = MainPageFeatured.objects.all().order_by('date_published')
