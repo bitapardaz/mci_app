@@ -13,11 +13,20 @@ from django.core import serializers
 
 @api_view(['GET'])
 def homepage(request,format=None):
-    pass
+
     dict = {}
     dict['main_ads'] = MainAdvert.objects.all().values()
-    dict['our_recommendation'] = MainPageFeatured.objects.all().order_by('date_published').values()
-    dict['new_items'] = Album.objects.filter(confirmed=True).order_by('date_published')[0:20].values()
+
+    featured_albums = []
+    recommendations = MainPageFeatured.objects.all().order_by('date_published')
+    for recom in recommendations:
+        featured_albums.append(recom.album)
+    serializer = AlbumSerializer(featured_albums,many=True)
+    dict['our_recommendation'] = serializer.data
+
+    new_items = Album.objects.filter(confirmed=True).order_by('date_published')[0:20]
+    serializer = AlbumSerializer(new_items,many=True)
+    dict['new_items'] = serializer.data
 
     cat_list = Category.objects.filter(confirmed=True,parent=None)
     serializer = CategorySerializer(cat_list,many=True)

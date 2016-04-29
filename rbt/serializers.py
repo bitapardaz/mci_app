@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.core.serializers import serialize as core_serialize
 from rest_framework.renderers import JSONRenderer
-from models import Song,Category,Album,CatAdvert,MainAdvert
+from models import Song,Category,Album,CatAdvert,MainAdvert,MainPageFeatured
 
 
 class SongSerializer(serializers.ModelSerializer):
