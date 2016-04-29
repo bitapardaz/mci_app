@@ -1,7 +1,7 @@
 from rest_framework import status
 from django.shortcuts import render
 from django.http import HttpResponse
-from models import Song,Category,Album,CatAdvert,MainAdvert
+from models import Song,Category,Album,CatAdvert,MainAdvert,MainPageFeatured
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -14,12 +14,17 @@ from django.core import serializers
 @api_view(['GET'])
 def homepage(request,format=None):
     pass
+    dict = {}
+    dict['main_ads'] = MainAdvert.objects.all().values()
+    dict['our_recommendation'] = MainPageFeatured.objects.all().order_by('date_published').values()
+    dict['new_items'] = Album.objects.all().order_by('date_published')[0:10].values()
 
-#    dict = {}
-#    dict['new_items'] = Album.objects.all()[0:10].order_by('date_published').values()
-#    dict['our_recommendation'] =
-#    response =  Response(dict)
-#    return response
+    cat_list = Category.objects.filter(confirmed=True,parent=None)
+    serializer = CategorySerializer(cat_list,many=True)
+    dict['categories'] = serializer.data
+
+    response =  Response(dict)
+    return response
 
 def get_category_by_id(cat_list, id):
 

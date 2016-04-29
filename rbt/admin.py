@@ -1,5 +1,5 @@
 from django.contrib import admin
-from models import Producer, Song, Tag, Category, SongTagAssociation, Album,CatAdvert, MainAdvert
+from models import Producer, Song, Tag, Category, SongTagAssociation, Album,CatAdvert, MainAdvert, MainPageFeatured
 
 class SongInline(admin.TabularInline):
     model = Song
@@ -42,7 +42,6 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 
-
 # Register your models here.
 admin.site.register(Producer)
 admin.site.register(Song)
@@ -52,3 +51,4 @@ admin.site.register(SongTagAssociation)
 admin.site.register(Album,AlbumAdmin)
 admin.site.register(CatAdvert,CatAdvertAdmin)
 admin.site.register(MainAdvert,MainAdvertAdmin)
+admin.site.register(MainPageFeatured)

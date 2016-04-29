@@ -48,8 +48,6 @@ class Album(models.Model):
     producer = models.ForeignKey(Producer,null=True,blank=True)
     pseudo_producer = models.ForeignKey(PseudoProducer,null=True,blank=True)
 
-
-
     def __unicode__(self):
 
         # get the number of songs in the current album.
@@ -61,7 +59,6 @@ class Album(models.Model):
 
     total_songs.allow_tags = True
     total_songs.short_description = 'Song Count'
-
 
 
 class Song(models.Model):
@@ -90,7 +87,12 @@ class Song(models.Model):
 
 
 class MainPageFeatured(models.Model):
-    pass
+
+    album = models.ForeignKey(Album)
+    date_published = models.DateTimeField(auto_now=True, editable=True)
+
+    def __unicode__(self):
+        return self.album.farsi_name
 
 
 class Category_Featured(models.Model):
@@ -100,8 +102,6 @@ class Category_Featured(models.Model):
 
     def __unicode__(self):
         return song.__unicode__() + ' -- ' + category.__unicode__()
-
-
 
 
 class Tag(models.Model):
