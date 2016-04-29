@@ -1,5 +1,5 @@
 from django.contrib import admin
-from models import Producer, Song, Tag, Category, SongTagAssociation, Album,CatAdvert, MainAdvert, MainPageFeatured
+from models import Producer, Song, Tag, Category, SongTagAssociation, Album,CatAdvert, MainAdvert, MainPageFeatured,Category_Featured
 
 class SongInline(admin.TabularInline):
     model = Song
@@ -40,6 +40,12 @@ class CategoryAdmin(admin.ModelAdmin):
     list_filter = ['confirmed']
 
 
+class CategoryFeaturedAdmin(admin.ModelAdmin):
+    list_display = ('category','album','date_published')
+
+    class Media:
+        js = ("rbt/js/filter_albums.js",)
+
 # Register your models here.
 admin.site.register(Producer)
 admin.site.register(Song)
@@ -50,3 +56,4 @@ admin.site.register(Album,AlbumAdmin)
 admin.site.register(CatAdvert,CatAdvertAdmin)
 admin.site.register(MainAdvert,MainAdvertAdmin)
 admin.site.register(MainPageFeatured)
+admin.site.register(Category_Featured, CategoryFeaturedAdmin)

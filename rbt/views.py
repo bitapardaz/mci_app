@@ -1,7 +1,7 @@
 from rest_framework import status
 from django.shortcuts import render
 from django.http import HttpResponse
-from models import Song,Category,Album,CatAdvert,MainAdvert,MainPageFeatured
+from models import Song,Category,Album,CatAdvert,MainAdvert,MainPageFeatured, Category_Featured
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -46,15 +46,24 @@ def cat_homepage(request,cat_id):
 
     dict={}
 
+    category = Category.objects.get(id=cat_id)
+
     # get cat ads
-    ads = CatAdvert.objects.filter(category__id = cat_id)
+    ads = CatAdvert.objects.filter(category=category)
     serializer = CatAdvertSerializer(ads,many=True)
     dict['cat_ads'] = serializer.data
 
-    # get  our recommendations for the category
-    
+    # get  our recommendations (featured) for the category
+    featured_albums = []
+    recommendations = Category_Featured.objects.filter(category = category).order_by('date_published')
+    for recom in recommendations:
+        featured_albums.append(recom.album)
+    serializer = AlbumSerializer(featured_albums,many=True)
+    dict['our_recommendation'] = serializer.data
 
     # new albums in this category
+
+
 
     # popular albums in this cateogory
 

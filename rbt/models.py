@@ -98,9 +98,9 @@ class MainPageFeatured(models.Model):
 class Category_Featured(models.Model):
 
     category = models.ForeignKey(Category)
-    song = models.ForeignKey(Song)
+    album = models.ForeignKey(Album)
+    date_published = models.DateTimeField(auto_now=True, editable=True)
 
-    
 
 
 class Tag(models.Model):

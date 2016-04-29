@@ -41,7 +41,6 @@ class AlbumSerializer(serializers.ModelSerializer):
 
     producer = serializers.StringRelatedField(read_only=True)
 
-
     class Meta:
         model = Album
 
