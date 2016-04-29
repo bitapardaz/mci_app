@@ -30,6 +30,10 @@ def homepage(request,format=None):
     serializer = AlbumSerializer(new_items,many=True)
     dict['new_items'] = serializer.data
 
+    popular_albums = Album.objects.filter(confirmed=True).order_by('rate')[0:20]
+    serializer = AlbumSerializer(popular_albums,many=True)
+    dict['popular_albums'] = serializer.data
+
     cat_list = Category.objects.filter(confirmed=True,parent=None)
     serializer = CategorySerializer(cat_list,many=True)
     dict['categories'] = serializer.data
