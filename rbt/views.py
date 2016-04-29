@@ -67,10 +67,15 @@ def cat_homepage(request,cat_id):
     dict['new_albums'] = serializer.data
 
     # popular albums in this cateogory
+    album_list = Album.objects.filter(category = category,confirmed=True).order_by('-rate')[0:20]
+    serializer = AlbumSerializer(album_list,many=True)
+    dict['popular_albums'] = serializer.data
 
     # children
+    cat_list = Category.objects.filter(confirmed=True,parent=category)
+    serializer = CategorySerializer(cat_list,many=True)
+    dict['categories'] = serializer.data
 
-    #
     response = Response(dict)
     return response
 
