@@ -24,6 +24,8 @@ urlpatterns = [
 
     #url(r'^(?P<cat_id>[0-9]+)/featured/$',views.cat_featured),
     url(r'^filter_albums_per_cat/$',views.filter_albums_per_cat),
+
+    # the purpose of having the following url is not clear.
     url(r'^album_select/',views.album_select),
 
     # URLs related to each Album

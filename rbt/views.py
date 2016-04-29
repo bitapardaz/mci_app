@@ -269,5 +269,12 @@ def filter_albums_per_cat(request,format=None):
     cat_id = int(request.GET['cat_id'])
     category = Category.objects.get(pk=cat_id)
     albums = Album.objects.filter(category=category,confirmed=True).order_by('-date_published')
+
+    # add albums in the children.
+    children = Category.objects.filter(parent=category)
+    for child in children:
+        child_album = Album.objects.filter(category=child,confirmed=True).order_by('-date_published')
+        albums = albums | child_album
+
     serializer = AlbumSerializer(albums,many=True)
     return Response(serializer.data)
