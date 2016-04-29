@@ -41,15 +41,18 @@ def homepage(request,format=None):
     response =  Response(dict)
     return response
 
-@api_view(['GET']):
-def cat_homepage(request,cat_id)
+@api_view(['GET'])
+def cat_homepage(request,cat_id):
 
     dict={}
 
     # get cat ads
-    
+    ads = CatAdvert.objects.filter(category__id = cat_id)
+    serializer = CatAdvertSerializer(ads,many=True)
+    dict['cat_ads'] = serializer.data
 
     # get  our recommendations for the category
+    
 
     # new albums in this category
 

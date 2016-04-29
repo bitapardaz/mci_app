@@ -25,7 +25,7 @@ class AlbumAdmin(admin.ModelAdmin):
 
 class CatAdvertAdmin(admin.ModelAdmin):
 
-    list_display = ('category','album')
+    list_display = ('category','album','miscellaneous','url')
 
     class Media:
         js = ("rbt/js/filter_albums.js",)

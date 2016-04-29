@@ -100,8 +100,7 @@ class Category_Featured(models.Model):
     category = models.ForeignKey(Category)
     song = models.ForeignKey(Song)
 
-    def __unicode__(self):
-        return song.__unicode__() + ' -- ' + category.__unicode__()
+    
 
 
 class Tag(models.Model):

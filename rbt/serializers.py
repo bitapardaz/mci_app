@@ -47,8 +47,20 @@ class AlbumSerializer(serializers.ModelSerializer):
 
 
 class CatAdvertSerializer(serializers.ModelSerializer):
+
+    album_detail = serializers.SerializerMethodField('get_album_details')
+
+    def get_album_details(self,ad):
+
+        if ad.album==None:
+            return None
+        else:
+            serializer = AlbumSerializer(ad.album)
+            return serializer.data
+
     class Meta:
         model=CatAdvert
+        fields = ('id','category','album_detail','miscellaneous','url')
 
 
 class MainAdvertSerializer(serializers.ModelSerializer):
