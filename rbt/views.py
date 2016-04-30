@@ -94,7 +94,7 @@ def get_category_new_albums(category,child_list):
         albums = Album.objects.none()
         for child in child_list:
             child_album = Album.objects.filter(category=child,confirmed=True).order_by('-date_published')[0:10]
-            albums = (albums | child_album).order_by('-date_published')
+            albums = (albums | child_album)
 
     return albums
 
@@ -111,7 +111,7 @@ def get_category_popular_albums(category,child_list):
         albums = Album.objects.none()
         for child in child_list:
             child_album = Album.objects.filter(category=child,confirmed=True).order_by('-rate')[0:10]
-            albums = (albums | child_album).order_by('-rate')
+            albums = (albums | child_album)
 
     return albums
 
