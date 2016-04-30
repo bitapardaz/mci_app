@@ -75,7 +75,7 @@ def cat_homepage(request,cat_id):
 
     # popular albums in this cateogory
     # depends on whether the category has children or not.
-    album_list = Album.objects.filter(category = category,confirmed=True).order_by('-rate')[0:20]
+    album_list = get_category_popular_albums(category,child_list)
     serializer = AlbumSerializer(album_list,many=True)
     dict['popular_albums'] = serializer.data
 
@@ -89,20 +89,30 @@ def get_category_new_albums(category,child_list):
     has children, then the latest albums in each child are also included.
     '''
     if len(child_list) == 0:
-        albums = Album.objects.filter(category = category,confirmed=True).order_by('-date_published')[0:10]
+        albums = Album.objects.filter(category = category,confirmed=True).order_by('-date_published')[0:20]
     else: # the category has some children.
         for child in children:
-            child_album = Album.objects.filter(category=child,confirmed=True).order_by('-date_published')[0:20]
+            child_album = Album.objects.filter(category=child,confirmed=True).order_by('-date_published')[0:10]
             albums = (albums | child_album).order_by('-date_published')
 
     return albums
 
-def get_category_popular_albums(category):
+
+
+def get_category_popular_albums(category,child_list):
     '''
     returns the popular albums associated with this category. If the category
     has children, then the popular albums in each child are also included.
     '''
-    pass
+    if len(child_list) == 0:
+        albums = Album.objects.filter(category = category,confirmed=True).order_by('-rate')[0:20]
+    else: # the category has some children.
+        for child in children:
+            child_album = Album.objects.filter(category=child,confirmed=True).order_by('-rate')[0:10]
+            albums = (albums | child_album).order_by('-rate')
+
+    return albums
+
 
 
 def get_category_by_id(cat_list, id):
