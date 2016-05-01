@@ -119,7 +119,7 @@ def get_category_popular_albums(category,child_list):
 
         albums = itertools.chain.from_iterable(child_albums)
 
-        return albums
+    return albums
 
 
 def get_category_by_id(cat_list, id):
