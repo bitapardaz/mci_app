@@ -10,6 +10,7 @@ from userprofile.serializers import UserProfileSerializer
 from userprofile.models import UserProfile
 from forms import AlbumSelectForm
 from django.core import serializers
+import itertools
 
 @api_view(['GET'])
 def homepage(request,format=None):
@@ -90,14 +91,16 @@ def get_category_new_albums(category,child_list):
     '''
     if len(child_list) == 0:
         albums = Album.objects.filter(category = category,confirmed=True).order_by('-date_published')[0:20]
+
     else: # the category has some children.
-        albums = Album.objects.none()
+        child_albums = []
         for child in child_list:
-            child_album = Album.objects.filter(category=child,confirmed=True).order_by('-date_published')[0:10]
-            albums = (albums | child_album)
+            album_list = Album.objects.filter(category=child,confirmed=True).order_by('-date_published')[0:10]
+            child_albums.append(album_list)
+
+        albums = itertools.chain.from_iterable(child_albums)
 
     return albums
-
 
 
 def get_category_popular_albums(category,child_list):
@@ -108,13 +111,15 @@ def get_category_popular_albums(category,child_list):
     if len(child_list) == 0:
         albums = Album.objects.filter(category = category,confirmed=True).order_by('-rate')[0:20]
     else: # the category has some children.
-        albums = Album.objects.none()
+
+        child_albums = []
         for child in child_list:
-            child_album = Album.objects.filter(category=child,confirmed=True).order_by('-rate')[0:10]
-            albums = (albums | child_album)
+            album_list = Album.objects.filter(category=child,confirmed=True).order_by('-rate')[0:10]
+            child_albums.append(album_list)
 
-    return albums
+        albums = itertools.chain.from_iterable(child_albums)
 
+        return albums
 
 
 def get_category_by_id(cat_list, id):
