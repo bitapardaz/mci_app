@@ -10,5 +10,5 @@ def populate_producer(album):
 
 def populate_producer_pop_songs():
 
-    for album in Album.objects.filter(category__english_name='pop'):
+    for album in Album.objects.filter(category__english_name='traditional'):
         populate_producer(album)
