@@ -21,17 +21,17 @@ def homepage(request,format=None):
     dict['ads'] = serializer.data
 
     featured_albums = []
-    recommendations = MainPageFeatured.objects.all().order_by('date_published')
+    recommendations = MainPageFeatured.objects.all().order_by('-date_published')
     for recom in recommendations:
         featured_albums.append(recom.album)
     serializer = AlbumSerializer(featured_albums,many=True)
     dict['featured_albums'] = serializer.data
 
-    new_items = Album.objects.filter(confirmed=True).order_by('date_published')[0:20]
+    new_items = Album.objects.filter(confirmed=True).order_by('-date_published')[0:20]
     serializer = AlbumSerializer(new_items,many=True)
     dict['new_albums'] = serializer.data
 
-    popular_albums = Album.objects.filter(confirmed=True).order_by('rate')[0:20]
+    popular_albums = Album.objects.filter(confirmed=True).order_by('-rate')[0:20]
     serializer = AlbumSerializer(popular_albums,many=True)
     dict['popular_albums'] = serializer.data
 
@@ -62,7 +62,7 @@ def cat_homepage(request,cat_id):
 
     # get  our recommendations (featured) for the category
     featured_albums = []
-    recommendations = Category_Featured.objects.filter(category = category).order_by('date_published')
+    recommendations = Category_Featured.objects.filter(category = category).order_by('-date_published')
     for recom in recommendations:
         featured_albums.append(recom.album)
     serializer = AlbumSerializer(featured_albums,many=True)
