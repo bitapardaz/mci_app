@@ -338,3 +338,48 @@ def filter_albums_per_cat(request,format=None):
 
     serializer = AlbumSerializer(albums,many=True)
     return Response(serializer.data)
+
+
+
+@api_view(['GET','POST'])
+def search(request,term,format=None):
+    """
+    search functionality.
+    Album name.
+    """
+    if request.method == "GET":
+
+        dict = {}
+
+        albums = Album.objects.filter(confirmed=True, farsi_name__contains = term).order_by('-date_published')[0:20]
+        serializer = AlbumSerializer(albums,many=True)
+        dict['albums'] = serializer.data
+
+        response = Response(dict)
+        return response
+
+
+
+@api_view(['GET','POST'])
+def search_album_more(request,term,page,format=None):
+    """
+    search functionality.
+    Album name.
+    """
+
+    page =  int(page)
+
+    step = 30
+    start_index = page * step
+    end_index = (page+1) * step
+
+    if request.method == "GET":
+
+        dict = {}
+
+        albums = Album.objects.filter(confirmed=True, farsi_name__contains = term).order_by('-date_published')[start_index:end_index]
+        serializer = AlbumSerializer(albums,many=True)
+        dict['albums'] = serializer.data
+
+        response = Response(dict)
+        return response
