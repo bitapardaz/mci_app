@@ -46,9 +46,12 @@ class CategoryFeaturedAdmin(admin.ModelAdmin):
     class Media:
         js = ("rbt/js/filter_albums.js",)
 
+class SongAdmin(admin.ModelAdmin):
+    search_fields=['song_name']
+
 # Register your models here.
 admin.site.register(Producer)
-admin.site.register(Song)
+admin.site.register(Song,SongAdmin)
 admin.site.register(Tag)
 admin.site.register(Category,CategoryAdmin)
 admin.site.register(SongTagAssociation)
