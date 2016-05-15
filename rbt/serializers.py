@@ -23,7 +23,7 @@ class CategorySerializer(serializers.ModelSerializer):
     children = serializers.SerializerMethodField('mychildren')
 
     def mychildren(self,cat):
-        children = Category.objects.filter(parent = cat)
+        children = Category.objects.filter(parent = cat,confirmed=True)
         if children == []:
             return []
         else:
