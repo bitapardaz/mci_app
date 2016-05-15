@@ -11,3 +11,7 @@ def move_songs(start,target,number_of_songs):
 
         song.album = tAlbum
         song.save()
+
+def move_allbums(sCat,tcat):
+
+    

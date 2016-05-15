@@ -60,6 +60,9 @@ class Album(models.Model):
     total_songs.allow_tags = True
     total_songs.short_description = 'Song Count'
 
+    class Meta:
+        ordering=['farsi_name']
+
 
 class Song(models.Model):
 
