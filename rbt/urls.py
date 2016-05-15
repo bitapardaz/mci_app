@@ -11,9 +11,8 @@ urlpatterns = [
     url(r'^ads/$',views.main_adverts),
     url(r'^rbt_cats/$',views.rbt_cats),
     #url(r'^featured_albums/',views.featured_albums),
-    #url(r'^latest_albums/',views.latest_albums),
+    url(r'^latest_albums/(?P<page>[0-9]+)/',views.latest_albums),
     #url(r'^popular_albums/',views.popular_albums),
-    #url(r'^latest_albums/',views.latest_albums),
 
     # URLs related to each category
     url(r'^0/homepage/$',views.homepage),

@@ -84,6 +84,7 @@ def cat_homepage(request,cat_id):
     return response
 
 
+
 def get_category_new_albums(category,child_list):
     '''
     returns the albums associated with this category. If the category
@@ -204,6 +205,22 @@ def list_album_songs(request,album_id):
 
     songs = Song.objects.filter(album__id=album_id)
     serializer = SongSerializer(songs,many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def latest_albums(request,page,format=None):
+    """
+    returns the latest albums across all categories and the
+    results is displayed in the first page.
+    """
+    step = 30
+    page_index = int(page)
+    start_index = page_index * step
+    end_index = (page_index+1) * step
+
+    album_list = Album.objects.filter(confirmed=True).order_by('-date_published')[start_index:end_index]
+    serializer = AlbumSerializer(album_list,many=True)
     return Response(serializer.data)
 
 
