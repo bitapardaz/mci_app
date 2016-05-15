@@ -4,11 +4,8 @@ from models import Producer, Song, Tag, Category, SongTagAssociation, Album,CatA
 
 class SongInline(admin.TabularInline):
 
-    def get_producer(self,instance):
-        return "TheOneAndOnlyProducer"
-
     model = Song
-    fields=['song_name','song_admin_change_url','get_producer','download_link']
+    fields=['song_name','song_admin_change_url','producer','download_link']
     readonly_fields = ['song_admin_change_url']
     extra = 0
 
