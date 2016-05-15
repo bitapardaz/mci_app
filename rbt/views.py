@@ -351,10 +351,13 @@ def search(request,term,format=None):
 
         dict = {}
 
+        # search based on album title
         albums = Album.objects.filter(confirmed=True, farsi_name__contains = term).order_by('-date_published')[0:20]
         serializer = AlbumSerializer(albums,many=True)
         dict['albums'] = serializer.data
 
+
+        # search based on song_name and then return the albums
         song_albums = set()
         songs = Song.objects.filter(song_name__contains=term)[0:40].select_related('album')
 
@@ -390,6 +393,37 @@ def search_album_more(request,term,page,format=None):
         albums = Album.objects.filter(confirmed=True, farsi_name__contains = term).order_by('-date_published')[start_index:end_index]
         serializer = AlbumSerializer(albums,many=True)
         dict['albums'] = serializer.data
+
+        response = Response(dict)
+        return response
+
+
+@api_view(['GET','POST'])
+def search_song_albums_more(request,term,page,format=None):
+    """
+    search functionality.
+    Song name
+    """
+
+    page =  int(page)
+
+    step = 30
+    start_index = page * step
+    end_index = (page+1) * step
+
+    if request.method == "GET":
+
+        dict = {}
+
+        song_albums = set()
+        songs = Song.objects.filter(song_name__contains=term)[start_index:end_index].select_related('album')
+
+        for song in songs:
+            if song.album.confirmed == True:
+                song_albums.add(song.album)
+
+        serializer = AlbumSerializer(song_albums,many=True)
+        dict['song_albums'] = serializer.data
 
         response = Response(dict)
         return response
