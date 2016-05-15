@@ -1,11 +1,17 @@
 from django.contrib import admin
 from models import Producer, Song, Tag, Category, SongTagAssociation, Album,CatAdvert, MainAdvert, MainPageFeatured,Category_Featured
 
+
 class SongInline(admin.TabularInline):
+
+    def get_producer(self,instance):
+        return "TheOneAndOnlyProducer"
+
     model = Song
-    fields=['song_name','song_admin_change_url','producer','price','download_link']
+    fields=['song_name','song_admin_change_url','get_producer','download_link']
     readonly_fields = ['song_admin_change_url']
     extra = 0
+
 
 
 class AlbumAdmin(admin.ModelAdmin):
@@ -47,6 +53,7 @@ class CategoryFeaturedAdmin(admin.ModelAdmin):
         js = ("rbt/js/filter_albums.js",)
 
 class SongAdmin(admin.ModelAdmin):
+    list_display = ('song_name', 'producer', 'album')
     search_fields=['song_name']
 
 # Register your models here.
