@@ -38,6 +38,8 @@ urlpatterns = [
     url(r'^latest_songs/(?P<page>[0-9]+)/$',views.latest_songs),
     url(r'^search/(?P<term>[\w|\d]+)/$',views.search),
     url(r'^search_album_more/(?P<term>[\w|\d]+)/(?P<page>[0-9]+)/$',views.search_album_more),
+    url(r'^search_song_albums_more/(?P<term>[\w|\d]+)/(?P<page>[0-9]+)/$',views.search_song_albums_more),
+
 
 
 ]
