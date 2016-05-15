@@ -355,6 +355,16 @@ def search(request,term,format=None):
         serializer = AlbumSerializer(albums,many=True)
         dict['albums'] = serializer.data
 
+        song_albums = set()
+        songs = Song.objects.filter(song_name__contains=term)[0:40].select_related('album')
+
+        for song in songs:
+            if song.album.confirmed == True:
+                song_albums.add(song.album)
+
+        serializer = AlbumSerializer(song_albums,many=True)
+        dict['song_albums'] = serializer.data
+
         response = Response(dict)
         return response
 
