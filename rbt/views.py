@@ -369,12 +369,15 @@ def search(request,format=None):
         serializer = AlbumSerializer(producer_albums,many=True)
         dict['producer_albums'] = serializer.data
 
-    else:
-        return HttpResponse("Suckers! This is a post service.")
 
 
         response = Response(dict)
         return response
+
+    else:
+        return HttpResponse("Suckers! This is a post service.")
+
+
 
 
 
