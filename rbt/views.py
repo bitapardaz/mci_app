@@ -340,17 +340,18 @@ def filter_albums_per_cat(request,format=None):
     return Response(serializer.data)
 
 
-
 @api_view(['GET','POST'])
-def search(request,term,format=None):
+def search(request,format=None):
     """
     search functionality.
     Album name.
     """
-    if request.method == "GET":
+
+    if request.method == 'POST':
+
+        term = request.data.get('term')
 
         dict = {}
-
 
         # search based on album title
         albums = Album.objects.filter(confirmed=True, farsi_name__contains = term).order_by('-date_published')[0:20]
@@ -368,9 +369,14 @@ def search(request,term,format=None):
         serializer = AlbumSerializer(producer_albums,many=True)
         dict['producer_albums'] = serializer.data
 
+    else:
+        return HttpResponse("Suckers! This is a post service.")
+
 
         response = Response(dict)
         return response
+
+
 
 
 
@@ -483,5 +489,5 @@ def producer_album_search_utility(term,page):
 
 @api_view(['GET','POST'])
 def post_test(request):
-    term = request.POST.get('term')
+    term = request.data.get('term')
     return Response(term)
