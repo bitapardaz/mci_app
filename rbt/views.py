@@ -369,13 +369,11 @@ def search(request,format=None):
         serializer = AlbumSerializer(producer_albums,many=True)
         dict['producer_albums'] = serializer.data
 
-
-
         response = Response(dict)
         return response
 
     else:
-        return HttpResponse("Suckers! This is a post service.")
+        return Response("POST your search term.")
 
 
 
@@ -384,19 +382,20 @@ def search(request,format=None):
 
 
 @api_view(['GET','POST'])
-def search_album_more(request,term,page,format=None):
+def search_album_more(request,page,format=None):
     """
     search functionality.
     Album name.
     """
 
-    page =  int(page)
+    if request.method=="POST":
 
-    step = 20
-    start_index = page * step
-    end_index = (page+1) * step
+        term = request.data.get('term')
+        page =  int(page)
 
-    if request.method == "GET":
+        step = 20
+        start_index = page * step
+        end_index = (page+1) * step
 
         dict = {}
 
@@ -407,9 +406,13 @@ def search_album_more(request,term,page,format=None):
         response = Response(dict)
         return response
 
+    else:
+            return Response("POST your search term.")
+
+
 
 @api_view(['GET','POST'])
-def search_song_albums_more(request,term,page,format=None):
+def search_song_albums_more(request,page,format=None):
     """
     search functionality.
     Song name
@@ -417,9 +420,10 @@ def search_song_albums_more(request,term,page,format=None):
 
     page =  int(page)
 
-    if request.method == "GET":
+    if request.method == "POST":
 
         dict = {}
+        term = request.data.get('term')
 
         song_albums = song_album_search_utility(term,page)
         serializer = AlbumSerializer(song_albums,many=True)
@@ -428,9 +432,13 @@ def search_song_albums_more(request,term,page,format=None):
         response = Response(dict)
         return response
 
+    else:
+        return Response("POST your search term.")
+
+
 
 @api_view(['GET','POST'])
-def search_producer_albums_more(request,term,page,format=None):
+def search_producer_albums_more(request,page,format=None):
     """
     search functionality.
     producer name
@@ -438,9 +446,10 @@ def search_producer_albums_more(request,term,page,format=None):
 
     page =  int(page)
 
-    if request.method == "GET":
+    if request.method == "POST":
 
         dict = {}
+        term = request.data.get('term')
 
         producer_albums = producer_album_search_utility(term,page)
         serializer = AlbumSerializer(producer_albums,many=True)
@@ -448,6 +457,11 @@ def search_producer_albums_more(request,term,page,format=None):
 
         response = Response(dict)
         return response
+
+    else:
+
+        return Response("POST your search term.")
+
 
 
 def song_album_search_utility(term,page):
@@ -488,9 +502,3 @@ def producer_album_search_utility(term,page):
             producer_albums.add(song.album)
 
     return producer_albums
-
-
-@api_view(['GET','POST'])
-def post_test(request):
-    term = request.data.get('term')
-    return Response(term)
