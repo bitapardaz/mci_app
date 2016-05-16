@@ -41,8 +41,9 @@ urlpatterns = [
     url(r'^search_song_albums_more/(?P<term>[\w|\d]+)/(?P<page>[0-9]+)/$',views.search_song_albums_more),
     url(r'^search_producer_albums_more/(?P<term>[\w|\d]+)/(?P<page>[0-9]+)/$',views.search_producer_albums_more),
 
+    url(r'^search_producer_albums_more/(?P<term>[\w|\d]+)/(?P<page>[0-9]+)/$',views.search_producer_albums_more),
 
-
+    url(r'^post_test/$',views.post_test),
 
 ]
 

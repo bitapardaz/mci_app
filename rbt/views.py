@@ -479,3 +479,9 @@ def producer_album_search_utility(term,page):
             producer_albums.add(song.album)
 
     return producer_albums
+
+
+@api_view(['GET','POST'])
+def post_test(request):
+    term = request.POST.get('term')
+    return Response(term)
