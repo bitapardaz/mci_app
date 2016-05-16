@@ -351,6 +351,7 @@ def search(request,term,format=None):
 
         dict = {}
 
+
         # search based on album title
         albums = Album.objects.filter(confirmed=True, farsi_name__contains = term).order_by('-date_published')[0:20]
         serializer = AlbumSerializer(albums,many=True)
@@ -359,7 +360,7 @@ def search(request,term,format=None):
 
         # search based on song_name and then return the albums
         song_albums = set()
-        songs = Song.objects.filter(song_name__contains=term)[0:40].select_related('album')
+        songs = Song.objects.filter(song_name__contains=term)[0:200].select_related('album')
 
         for song in songs:
             if song.album.confirmed == True:
@@ -382,7 +383,7 @@ def search_album_more(request,term,page,format=None):
 
     page =  int(page)
 
-    step = 30
+    step = 20
     start_index = page * step
     end_index = (page+1) * step
 
@@ -407,7 +408,7 @@ def search_song_albums_more(request,term,page,format=None):
 
     page =  int(page)
 
-    step = 30
+    step = 200
     start_index = page * step
     end_index = (page+1) * step
 
@@ -417,7 +418,6 @@ def search_song_albums_more(request,term,page,format=None):
 
         song_albums = set()
         songs = Song.objects.filter(song_name__contains=term)[start_index:end_index].select_related('album')
-
         for song in songs:
             if song.album.confirmed == True:
                 song_albums.add(song.album)
