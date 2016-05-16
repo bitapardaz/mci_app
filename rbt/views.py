@@ -363,8 +363,11 @@ def search(request,term,format=None):
         serializer = AlbumSerializer(song_albums,many=True)
         dict['song_albums'] = serializer.data
 
-        serializer = AlbumSerializer(song_albums,many=True)
-        dict['song_albums'] = serializer.data
+        # search based on producer name of the songs
+        producer_albums = producer_album_search_utility(term,page=0)
+        serializer = AlbumSerializer(producer_albums,many=True)
+        dict['producer_albums'] = serializer.data
+
 
         response = Response(dict)
         return response
@@ -416,6 +419,28 @@ def search_song_albums_more(request,term,page,format=None):
         response = Response(dict)
         return response
 
+
+@api_view(['GET','POST'])
+def search_producer_albums_more(request,term,page,format=None):
+    """
+    search functionality.
+    producer name
+    """
+
+    page =  int(page)
+
+    if request.method == "GET":
+
+        dict = {}
+
+        producer_albums = producer_album_search_utility(term,page)
+        serializer = AlbumSerializer(producer_albums,many=True)
+        dict['producer_albums'] = serializer.data
+
+        response = Response(dict)
+        return response
+
+
 def song_album_search_utility(term,page):
 
     # number of songs that are taken into account.
@@ -434,3 +459,23 @@ def song_album_search_utility(term,page):
             song_albums.add(song.album)
 
     return song_albums
+
+def producer_album_search_utility(term,page):
+
+
+    # number of songs that are taken into account.
+    # note: a song might be in an album with confirmed = False
+    # thus, we take a lot of songs in each uptake.
+    step = 200
+
+    start_index = page * step
+    end_index = (page+1) * step
+
+
+    producer_albums = set()
+    songs = Song.objects.filter(producer__name__contains=term)[start_index:end_index].select_related('album')
+    for song in songs:
+        if song.album.confirmed == True:
+            producer_albums.add(song.album)
+
+    return producer_albums
