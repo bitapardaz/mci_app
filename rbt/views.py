@@ -494,9 +494,8 @@ def producer_album_search_utility(term,page):
 
 
     producer_albums = set()
-    songs = Song.objects.filter(producer__name__contains=term)[start_index:end_index].select_related('album')
+    songs = Song.objects.filter(album__confirmed=True,producer__name__contains=term)[start_index:end_index].select_related('album')
     for song in songs:
-        if song.album.confirmed == True:
-            producer_albums.add(song.album)
+        producer_albums.add(song.album)
 
     return producer_albums
