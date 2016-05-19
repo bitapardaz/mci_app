@@ -474,12 +474,10 @@ def song_album_search_utility(term,page):
     start_index = page * step
     end_index = (page+1) * step
 
-
     song_albums = set()
-    songs = Song.objects.filter(song_name__contains=term)[start_index:end_index].select_related('album')
+    songs = Song.objects.filter(album__confirmed=True ,song_name__contains=term)[start_index:end_index].select_related('album')
     for song in songs:
-        if song.album.confirmed == True:
-            song_albums.add(song.album)
+        song_albums.add(song.album)
 
     return song_albums
 
