@@ -67,6 +67,9 @@ class CategoryAdmin(admin.ModelAdmin):
 
 class CategoryFeaturedAdmin(admin.ModelAdmin):
     list_display = ('category','album','date_published')
+    list_filter = (CategoryFilter,)
+
+
 
     class Media:
         js = ("rbt/js/filter_albums.js",)
