@@ -1,5 +1,6 @@
 from django.contrib import admin
 from models import Producer, Song, Tag, Category, SongTagAssociation, Album,CatAdvert, MainAdvert, MainPageFeatured,Category_Featured
+from django.utils.translation import ugettext_lazy as _
 
 
 class SongInline(admin.TabularInline):
@@ -26,9 +27,30 @@ class AlbumAdmin(admin.ModelAdmin):
         search_fields = ['farsi_name']
 
 
+class CategoryFilter(admin.SimpleListFilter):
+
+    title = _('Categories')
+    parameter_name = 'category__id__exact'
+
+    def lookups(self, request, model_admin):
+
+        #return [
+        #            ('80s', _('in the eighties')),
+        #            ('90s', _('in the nineties')),
+        #        ]
+
+        queryset = Category.objects.filter(confirmed=True)
+        #queryset = model_admin.queryset(request).filter()
+        return queryset.values_list('id','farsi_name')
+
+    def queryset(self,reqeust,queryset):
+        if self.value():
+            return queryset.filter(category=self.value())
+
 class CatAdvertAdmin(admin.ModelAdmin):
 
     list_display = ('category','album','miscellaneous','url')
+    list_filter = (CategoryFilter,)
 
     class Media:
         js = ("rbt/js/filter_albums.js",)
