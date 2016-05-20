@@ -99,7 +99,7 @@ def get_category_new_albums(category,child_list):
             album_list = Album.objects.filter(category=child,confirmed=True).order_by('-date_published')[0:10]
             child_albums.append(album_list)
 
-        albums = itertools.chain.from_iterable(child_albums).order_by('-date_published')
+        albums = sorted(itertools.chain.from_iterable(child_albums), key=lambda instance: instance.date_published)
 
     return albums
 
