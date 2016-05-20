@@ -77,11 +77,11 @@ class CategoryFeaturedAdmin(admin.ModelAdmin):
 class SongAdmin(admin.ModelAdmin):
     list_display = ('song_name', 'producer', 'album')
     search_fields=['song_name']
-    
+
 
 class ProducerAdmin(admin.ModelAdmin):
-    list_display = ('name')
-    search_fields=['song_name']
+    list_display = ('name',)
+    search_fields=['name']
 
 
 # Register your models here.
