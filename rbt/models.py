@@ -1,6 +1,8 @@
 from django.db import models
 from django.core import urlresolvers
 
+from django.contrib.staticfiles.templatetags.staticfiles import static
+
 # Create your models here.
 
 class Producer(models.Model):
@@ -91,6 +93,18 @@ class Song(models.Model):
 
     song_admin_change_url.allow_tags = True
     song_admin_change_url.short_description = 'URL'
+
+    def album_status(self):
+        if self.album == None or self.album.farsi_name.strip() == '':
+
+            url = static('admin/img/icon_error.gif')
+            return u'<img src="%s">' % url
+
+        else:
+            return u' '
+
+    album_status.allow_tags = True
+    album_status.short_description = 'Album'
 
 
 class MainPageFeatured(models.Model):

@@ -79,9 +79,19 @@ class SongAdmin(admin.ModelAdmin):
     search_fields=['song_name']
 
 
+class SongInlineProducer(admin.TabularInline):
+
+
+    model = Song
+    fields=['song_name','album_status','album','song_admin_change_url',]
+    readonly_fields = ['song_admin_change_url','album_status',]
+    extra = 0
+
 class ProducerAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields=['name']
+    inlines = [SongInlineProducer]
+
 
 
 # Register your models here.
