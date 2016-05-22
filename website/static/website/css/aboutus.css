@@ -1,0 +1,10 @@
+#contactdiv
+{
+	text-align:left;padding-left: 40px; font-size: 22px;
+}
+#contactdiv p {
+	padding:10px
+}
+#contactdiv a {
+color:darkslategray !important;font-family: b roya; text-decoration: none;
+}
