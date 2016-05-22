@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'rbt',
     'rest_framework',
     'userprofile',
+    'website'
 )
 
 MIDDLEWARE_CLASSES = (

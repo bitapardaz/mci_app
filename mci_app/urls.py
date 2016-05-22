@@ -19,7 +19,10 @@ from django.contrib import admin
 from django.conf.urls.static import static
 from django.conf import settings
 
+from website import views as website_views
+
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^mcirbt/',include('rbt.urls')),
+    url(r'^$',website_views.homepage),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

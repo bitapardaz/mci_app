@@ -3,3 +3,4 @@ mci_app/*.pyc
 *.*~
 media
 *.pyc
+website/static/*
