@@ -149,6 +149,9 @@ def cat_albums(request,cat_id,page,format=None):
     start_index = page_index * nu_of_items
     end_index = start_index + (    ((page_index+1) * nu_of_items)   )
 
+    print(start_index)
+    print(end_index)
+
     category = Category.objects.get(pk=cat_id)
     albums = Album.objects.filter(category=category,confirmed=True).order_by('-date_published')[start_index:end_index]
     serializer = AlbumSerializer(albums,many=True)
@@ -218,8 +221,7 @@ def latest_albums(request,page,format=None):
     page_index = int(page)
     start_index = page_index * step
     end_index = (page_index+1) * step
-    print(start_index)
-    print(end_index)
+
 
     album_list = Album.objects.filter(confirmed=True).order_by('-date_published')[start_index:end_index]
     serializer = AlbumSerializer(album_list,many=True)
