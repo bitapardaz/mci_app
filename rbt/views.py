@@ -145,6 +145,7 @@ def rbt_cats(request,format=None):
 def cat_albums(request,cat_id,page,format=None):
 
     page_index = int(page)
+    print(page_index)
     nu_of_items = 20
     start_index = page_index * nu_of_items
     end_index = start_index + (    ((page_index+1) * nu_of_items)   )
