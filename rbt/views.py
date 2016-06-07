@@ -145,9 +145,9 @@ def rbt_cats(request,format=None):
 def cat_albums(request,cat_id,page,format=None):
 
     page_index = int(page)
-    no_of_items = 20
+    nu_of_items = 20
     start_index = page_index * no_of_items
-    end_index = start_index + (    ((page_index+1) * no_of_items)   )
+    end_index = start_index + (    ((page_index+1) * nu_of_items)   )
 
     category = Category.objects.get(pk=cat_id)
     albums = Album.objects.filter(category=category,confirmed=True).order_by('-date_published')[start_index:end_index]
@@ -218,6 +218,8 @@ def latest_albums(request,page,format=None):
     page_index = int(page)
     start_index = page_index * step
     end_index = (page_index+1) * step
+    print(start_index)
+    print(end_index)
 
     album_list = Album.objects.filter(confirmed=True).order_by('-date_published')[start_index:end_index]
     serializer = AlbumSerializer(album_list,many=True)
