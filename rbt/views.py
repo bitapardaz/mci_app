@@ -221,10 +221,6 @@ def latest_albums(request,page,format=None):
     start_index = page_index * step
     end_index = (page_index+1) * step
 
-    print(page_index)
-    print(start_index)
-    print(end_index)
-
     album_list = Album.objects.filter(confirmed=True).order_by('-date_published')[start_index:end_index]
     serializer = AlbumSerializer(album_list,many=True)
     return Response(serializer.data)

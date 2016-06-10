@@ -71,21 +71,23 @@ def add_song_to_db(code,name,producer_farsi,album_farsi,category_farsi):
 ### running the downloader
 #################################################
 
-for id in range(76172,76173):
+def run_downloader():
 
-    print("\n%s" % id),
+    for id in range(76172,76173):
 
-    html_page = download_song_html(id)
-    if is_song_valid(html_page):
+        print("\n%s" % id),
 
-        # get the information from mci site
-        (code,name,producer_farsi,album_farsi,category_farsi) = derive_song_information(html_page)
+        html_page = download_song_html(id)
+        if is_song_valid(html_page):
 
-        # check if the song already exists in the database
-        try:
-            song = Song.objects.get(activation_code=int(code))
-            # the song already exists in the database.
-            # Do nothing.
-        except Song.DoesNotExist:
-            add_song_to_db(code,name,producer_farsi,album_farsi,category_farsi)
-            print( "- inserted.")
+            # get the information from mci site
+            (code,name,producer_farsi,album_farsi,category_farsi) = derive_song_information(html_page)
+
+            # check if the song already exists in the database
+            try:
+                song = Song.objects.get(activation_code=int(code))
+                # the song already exists in the database.
+                # Do nothing.
+            except Song.DoesNotExist:
+                add_song_to_db(code,name,producer_farsi,album_farsi,category_farsi)
+                print( "- inserted.")
