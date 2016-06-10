@@ -5,7 +5,7 @@ from rbt.models import Song
 
 class UserProfile(models.Model):
     mobile_number = models.CharField(max_length=20)
-    imei = models.CharField(max_length=36)
+    token = models.CharField(max_length=160, null=True,blank=True)
 
     def __unicode__(self):
         return str(self.mobile_number)

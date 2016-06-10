@@ -263,10 +263,15 @@ def register(request,format=None):
 
         serializer = UserProfileSerializer(data=request.data)
         if serializer.is_valid():
+
             # extract mobile number
             mobile_number = serializer.validated_data['mobile_number']
             obj, created = UserProfile.objects.get_or_create(mobile_number=mobile_number)
-            obj.imei = serializer.validated_data['imei']
+
+            token = serializer.validated_data['token']
+            if token != None
+                obj.token = token
+                obj.save()
 
             result = {}
             if created:
