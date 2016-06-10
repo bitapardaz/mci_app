@@ -43,8 +43,14 @@ def download_song_html(id):
     return html_page
 
 def add_song_to_db(code,name,producer_farsi,album_farsi,category_farsi):
+
     # get or create producer
-    producer,created = Producer.objects.get_or_create(name=producer_farsi)
+    try:
+        producer,created = Producer.objects.get_or_create(name=producer_farsi)
+
+    except Producer.MultipleObjectsReturned:
+        producer = Producer.objects.filter(name=producer_farsi)[0]
+
 
     # get or create cateogory
     category,created = Category.objects.get_or_create(farsi_name=category_farsi)
@@ -73,7 +79,7 @@ def add_song_to_db(code,name,producer_farsi,album_farsi,category_farsi):
 
 def run_downloader():
 
-    for id in range(76172,76173):
+    for id in range(30241,30242):
 
         print("\n%s" % id),
 
