@@ -269,7 +269,7 @@ def register(request,format=None):
             obj, created = UserProfile.objects.get_or_create(mobile_number=mobile_number)
 
             token = serializer.validated_data['token']
-            if token != None
+            if token != "":
                 obj.token = token
                 obj.save()
 
