@@ -76,7 +76,7 @@ class CategoryFeaturedAdmin(admin.ModelAdmin):
 
 class SongAdmin(admin.ModelAdmin):
     list_display = ('song_name', 'producer', 'album')
-    search_fields=['song_name', 'activation_code',]
+    search_fields=['song_name', 'activation_code','producer__name']
 
 class SongInlineProducer(admin.TabularInline):
 
