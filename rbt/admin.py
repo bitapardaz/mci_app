@@ -1,5 +1,5 @@
 from django.contrib import admin
-from models import Producer, Song, Tag, Category, SongTagAssociation, Album,CatAdvert, MainAdvert, MainPageFeatured,Category_Featured
+from models import Producer, Song, Tag, Category, SongTagAssociation, Album,CatAdvert, MainAdvert, MainPageFeatured,Category_Featured, Search_Activity
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -91,6 +91,9 @@ class ProducerAdmin(admin.ModelAdmin):
     inlines = [SongInlineProducer]
 
 
+class SearchActivityAdmin(admin.ModelAdmin):
+    list_display=('search_term','time_stamp',)
+    search_fields=['search_term']
 
 # Register your models here.
 admin.site.register(Producer,ProducerAdmin)
@@ -103,3 +106,4 @@ admin.site.register(CatAdvert,CatAdvertAdmin)
 admin.site.register(MainAdvert,MainAdvertAdmin)
 admin.site.register(MainPageFeatured)
 admin.site.register(Category_Featured, CategoryFeaturedAdmin)
+admin.site.register(Search_Activity,SearchActivityAdmin)

@@ -1,7 +1,7 @@
 from rest_framework import status
 from django.shortcuts import render
 from django.http import HttpResponse
-from models import Song,Category,Album,CatAdvert,MainAdvert,MainPageFeatured, Category_Featured
+from models import Song,Category,Album,CatAdvert,MainAdvert,MainPageFeatured, Category_Featured, Search_Activity
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -357,6 +357,11 @@ def search(request,format=None):
     if request.method == 'POST':
 
         term = request.data.get('term')
+
+        # inset search term in Search_Activity Table
+        search = Search_Activity.objects.create(search_term=term)
+
+        # gather search result
 
         dict = {}
 

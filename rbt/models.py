@@ -151,3 +151,11 @@ class MainAdvert(models.Model):
     album = models.ForeignKey(Album,null=True,blank=True)
     miscellaneous = models.ImageField(upload_to='',null=True,blank=True)
     url = models.URLField(null=True,blank=True)
+
+
+class Search_Activity(models.Model):
+    search_term = models.CharField(max_length=20)
+    time_stamp = models.DateTimeField(auto_now=True,editable=True)
+
+    def __unicode__(self):
+        return self.search_term
