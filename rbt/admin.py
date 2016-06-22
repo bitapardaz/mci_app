@@ -1,5 +1,6 @@
 from django.contrib import admin
-from models import Producer, Song, Tag, Category, SongTagAssociation, Album,CatAdvert, MainAdvert, MainPageFeatured,Category_Featured, Search_Activity
+from models import Producer, Song, Tag, Category, SongTagAssociation, Album,CatAdvert, MainAdvert, MainPageFeatured,Category_Featured, Search_Activity, Operator
+
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -23,7 +24,7 @@ class AlbumAdmin(admin.ModelAdmin):
         readonly_fields = ['total_songs']
 
         list_display = ('farsi_name', 'category', 'total_songs','confirmed','date_published','producer','rate')
-        list_filter = ['category','date_published','confirmed']
+        list_filter = ['category','date_published','confirmed',]
         search_fields = ['farsi_name']
 
 
@@ -95,6 +96,18 @@ class SearchActivityAdmin(admin.ModelAdmin):
     list_display=('search_term','time_stamp',)
     search_fields=['search_term']
 
+
+
+
+#######################################################
+### MTN Admin classes
+#######################################################
+
+
+
+
+
+
 # Register your models here.
 admin.site.register(Producer,ProducerAdmin)
 admin.site.register(Song,SongAdmin)
@@ -107,3 +120,4 @@ admin.site.register(MainAdvert,MainAdvertAdmin)
 admin.site.register(MainPageFeatured)
 admin.site.register(Category_Featured, CategoryFeaturedAdmin)
 admin.site.register(Search_Activity,SearchActivityAdmin)
+admin.site.register(Operator)

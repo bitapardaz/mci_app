@@ -1,24 +1,15 @@
+from rbt.models import Tag
+
 from django.db import models
 from django.core import urlresolvers
 
 from django.contrib.staticfiles.templatetags.staticfiles import static
 
+
 # Create your models here.
-class Operator(models.Model):
-    name = models.CharField(max_length=10)
-
-    def __unicode__(self):
-        return self.name
 
 
-class Tag(models.Model):
-    name = models.CharField(max_length=200)
-
-    def __unicode__(self):
-        return self.name
-
-
-class Producer(models.Model):
+class MTN_Producer(models.Model):
 
     name = models.CharField(max_length=200)
     confirmed = models.BooleanField(default=False)
@@ -30,7 +21,23 @@ class Producer(models.Model):
         ordering=['name']
 
 
-class Category(models.Model):
+
+class MTN_MusicStudio(models.Model):
+
+    name = models.CharField(max_length=200)
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        ordering=['name']
+
+
+# Models specifically related to the MTN system.
+# Some of the models use classes defined in "rbt/models."
+# The classes used are Tag, Producer
+
+class MTN_Category(models.Model):
     farsi_name = models.CharField(max_length=200)
     display_name = models.CharField(max_length=200)
     english_name = models.CharField(max_length=200, null=True, blank=True)
@@ -42,26 +49,18 @@ class Category(models.Model):
         return  self.farsi_name
 
 
-class PseudoProducer(models.Model):
 
-    name = models.CharField(max_length=200)
-    confirmed = models.BooleanField(default=False)
-
-    def __unicode__(self):
-        return self.name
-
-
-class Album(models.Model):
+class MTN_Album(models.Model):
     farsi_name = models.CharField(max_length=200)
     english_name = models.CharField(max_length=200, null=True, blank=True)
     photo = models.ImageField(upload_to='',null=True, blank=True)
     wide_photo = models.ImageField(upload_to='',null=True, blank=True)
     rate = models.IntegerField(default=0)
-    category = models.ForeignKey(Category)
+    category = models.ForeignKey(MTN_Category)
     date_published = models.DateTimeField(auto_now=True, editable=True)
     confirmed = models.BooleanField(default=False)
-    producer = models.ForeignKey(Producer,null=True,blank=True)
-    pseudo_producer = models.ForeignKey(PseudoProducer,null=True,blank=True)
+    producer = models.ForeignKey(MTN_Producer,null=True,blank=True)
+    music_studio = models.ForeignKey(MTN_MusicStudio,null=True,blank=True)
 
     def __unicode__(self):
 
@@ -69,7 +68,7 @@ class Album(models.Model):
         return self.farsi_name
 
     def total_songs(self):
-        songs = Song.objects.filter(album=self);
+        songs = MTN_Song.objects.filter(album=self);
         return len(songs)
 
     total_songs.allow_tags = True
@@ -79,31 +78,33 @@ class Album(models.Model):
         ordering=['farsi_name']
 
 
-class Song(models.Model):
+class MTN_Song(models.Model):
 
+    tone_id = models.CharField(max_length=20,default="id")
     song_name = models.CharField(max_length=200, default='name')
     activation_code = models.IntegerField(default=0)
-    download_link = models.URLField(max_length=500)
+    download_link = models.URLField(max_length=400)
     rate = models.IntegerField(default=0)
     activated = models.IntegerField(default=0)
-    producer = models.ForeignKey(Producer,null=True,blank=True)
+    producer = models.ForeignKey(MTN_Producer,null=True,blank=True)
     image = models.ImageField(upload_to='',null=True, blank=True)
     price = models.IntegerField(default=300)
-    album = models.ForeignKey(Album,null=True,blank=True)
+    album = models.ForeignKey(MTN_Album,null=True,blank=True)
+    music_studio = models.ForeignKey(MTN_MusicStudio,null=True,blank=True)
     confirmed = models.BooleanField(default=False)
 
 
     def __unicode__(self):
         return self.song_name
 
-    def song_admin_change_url(self):
-        link = urlresolvers.reverse('admin:rbt_song_change',args=(self.id,))
+    def mtn_song_admin_change_url(self):
+        link = urlresolvers.reverse('admin:mtn_rbt_mtn_song_change',args=(self.id,))
         return u'<a href="%s">%s</a>' % (link,"Link")
 
-    song_admin_change_url.allow_tags = True
-    song_admin_change_url.short_description = 'URL'
+    mtn_song_admin_change_url.allow_tags = True
+    mtn_song_admin_change_url.short_description = 'URL'
 
-    def album_status(self):
+    def mtn_album_status(self):
         if self.album == None or self.album.farsi_name.strip() == '':
 
             url = static('admin/img/icon_error.gif')
@@ -112,50 +113,48 @@ class Song(models.Model):
         else:
             return u' '
 
-    album_status.allow_tags = True
-    album_status.short_description = 'Album'
+    mtn_album_status.allow_tags = True
+    mtn_album_status.short_description = 'Album'
 
 
-class MainPageFeatured(models.Model):
+class MTN_MainPageFeatured(models.Model):
 
-    album = models.ForeignKey(Album)
+    album = models.ForeignKey(MTN_Album)
     date_published = models.DateTimeField(auto_now=True, editable=True)
 
     def __unicode__(self):
         return self.album.farsi_name
 
 
-class Category_Featured(models.Model):
+class MTN_Category_Featured(models.Model):
 
-    category = models.ForeignKey(Category)
-    album = models.ForeignKey(Album)
+    category = models.ForeignKey(MTN_Category)
+    album = models.ForeignKey(MTN_Album)
     date_published = models.DateTimeField(auto_now=True, editable=True)
 
 
-
-class SongTagAssociation(models.Model):
-    song = models.ForeignKey(Song)
+class MTN_SongTagAssociation(models.Model):
+    song = models.ForeignKey(MTN_Song)
     tag = models.ForeignKey(Tag)
 
     def __unicode__(self):
         return self.song.__unicode__() + ' -- ' + self.tag.__unicode__()
 
 
-
-class CatAdvert(models.Model):
-    category = models.ForeignKey(Category,null=True,blank=True)
-    album = models.ForeignKey(Album,null=True,blank=True)
+class MTN_CatAdvert(models.Model):
+    category = models.ForeignKey(MTN_Category,null=True,blank=True)
+    album = models.ForeignKey(MTN_Album,null=True,blank=True)
     miscellaneous = models.ImageField(upload_to='',null=True,blank=True)
     url = models.URLField(null=True,blank=True)
 
 
-class MainAdvert(models.Model):
-    album = models.ForeignKey(Album,null=True,blank=True)
+class MTN_MainAdvert(models.Model):
+    album = models.ForeignKey(MTN_Album,null=True,blank=True)
     miscellaneous = models.ImageField(upload_to='',null=True,blank=True)
     url = models.URLField(null=True,blank=True)
 
 
-class Search_Activity(models.Model):
+class MTN_Search_Activity(models.Model):
     search_term = models.CharField(max_length=20)
     time_stamp = models.DateTimeField(auto_now=True,editable=True)
 
