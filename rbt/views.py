@@ -154,8 +154,8 @@ def cat_albums(request,cat_id,page,format=None):
     start_index = page_index * no_of_items
     end_index = (page_index+1) * no_of_items
 
-    print "start_index:%d" % start_index
-    print "end_index:%d" % end_index
+    #print "start_index:%d" % start_index
+    #print "end_index:%d" % end_index
 
     # children
     category = Category.objects.get(id=cat_id)
@@ -169,16 +169,16 @@ def cat_albums(request,cat_id,page,format=None):
     else: # the category has some children. The first no_of_items of each category is taken
         child_albums = []
         for child in child_list:
-            print "\nchild: %s" % child.farsi_name
+            #print "\nchild: %s" % child.farsi_name
             album_list = Album.objects.filter(category=child,confirmed=True).order_by('-date_published')[start_index:end_index]
-            print "number of albums: %d" % len(album_list)
+            #print "number of albums: %d" % len(album_list)
             child_albums.append(album_list)
 
-        print "combining albums"
+        #print "combining albums"
         albums = itertools.chain.from_iterable(child_albums)
         final_albums =  [album for album in albums]
         length = len(final_albums)
-        print length
+        #print length
         serializer = AlbumSerializer(final_albums,many=True)
         return Response(serializer.data)
 
