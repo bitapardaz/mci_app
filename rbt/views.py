@@ -118,7 +118,8 @@ def get_category_popular_albums(category,child_list):
             album_list = Album.objects.filter(category=child,confirmed=True).order_by('-rate')[0:10]
             child_albums.append(album_list)
 
-        albums = itertools.chain.from_iterable(child_albums)
+        albums = sorted( itertools.chain.from_iterable(child_albums) , key=lambda instance: instance.rate, reverse=True )
+
 
     return albums
 
@@ -178,19 +179,6 @@ def cat_albums(request,cat_id,page,format=None):
 #        length = len(final_albums)
         serializer = AlbumSerializer(albums,many=True)
         return Response(serializer.data)
-
-
-@api_view(['GET'])
-def cat_popular_albums(request,cat_id):
-    """
-    returns the top 20 most popular albums in the given category
-    """
-    start_index = 0
-    end_index = 20
-
-    album_list = Album.objects.filter(category__id = cat_id,confirmed=True).order_by('-rate')[start_index:end_index]
-    serializer = AlbumSerializer(album_list,many=True)
-    return Response(serializer.data)
 
 
 @api_view(['GET'])
