@@ -144,16 +144,34 @@ def rbt_cats(request,format=None):
 @api_view(['GET'])
 def cat_albums(request,cat_id,page,format=None):
 
+    '''
+    returns the albums in the current category and its
+    children ordered based on the date-published.
+    '''
+
     page_index = int(page)
+    no_of_items = 20
+    start_index = page_index * no_of_items
+    end_index = (page_index+1) * no_of_items
 
-    nu_of_items = 20
-    start_index = page_index * nu_of_items
-    end_index = (page_index+1) * nu_of_items
+    # children
+    category = Category.objects.get(id=cat_id)
+    child_list = Category.objects.filter(confirmed=True,parent=category)
 
-    category = Category.objects.get(pk=cat_id)
-    albums = Album.objects.filter(category=category,confirmed=True).order_by('-date_published')[start_index:end_index]
-    serializer = AlbumSerializer(albums,many=True)
-    return Response(serializer.data)
+    if len(child_list) == 0:
+        albums = Album.objects.filter(category=category,confirmed=True).order_by('-date_published')[start_index:end_index]
+        serializer = AlbumSerializer(albums,many=True)
+        return Response(serializer.data)
+
+    else: # the category has some children. The first no_of_items of each category is taken
+        child_albums = []
+        for child in child_list:
+            album_list = Album.objects.filter(category=child,confirmed=True).order_by('-date-published')[start_index:end_index]
+            child_albums.append(album_list)
+
+        albums = itertools.chain.from_iterable(child_albums)
+        serializer = AlbumSerializer(albums,many=True)
+        return Response(serializer.data)
 
 
 @api_view(['GET'])

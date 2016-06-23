@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'userprofile',
     'website',
     'mtn_rbt',
+    'mtn_userprofile'
 )
 
 MIDDLEWARE_CLASSES = (
