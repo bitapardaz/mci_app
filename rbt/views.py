@@ -169,17 +169,14 @@ def cat_albums(request,cat_id,page,format=None):
     else: # the category has some children. The first no_of_items of each category is taken
         child_albums = []
         for child in child_list:
-            #print "\nchild: %s" % child.farsi_name
             album_list = Album.objects.filter(category=child,confirmed=True).order_by('-date_published')[start_index:end_index]
-            #print "number of albums: %d" % len(album_list)
             child_albums.append(album_list)
 
-        #print "combining albums"
+
         albums = itertools.chain.from_iterable(child_albums)
-        final_albums =  [album for album in albums]
-        length = len(final_albums)
-        #print length
-        serializer = AlbumSerializer(final_albums,many=True)
+#        final_albums =  [album for album in albums]
+#        length = len(final_albums)
+        serializer = AlbumSerializer(albums,many=True)
         return Response(serializer.data)
 
 
