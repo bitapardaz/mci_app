@@ -166,7 +166,7 @@ def cat_albums(request,cat_id,page,format=None):
     else: # the category has some children. The first no_of_items of each category is taken
         child_albums = []
         for child in child_list:
-            album_list = Album.objects.filter(category=child,confirmed=True).order_by('-date-published')[start_index:end_index]
+            album_list = Album.objects.filter(category=child,confirmed=True).order_by('-date_published')[start_index:end_index]
             child_albums.append(album_list)
 
         albums = itertools.chain.from_iterable(child_albums)
