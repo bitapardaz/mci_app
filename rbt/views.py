@@ -181,7 +181,6 @@ def cat_albums(request,cat_id,page,format=None):
         return Response(serializer.data)
 
 
-
 @api_view(['GET'])
 def cat_adverts(request,cat_id,format=None):
     """
