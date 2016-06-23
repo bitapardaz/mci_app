@@ -172,8 +172,8 @@ def cat_albums(request,cat_id,page,format=None):
             album_list = Album.objects.filter(category=child,confirmed=True).order_by('-date_published')[start_index:end_index]
             child_albums.append(album_list)
 
+        albums = sorted( itertools.chain.from_iterable(child_albums) , key=lambda instance: instance.date_published, reverse=True )
 
-        albums = itertools.chain.from_iterable(child_albums)
 #        final_albums =  [album for album in albums]
 #        length = len(final_albums)
         serializer = AlbumSerializer(albums,many=True)
