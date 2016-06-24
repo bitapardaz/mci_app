@@ -87,7 +87,7 @@ def cat_homepage(request,cat_id):
 
 def get_category_new_albums(category,child_list):
     '''
-    returns the albums associated with this category. If the category
+    returns the latest albums associated with this category. If the category
     has children, then the latest albums in each child are also included.
     '''
     if len(child_list) == 0:

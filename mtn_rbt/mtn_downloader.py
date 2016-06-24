@@ -66,6 +66,8 @@ def add_song_to_db(tone_id,song_name,price,singer_name,tone_valid_day,audio_file
     album,created = MTN_Album.objects.get_or_create(farsi_name=f_album,category=category)
 
     # send song file to the storage server for the purpose of uploading
+    upload_file_to_ftp_server(tone_id)
+
 
     # calculate the link to the audio file on the ftp server for the purpose of downloading
     audio_link_ftp_server = generate_ftp_server_audio_path(tone_id)
@@ -85,6 +87,7 @@ def add_song_to_db(tone_id,song_name,price,singer_name,tone_valid_day,audio_file
     # delete the file from the main server
     if os.path.exists(audio_file_path):
         os.remove(audio_file_path)
+
 
 
 def get_one_song_information(tone_id):
@@ -209,3 +212,9 @@ def generate_relative_audio_file_path(tone_id):
 
 def generate_ftp_server_audio_path(tone_id):
     return "http://pishahangstorage.com/songs/tone_%s.wav" % str(tone_id)
+
+
+def upload_file_to_ftp_server(tone_id)
+    host = "46.4.87.118"
+    username = "alireza@pishahangstorage.com"
+    password = "pishahang1234"
