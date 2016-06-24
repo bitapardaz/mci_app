@@ -7,11 +7,19 @@ from bs4 import BeautifulSoup
 from mtn_rbt.models import MTN_Song,MTN_Album, MTN_MusicStudio, MTN_Category, MTN_Producer
 from rbt.models import Producer
 import os
+import ftplib
 
 
 def run_downloader():
 
-    for tone_id in range(1900,2000):
+    # open the ftp session to pishahangstorage.com
+    host = "46.4.87.118"
+    username = "songs@pishahangstorage.com"
+    password = "pishahang1234"
+    ftp_session = ftplib.FTP(host,username,password)
+    print "ftp_session established"
+
+    for tone_id in range(1654,1655):
 
         print("\n\n%s- checking if the song already exists" % tone_id)
 
@@ -31,19 +39,22 @@ def run_downloader():
 
             if is_code_valid:
                 print("%s- Adding tone_id to the database... " % tone_id)
-                add_song_to_db(tone_id,name,price,singer_name,tone_valid_day,audio_file_path,activation_code,album,category,music_studio)
+                add_song_to_db(tone_id,name,price,singer_name,tone_valid_day,audio_file_path,activation_code,album,category,music_studio,ftp_session)
                 print( "(%s,%s)- inserted" % (tone_id,activation_code))
 
             else:
                 print("%s- invalid code" % tone_id)
 
+    print "quiting ftp_session"
+    ftp_session.quit()
 
-
-def add_song_to_db(tone_id,song_name,price,singer_name,tone_valid_day,audio_file_path,activation_code,f_album,f_category,f_music_studio):
+def add_song_to_db(tone_id,song_name,price,singer_name,tone_valid_day,audio_file_path,activation_code,f_album,f_category,f_music_studio,ftp_session):
     '''
     categories are dynamically created (if it does not previously exist)
     and is associated with the album.
     '''
+
+    print "%d- adding song to db. music_studio: %s" % (tone_id,f_music_studio)
 
     # get or create producer
     try:
@@ -66,8 +77,7 @@ def add_song_to_db(tone_id,song_name,price,singer_name,tone_valid_day,audio_file
     album,created = MTN_Album.objects.get_or_create(farsi_name=f_album,category=category)
 
     # send song file to the storage server for the purpose of uploading
-    upload_file_to_ftp_server(tone_id)
-
+    upload_file_to_ftp_server(tone_id,ftp_session)
 
     # calculate the link to the audio file on the ftp server for the purpose of downloading
     audio_link_ftp_server = generate_ftp_server_audio_path(tone_id)
@@ -87,8 +97,6 @@ def add_song_to_db(tone_id,song_name,price,singer_name,tone_valid_day,audio_file
     # delete the file from the main server
     if os.path.exists(audio_file_path):
         os.remove(audio_file_path)
-
-
 
 def get_one_song_information(tone_id):
 
@@ -132,7 +140,8 @@ def get_one_song_information(tone_id):
         try:
 
 
-
+            print "%d- audio link: %s" % (tone_id,audio_link)
+            print "%d- audio local path: %s" % (tone_id,audio_file_path)
             audio_file.retrieve(audio_link,audio_file_path)
             # note: this will save the file on the disk.
             # make sure that you remove the file after it is
@@ -168,7 +177,7 @@ def get_one_song_information(tone_id):
             the code is valid but the audio file does not exist
             return empty result
             '''
-            print "Audio file deos not exists ... "
+            print "%d- Audio file deos not exists ... " % tone_id
             return (is_code_valid,tone_id, name, price, singer_name, tone_valid_day,
                     audio_file_path, activation_code, album, category,music_studio)
 
@@ -207,14 +216,27 @@ def generate_relative_audio_file_path(tone_id):
     returns the name to be used when temporarily saving
     a song to our database. (before sendnig the song to ftp server)
     '''
-    return "song_storage/tone_%d" % tone_id
+    return "song_storage/tone_%d.wav" % tone_id
 
 
 def generate_ftp_server_audio_path(tone_id):
     return "http://pishahangstorage.com/songs/tone_%s.wav" % str(tone_id)
 
 
-def upload_file_to_ftp_server(tone_id)
-    host = "46.4.87.118"
-    username = "alireza@pishahangstorage.com"
-    password = "pishahang1234"
+def upload_file_to_ftp_server(tone_id,ftp_session):
+
+    print "%s- uploading to the ftp server" % tone_id
+
+    audio_file_path = generate_relative_audio_file_path(tone_id)
+    absoulte_path = os.path.abspath(audio_file_path)
+    myfile = open(absoulte_path,'rb')
+
+    target_file_name = "tone_%s.wav" % tone_id
+    command = "STOR %s" % target_file_name
+
+    print "%s- ftp command: %s" % (tone_id,command)
+
+    ftp_session.storbinary(command,myfile)
+    myfile.close()
+
+    print "%s- upload done!" % tone_id

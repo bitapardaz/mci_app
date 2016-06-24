@@ -20,14 +20,22 @@ urlpatterns = [
     url(r'^(?P<cat_id>[0-9]+)/(?P<page>[0-9]+)/$',views.cat_albums),
     url(r'^(?P<cat_id>[0-9]+)/ads/$',views.cat_adverts),
 
-    #url(r'^(?P<cat_id>[0-9]+)/featured/$',views.cat_featured),
+    #URLs used in the admin interface
     url(r'^filter_albums_per_cat/$',views.filter_albums_per_cat),
+
+    # URLs related to each Album
+    url(r'^album/(?P<album_id>[0-9]+)/$',views.list_album_songs),
+
+    # search functionality
+    url(r'^search/$',views.search),
+    url(r'^search_album_more/(?P<page>[0-9]+)/$',views.search_album_more),
+    url(r'^search_song_albums_more/(?P<page>[0-9]+)/$',views.search_song_albums_more),
+    url(r'^search_producer_albums_more/(?P<page>[0-9]+)/$',views.search_producer_albums_more),
 
     # the purpose of having the following url is not clear.
     url(r'^album_select/',views.album_select),
 
-    # URLs related to each Album
-    url(r'^album/(?P<album_id>[0-9]+)/$',views.list_album_songs),
+
 
     # Depricated URLs
     url(r'^list/$',views.list),
@@ -35,10 +43,7 @@ urlpatterns = [
     url(r'^popular_songs/(?P<page>[0-9]+)/$',views.popular_songs),
     url(r'^latest_songs/(?P<page>[0-9]+)/$',views.latest_songs),
 
-    url(r'^search/$',views.search),
-    url(r'^search_album_more/(?P<page>[0-9]+)/$',views.search_album_more),
-    url(r'^search_song_albums_more/(?P<page>[0-9]+)/$',views.search_song_albums_more),
-    url(r'^search_producer_albums_more/(?P<page>[0-9]+)/$',views.search_producer_albums_more),
+
 
 ]
 

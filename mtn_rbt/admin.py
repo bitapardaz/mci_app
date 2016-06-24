@@ -49,7 +49,7 @@ class MTN_CatAdvertAdmin(admin.ModelAdmin):
     list_filter = (MTN_CategoryFilter,)
 
     class Media:
-        js = ("rbt/js/filter_mtn_albums.js",)
+        js = ("mtn_rbt/js/filter_albums.js",)
 
 
 class MTN_MainAdvertAdmin(admin.ModelAdmin):
@@ -66,7 +66,7 @@ class MTN_CategoryFeaturedAdmin(admin.ModelAdmin):
     list_filter = (MTN_CategoryFilter,)
 
     class Media:
-        js = ("rbt/js/filter_mtn_albums.js",)
+        js = ("mtn_rbt/js/filter_albums.js",)
 
 class MTN_SongAdmin(admin.ModelAdmin):
     list_display = ('song_name', 'album', 'music_studio','producer')

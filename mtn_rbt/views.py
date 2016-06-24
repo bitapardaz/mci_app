@@ -159,3 +159,80 @@ def get_category_popular_albums(category,child_list):
         albums = sorted( itertools.chain.from_iterable(child_albums) , key=lambda instance: instance.rate, reverse=True )
 
     return albums
+
+
+
+@api_view(['GET'])
+def latest_albums(request,page,format=None):
+    """
+    returns the latest albums across all categories and the
+    results is displayed in the first page.
+    """
+    step = 30
+
+    page_index = int(page)
+    start_index = page_index * step
+    end_index = (page_index+1) * step
+
+    album_list = MTN_Album.objects.filter(confirmed=True).order_by('-date_published')[start_index:end_index]
+    serializer = MTN_AlbumSerializer(album_list,many=True)
+    return Response(serializer.data)
+
+
+
+@api_view(['GET'])
+def cat_albums(request,cat_id,page,format=None):
+
+    '''
+    returns the albums in the current category and its
+    children ordered based on the date-published.
+    '''
+
+    page_index = int(page)
+    no_of_items = 20
+    start_index = page_index * no_of_items
+    end_index = (page_index+1) * no_of_items
+
+    # children
+    category = MTN_Category.objects.get(id=cat_id)
+    child_list = MTN_Category.objects.filter(confirmed=True,parent=category)
+
+    if len(child_list) == 0:
+        albums = MTN_Album.objects.filter(category=category,confirmed=True).order_by('-date_published')[start_index:end_index]
+        serializer = MTN_AlbumSerializer(albums,many=True)
+        return Response(serializer.data)
+
+    else: # the category has some children. The first no_of_items of each category is taken
+        child_albums = []
+        for child in child_list:
+            album_list = MTN_Album.objects.filter(category=child,confirmed=True).order_by('-date_published')[start_index:end_index]
+            child_albums.append(album_list)
+
+        albums = sorted( itertools.chain.from_iterable(child_albums) , key=lambda instance: instance.date_published, reverse=True )
+        serializer = MTN_AlbumSerializer(albums,many=True)
+        return Response(serializer.data)
+
+
+@api_view(['GET'])
+def list_album_songs(request,album_id):
+
+    songs = MTN_Song.objects.filter(album__id=album_id)
+    serializer = MTN_SongSerializer(songs,many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def filter_albums_per_cat(request,format=None):
+
+    cat_id = int(request.GET['cat_id'])
+    category = MTN_Category.objects.get(pk=cat_id)
+    albums = MTN_Album.objects.filter(category=category,confirmed=True).order_by('-date_published')
+
+    # add albums in the children.
+    children = MTN_Category.objects.filter(parent=category)
+    for child in children:
+        child_album = MTN_Album.objects.filter(category=child,confirmed=True).order_by('-date_published')
+        albums = albums | child_album
+
+    serializer = MTN_AlbumSerializer(albums,many=True)
+    return Response(serializer.data)

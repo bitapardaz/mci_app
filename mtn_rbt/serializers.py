@@ -8,11 +8,12 @@ class MTN_SongSerializer(serializers.ModelSerializer):
 
     #category = serializers.StringRelatedField(read_only=True)
     producer = serializers.StringRelatedField(read_only=True)
+    music_studio = serializers.StringRelatedField(read_only=True)
 
     class Meta:
         model = MTN_Song
         fields = ('song_name','activation_code','download_link','rate',
-                    'activated','producer','image',)
+                    'activated','producer','image','music_studio')
 
 
 class MTN_CategorySerializer(serializers.ModelSerializer):
