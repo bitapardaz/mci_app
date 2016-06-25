@@ -9,6 +9,48 @@ from rbt.models import Producer
 import os
 import ftplib
 
+def get_all_valid_tone_codes():
+
+    tone_ids = []
+
+    for page in range(1,10):
+        new_ids = get_valid_tone_codes(page)
+        tone_ids = tone_ids + new_ids
+
+    print "\n\nTotal number of songs = %d" % len(tone_ids)
+    return tone_ids
+
+
+def get_valid_tone_codes(page):
+
+    new_tone_ids=[]
+
+    website_link = "http://rbt.irancell.ir/user/browseordinarybyname.do?orderBy=2&urlFlag=101&uploadType=&resourceServiceType=1&toneNameLetter=&page=%d" % page
+
+    print "\ndownloading the page from rbt.iracell.com. page=%d" % page
+    html = urllib2.urlopen(website_link)
+    soup = BeautifulSoup(html,'html.parser')
+
+    for span in soup.find_all('span',class_="w75 txtCent"):
+
+        my_link = span.a
+        if my_link != None:
+            #Let "link" be a <a> tag that satisfies the condition above
+
+            on_click_text = my_link['onclick']
+            #print "onclick text = %s" % on_click_text
+
+            splited_str= on_click_text.split(',')
+            tone_id_section = splited_str[1]
+            tone_id_string = tone_id_section.split('\'')[1]
+            tone_id = int(tone_id_string)
+            print "identified tone_id:%d" % tone_id
+
+            new_tone_ids = new_tone_ids + [tone_id]
+
+    return  new_tone_ids
+
+
 
 def run_downloader():
 
@@ -19,10 +61,15 @@ def run_downloader():
     ftp_session = ftplib.FTP(host,username,password)
     print "ftp_session established"
 
-    for tone_id in range(1654,1655):
+    all_valid_tones = get_all_valid_tone_codes()
 
-        print("\n\n%s- checking if the song already exists" % tone_id)
+    counter = 0
+    for tone_id in all_valid_tones:
 
+        counter = counter + 1
+        print("\n\n%s- song %d out of %d " % (tone_id,counter,len(all_valid_tones)))
+
+        print("%s- checking if the song already exists" % tone_id)
         try:
             # check if the song already exists in the database
             song = MTN_Song.objects.get(tone_id=tone_id)
@@ -32,14 +79,12 @@ def run_downloader():
             # Do nothing.
 
         except MTN_Song.DoesNotExist:
-
             print("%s- tone_id is new to database. Checking the ID... " % tone_id)
-
-            (is_code_valid,tone_id_2, name, price, singer_name, tone_valid_day,audio_file_path, activation_code, album, category,music_studio) = get_one_song_information(tone_id)
+            (is_code_valid,tone_id_2, name, price, singer_name, tone_valid_day, audio_link,audio_file_path, activation_code, album, category,music_studio) = get_one_song_information(tone_id)
 
             if is_code_valid:
                 print("%s- Adding tone_id to the database... " % tone_id)
-                add_song_to_db(tone_id,name,price,singer_name,tone_valid_day,audio_file_path,activation_code,album,category,music_studio,ftp_session)
+                add_song_to_db(tone_id,name,price,singer_name,tone_valid_day, audio_link, audio_file_path,activation_code,album,category,music_studio,ftp_session)
                 print( "(%s,%s)- inserted" % (tone_id,activation_code))
 
             else:
@@ -48,7 +93,7 @@ def run_downloader():
     print "quiting ftp_session"
     ftp_session.quit()
 
-def add_song_to_db(tone_id,song_name,price,singer_name,tone_valid_day,audio_file_path,activation_code,f_album,f_category,f_music_studio,ftp_session):
+def add_song_to_db(tone_id,song_name,price,singer_name,tone_valid_day, audio_link, audio_file_path,activation_code,f_album,f_category,f_music_studio,ftp_session):
     '''
     categories are dynamically created (if it does not previously exist)
     and is associated with the album.
@@ -77,7 +122,7 @@ def add_song_to_db(tone_id,song_name,price,singer_name,tone_valid_day,audio_file
     album,created = MTN_Album.objects.get_or_create(farsi_name=f_album,category=category)
 
     # send song file to the storage server for the purpose of uploading
-    upload_file_to_ftp_server(tone_id,ftp_session)
+    upload_file_to_ftp_server(tone_id,ftp_session,audio_file_path)
 
     # calculate the link to the audio file on the ftp server for the purpose of downloading
     audio_link_ftp_server = generate_ftp_server_audio_path(tone_id)
@@ -136,7 +181,7 @@ def get_one_song_information(tone_id):
 
         audio_link = j_response["toneInfo"]["tonePreListenAddress"]
         audio_file = urllib.URLopener()
-        audio_file_path = generate_relative_audio_file_path(tone_id)
+        audio_file_path = generate_relative_audio_file_path(tone_id,audio_link)
         try:
 
 
@@ -169,7 +214,7 @@ def get_one_song_information(tone_id):
             print "%d- returning all song information to the runner" % tone_id
 
             return (is_code_valid,f_tone_id, name, price, singer_name, tone_valid_day,
-                    audio_file_path, activation_code, album, category,music_studio)
+                    audio_link, audio_file_path, activation_code, album, category,music_studio)
 
 
         except (HTTPError, IOError) as e:
@@ -211,23 +256,32 @@ def get_additional_info(f_tone_id):
 
 
 
-def generate_relative_audio_file_path(tone_id):
+def generate_relative_audio_file_path(tone_id,audio_link):
     '''
     returns the name to be used when temporarily saving
     a song to our database. (before sendnig the song to ftp server)
+
+    the file can be .mp3 or .wav
     '''
-    return "song_storage/tone_%d.wav" % tone_id
+
+    if audio_link.endswith('mp3'):
+        return "song_storage/tone_%d.mp3" % tone_id
+
+    if audio_link.endswith('wav'):
+        return "song_storage/tone_%d.wav" % tone_id
+
+
 
 
 def generate_ftp_server_audio_path(tone_id):
+    to be fixed.
     return "http://pishahangstorage.com/songs/tone_%s.wav" % str(tone_id)
 
 
-def upload_file_to_ftp_server(tone_id,ftp_session):
+def upload_file_to_ftp_server(tone_id,ftp_session,audio_file_path):
 
     print "%s- uploading to the ftp server" % tone_id
 
-    audio_file_path = generate_relative_audio_file_path(tone_id)
     absoulte_path = os.path.abspath(audio_file_path)
     myfile = open(absoulte_path,'rb')
 
