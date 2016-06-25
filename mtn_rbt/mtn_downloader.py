@@ -13,7 +13,7 @@ def get_all_valid_tone_codes():
 
     tone_ids = []
 
-    for page in range(1,10):
+    for page in range(1,5):
         new_ids = get_valid_tone_codes(page)
         tone_ids = tone_ids + new_ids
 
@@ -80,11 +80,11 @@ def run_downloader():
 
         except MTN_Song.DoesNotExist:
             print("%s- tone_id is new to database. Checking the ID... " % tone_id)
-            (is_code_valid,tone_id_2, name, price, singer_name, tone_valid_day, audio_link,audio_file_path, activation_code, album, category,music_studio) = get_one_song_information(tone_id)
+            (is_code_valid,f_tone_id, name, price, singer_name,tone_valid_day, activation_code, album, category,music_studio,file_name,audio_file_path,audio_file_ftp_server) = get_one_song_information(tone_id)
 
             if is_code_valid:
                 print("%s- Adding tone_id to the database... " % tone_id)
-                add_song_to_db(tone_id,name,price,singer_name,tone_valid_day, audio_link, audio_file_path,activation_code,album,category,music_studio,ftp_session)
+                add_song_to_db(tone_id,name,price,singer_name,tone_valid_day, activation_code,album,category,music_studio,file_name,audio_file_path, audio_file_ftp_server, ftp_session)
                 print( "(%s,%s)- inserted" % (tone_id,activation_code))
 
             else:
@@ -93,7 +93,7 @@ def run_downloader():
     print "quiting ftp_session"
     ftp_session.quit()
 
-def add_song_to_db(tone_id,song_name,price,singer_name,tone_valid_day, audio_link, audio_file_path,activation_code,f_album,f_category,f_music_studio,ftp_session):
+def add_song_to_db(tone_id,song_name,price,singer_name,tone_valid_day,activation_code,f_album,f_category,f_music_studio,file_name,audio_file_path, audio_file_ftp_server, ftp_session):
     '''
     categories are dynamically created (if it does not previously exist)
     and is associated with the album.
@@ -121,16 +121,13 @@ def add_song_to_db(tone_id,song_name,price,singer_name,tone_valid_day, audio_lin
     # get or create the album
     album,created = MTN_Album.objects.get_or_create(farsi_name=f_album,category=category)
 
-    # send song file to the storage server for the purpose of uploading
-    upload_file_to_ftp_server(tone_id,ftp_session,audio_file_path)
-
-    # calculate the link to the audio file on the ftp server for the purpose of downloading
-    audio_link_ftp_server = generate_ftp_server_audio_path(tone_id)
+    # send song file to the storage server
+    upload_file_to_ftp_server(tone_id,ftp_session,audio_file_path,file_name)
 
     # save the song
     mtn_song = MTN_Song(tone_id = tone_id,
                 activation_code=activation_code,
-                download_link=audio_link_ftp_server,
+                download_link=audio_file_ftp_server,
                 song_name=song_name,
                 producer=producer,
                 album = album,
@@ -156,6 +153,8 @@ def get_one_song_information(tone_id):
     album = ""
     category = ""
     music_studio = ""
+    file_name=""
+    audio_file_ftp_server=""
 
     f_tone_id = str(tone_id)
     data = urllib.urlencode({'toneId': f_tone_id })
@@ -181,9 +180,11 @@ def get_one_song_information(tone_id):
 
         audio_link = j_response["toneInfo"]["tonePreListenAddress"]
         audio_file = urllib.URLopener()
-        audio_file_path = generate_relative_audio_file_path(tone_id,audio_link)
-        try:
 
+        file_name = generate_file_name(tone_id,audio_link)
+        audio_file_path = generate_relative_audio_file_path(file_name)
+
+        try:
 
             print "%d- audio link: %s" % (tone_id,audio_link)
             print "%d- audio local path: %s" % (tone_id,audio_file_path)
@@ -199,10 +200,10 @@ def get_one_song_information(tone_id):
 
             f_tone_id = j_response["toneInfo"]["toneID"]
             name = j_response["toneInfo"]["toneName"]
+            print "%d- song name: %s" % (tone_id,name)
             price = j_response["toneInfo"]["price"]
             singer_name = j_response["toneInfo"]["singerName"]
             tone_valid_day = j_response["toneInfo"]["toneValidDay"]
-            audio_link = j_response["toneInfo"]["tonePreListenAddress"]
             activation_code = j_response["toneInfo"]["toneCode"]
 
             '''
@@ -213,8 +214,12 @@ def get_one_song_information(tone_id):
             print "%d- additional info (album+category+music studio) received" % tone_id
             print "%d- returning all song information to the runner" % tone_id
 
-            return (is_code_valid,f_tone_id, name, price, singer_name, tone_valid_day,
-                    audio_link, audio_file_path, activation_code, album, category,music_studio)
+            audio_file_ftp_server = generate_ftp_server_file_address(file_name)
+            print "%d- ftp server address: %s" % (tone_id,audio_file_ftp_server)
+
+            return (is_code_valid,f_tone_id, name, price, singer_name,
+                    tone_valid_day, activation_code, album, category,music_studio,
+                    file_name,audio_file_path,audio_file_ftp_server)
 
 
         except (HTTPError, IOError) as e:
@@ -223,16 +228,19 @@ def get_one_song_information(tone_id):
             return empty result
             '''
             print "%d- Audio file deos not exists ... " % tone_id
-            return (is_code_valid,tone_id, name, price, singer_name, tone_valid_day,
-                    audio_file_path, activation_code, album, category,music_studio)
+            return (is_code_valid,f_tone_id, name, price, singer_name,
+                    tone_valid_day, activation_code, album, category,music_studio,
+                    file_name,audio_file_path,audio_file_ftp_server)
+
 
     else:
         '''
         the json is empty. Info:null. The code is not valid
         '''
         print "JSON is empty..."
-        return (is_code_valid,tone_id, name, price, singer_name, tone_valid_day,
-                audio_file_path, activation_code, album, category,music_studio)
+        return (is_code_valid,f_tone_id, name, price, singer_name,
+                tone_valid_day, activation_code, album, category,music_studio,
+                file_name,audio_file_path,audio_file_ftp_server)
 
 
 
@@ -256,37 +264,37 @@ def get_additional_info(f_tone_id):
 
 
 
-def generate_relative_audio_file_path(tone_id,audio_link):
-    '''
-    returns the name to be used when temporarily saving
-    a song to our database. (before sendnig the song to ftp server)
+def generate_relative_audio_file_path(file_name):
+    return "song_storage/%s" % file_name
 
+def generate_file_name(tone_id,audio_link):
+
+    '''
+    returns the name to be used when saving
+    a song to our database or uploading on the ftp server.
     the file can be .mp3 or .wav
     '''
 
     if audio_link.endswith('mp3'):
-        return "song_storage/tone_%d.mp3" % tone_id
+        return "tone_%d.mp3" % tone_id
 
-    if audio_link.endswith('wav'):
-        return "song_storage/tone_%d.wav" % tone_id
-
-
+    elif audio_link.endswith('wav'):
+        return "tone_%d.wav" % tone_id
 
 
-def generate_ftp_server_audio_path(tone_id):
-    to be fixed.
-    return "http://pishahangstorage.com/songs/tone_%s.wav" % str(tone_id)
+
+def generate_ftp_server_file_address(file_name):
+    return "http://pishahangstorage.com/songs/%s" % file_name
 
 
-def upload_file_to_ftp_server(tone_id,ftp_session,audio_file_path):
+def upload_file_to_ftp_server(tone_id, ftp_session,audio_file_path,file_name):
 
     print "%s- uploading to the ftp server" % tone_id
 
     absoulte_path = os.path.abspath(audio_file_path)
     myfile = open(absoulte_path,'rb')
 
-    target_file_name = "tone_%s.wav" % tone_id
-    command = "STOR %s" % target_file_name
+    command = "STOR %s" % file_name
 
     print "%s- ftp command: %s" % (tone_id,command)
 
