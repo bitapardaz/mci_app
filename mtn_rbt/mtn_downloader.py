@@ -27,7 +27,7 @@ def get_valid_tone_codes(page):
 
     website_link = "http://rbt.irancell.ir/user/browseordinarybyname.do?orderBy=2&urlFlag=101&uploadType=&resourceServiceType=1&toneNameLetter=&page=%d" % page
 
-    print "\ndownloading the page from rbt.iracell.com. page=%d" % page
+    print "\ndownloading the page from rbt.irancell.com. page=%d" % page
     html = urllib2.urlopen(website_link)
     soup = BeautifulSoup(html,'html.parser')
 
@@ -54,14 +54,14 @@ def get_valid_tone_codes(page):
 
 def run_downloader():
 
+    all_valid_tones = get_all_valid_tone_codes()
+
     # open the ftp session to pishahangstorage.com
     host = "46.4.87.118"
     username = "songs@pishahangstorage.com"
     password = "pishahang1234"
     ftp_session = ftplib.FTP(host,username,password)
     print "ftp_session established"
-
-    all_valid_tones = get_all_valid_tone_codes()
 
     counter = 0
     for tone_id in all_valid_tones:
