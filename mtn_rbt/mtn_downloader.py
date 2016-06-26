@@ -9,11 +9,11 @@ from rbt.models import Producer
 import os
 import ftplib
 
-def get_all_valid_tone_codes():
+def get_all_valid_tone_codes(start_page,end_page):
 
     tone_ids = []
 
-    for page in range(1,5):
+    for page in range(start_page,end_page):
         new_ids = get_valid_tone_codes(page)
         tone_ids = tone_ids + new_ids
 
