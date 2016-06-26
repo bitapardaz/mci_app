@@ -9,52 +9,11 @@ from rbt.models import Producer
 import os
 import ftplib
 
-def get_all_valid_tone_codes(start_page,end_page):
-
-    tone_ids = []
-
-    for page in range(start_page,end_page):
-        new_ids = get_valid_tone_codes(page)
-        tone_ids = tone_ids + new_ids
-
-    print "\n\nTotal number of songs = %d" % len(tone_ids)
-    return tone_ids
 
 
-def get_valid_tone_codes(page):
+def run_downloader(start_page,end_page):
 
-    new_tone_ids=[]
-
-    website_link = "http://rbt.irancell.ir/user/browseordinarybyname.do?orderBy=2&urlFlag=101&uploadType=&resourceServiceType=1&toneNameLetter=&page=%d" % page
-
-    print "\ndownloading the page from rbt.irancell.com. page=%d" % page
-    html = urllib2.urlopen(website_link)
-    soup = BeautifulSoup(html,'html.parser')
-
-    for span in soup.find_all('span',class_="w75 txtCent"):
-
-        my_link = span.a
-        if my_link != None:
-            #Let "link" be a <a> tag that satisfies the condition above
-
-            on_click_text = my_link['onclick']
-            #print "onclick text = %s" % on_click_text
-
-            splited_str= on_click_text.split(',')
-            tone_id_section = splited_str[1]
-            tone_id_string = tone_id_section.split('\'')[1]
-            tone_id = int(tone_id_string)
-            print "identified tone_id:%d" % tone_id
-
-            new_tone_ids = new_tone_ids + [tone_id]
-
-    return  new_tone_ids
-
-
-
-def run_downloader():
-
-    all_valid_tones = get_all_valid_tone_codes()
+    all_valid_tones = get_all_valid_tone_codes(start_page,end_page)
 
     # open the ftp session to pishahangstorage.com
     host = "46.4.87.118"
@@ -302,3 +261,47 @@ def upload_file_to_ftp_server(tone_id, ftp_session,audio_file_path,file_name):
     myfile.close()
 
     print "%s- upload done!" % tone_id
+
+
+
+
+def get_all_valid_tone_codes(start_page,end_page):
+
+    tone_ids = []
+
+    for page in range(start_page,end_page):
+        new_ids = get_valid_tone_codes(page)
+        tone_ids = tone_ids + new_ids
+
+    print "\n\nTotal number of songs = %d" % len(tone_ids)
+    return tone_ids
+
+
+def get_valid_tone_codes(page):
+
+    new_tone_ids=[]
+
+    website_link = "http://rbt.irancell.ir/user/browseordinarybyname.do?orderBy=2&urlFlag=101&uploadType=&resourceServiceType=1&toneNameLetter=&page=%d" % page
+
+    print "\ndownloading the page from rbt.irancell.com. page=%d" % page
+    html = urllib2.urlopen(website_link)
+    soup = BeautifulSoup(html,'html.parser')
+
+    for span in soup.find_all('span',class_="w75 txtCent"):
+
+        my_link = span.a
+        if my_link != None:
+            #Let "link" be a <a> tag that satisfies the condition above
+
+            on_click_text = my_link['onclick']
+            #print "onclick text = %s" % on_click_text
+
+            splited_str= on_click_text.split(',')
+            tone_id_section = splited_str[1]
+            tone_id_string = tone_id_section.split('\'')[1]
+            tone_id = int(tone_id_string)
+            print "identified tone_id:%d" % tone_id
+
+            new_tone_ids = new_tone_ids + [tone_id]
+
+    return  new_tone_ids
