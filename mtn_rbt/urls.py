@@ -18,6 +18,8 @@ urlpatterns = [
 
     # URLs related to each Album
     url(r'^album/(?P<album_id>[0-9]+)/$',views.list_album_songs),
+    url(r'^album_full_information/(?P<album_id>[0-9]+)/$',views.album_full_information),
+
 
     #URLs used in the admin interface
     url(r'^filter_albums_per_cat/$',views.filter_albums_per_cat),
