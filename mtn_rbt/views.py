@@ -221,7 +221,6 @@ def list_album_songs(request,album_id):
     return Response(serializer.data)
 
 
-
 @api_view(['GET'])
 def album_full_information(request,album_id):
 
@@ -237,7 +236,6 @@ def album_full_information(request,album_id):
 
     response = Response(dict)
     return response
-
 
 
 @api_view(['GET'])
@@ -327,6 +325,62 @@ def search_album_more(request,page,format=None):
 
     else:
             return Response("POST your search term.")
+
+
+
+@api_view(['GET','POST'])
+def search_song_albums_more(request,page,format=None):
+    """
+    search functionality.
+    Song name
+    """
+
+    page =  int(page)
+
+    if request.method == "POST":
+
+        dict = {}
+        term = request.data.get('term')
+
+        song_albums = song_album_search_utility(term,page)
+        serializer = MTN_AlbumSerializer(song_albums,many=True)
+        dict['song_albums'] = serializer.data
+
+        response = Response(dict)
+        return response
+
+    else:
+        return Response("POST your search term.")
+
+
+
+
+@api_view(['GET','POST'])
+def search_producer_albums_more(request,page,format=None):
+    """
+    search functionality.
+    producer name
+    """
+
+    page =  int(page)
+
+    if request.method == "POST":
+
+        dict = {}
+        term = request.data.get('term')
+
+        producer_albums = producer_album_search_utility(term,page)
+        serializer = MTN_AlbumSerializer(producer_albums,many=True)
+        dict['producer_albums'] = serializer.data
+
+        response = Response(dict)
+        return response
+
+    else:
+
+        return Response("POST your search term.")
+
+
 
 
 
