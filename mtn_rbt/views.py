@@ -236,3 +236,115 @@ def filter_albums_per_cat(request,format=None):
 
     serializer = MTN_AlbumSerializer(albums,many=True)
     return Response(serializer.data)
+
+
+
+@api_view(['GET','POST'])
+def search(request,format=None):
+    """
+    search functionality.
+    Album name.
+    """
+
+    if request.method == 'POST':
+
+        term = request.data.get('term')
+
+        # inset search term in Search_Activity Table
+        search = MTN_Search_Activity.objects.create(search_term=term)
+
+        # gather search result
+
+        dict = {}
+
+        # search based on album title
+        albums = MTN_Album.objects.filter(confirmed=True, farsi_name__contains = term).order_by('-date_published')[0:20]
+        serializer = MTN_AlbumSerializer(albums,many=True)
+        dict['albums'] = serializer.data
+
+
+        # search based on song_name and then return the albums
+        song_albums = mtn_song_album_search_utility(term,page=0)
+        serializer = MTN_AlbumSerializer(song_albums,many=True)
+        dict['song_albums'] = serializer.data
+
+        # search based on producer name of the songs
+        producer_albums = mtn_producer_album_search_utility(term,page=0)
+        serializer = MTN_AlbumSerializer(producer_albums,many=True)
+        dict['producer_albums'] = serializer.data
+
+        response = Response(dict)
+        return response
+
+    else:
+        return Response("POST your search term.")
+
+
+
+@api_view(['GET','POST'])
+def search_album_more(request,page,format=None):
+    """
+    search functionality.
+    Album name.
+    """
+
+    if request.method=="POST":
+
+        term = request.data.get('term')
+        page =  int(page)
+
+        step = 20
+        start_index = page * step
+        end_index = (page+1) * step
+
+        dict = {}
+
+        albums = MTN_Album.objects.filter(confirmed=True, farsi_name__contains = term).order_by('-date_published')[start_index:end_index]
+        serializer = MTN_AlbumSerializer(albums,many=True)
+        dict['albums'] = serializer.data
+
+        response = Response(dict)
+        return response
+
+    else:
+            return Response("POST your search term.")
+
+
+
+
+def mtn_song_album_search_utility(term,page):
+
+    # number of songs that are taken into account.
+    # note: a song might be in an album with confirmed = False
+    # thus, we take a lot of songs in each uptake.
+    step = 200
+
+    start_index = page * step
+    end_index = (page+1) * step
+
+    song_albums = set()
+    songs = MTN_Song.objects.filter(album__confirmed=True ,song_name__contains=term)[start_index:end_index].select_related('album')
+    for song in songs:
+        song_albums.add(song.album)
+
+    return song_albums
+
+
+def mtn_producer_album_search_utility(term,page):
+
+
+    # number of songs that are taken into account.
+    # note: a song might be in an album with confirmed = False
+    # thus, we take a lot of songs in each uptake.
+    step = 200
+
+    start_index = page * step
+    end_index = (page+1) * step
+
+
+    producer_albums = set()
+    songs = MTN_Song.objects.filter(album__confirmed=True,producer__name__contains=term)[start_index:end_index].select_related('album')
+    for song in songs:
+        producer_albums.add(song.album)
+
+    return producer_albums

@@ -25,6 +25,8 @@ urlpatterns = [
 
     # URLs related to each Album
     url(r'^album/(?P<album_id>[0-9]+)/$',views.list_album_songs),
+    url(r'^album_full_information/(?P<album_id>[0-9]+)/$',views.album_full_information),
+
 
     # search functionality
     url(r'^search/$',views.search),

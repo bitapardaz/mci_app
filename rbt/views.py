@@ -209,6 +209,25 @@ def list_album_songs(request,album_id):
     return Response(serializer.data)
 
 
+
+@api_view(['GET'])
+def album_full_information(request,album_id):
+
+    dict={}
+
+    current_album = Album.objects.get(id=album_id)
+    serializer = AlbumSerializer(current_album)
+    dict['current_album'] = serializer.data
+
+    songs = Song.objects.filter(album__id=album_id)
+    serializer = SongSerializer(songs,many=True)
+    dict['songs'] = serializer.data
+
+    response = Response(dict)
+    return response
+
+
+
 @api_view(['GET'])
 def latest_albums(request,page,format=None):
     """
