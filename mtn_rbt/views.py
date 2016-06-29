@@ -342,7 +342,7 @@ def search_song_albums_more(request,page,format=None):
         dict = {}
         term = request.data.get('term')
 
-        song_albums = song_album_search_utility(term,page)
+        song_albums = mtn_song_album_search_utility(term,page)
         serializer = MTN_AlbumSerializer(song_albums,many=True)
         dict['song_albums'] = serializer.data
 
@@ -369,7 +369,7 @@ def search_producer_albums_more(request,page,format=None):
         dict = {}
         term = request.data.get('term')
 
-        producer_albums = producer_album_search_utility(term,page)
+        producer_albums = mtn_producer_album_search_utility(term,page)
         serializer = MTN_AlbumSerializer(producer_albums,many=True)
         dict['producer_albums'] = serializer.data
 
