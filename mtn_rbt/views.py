@@ -383,8 +383,6 @@ def search_producer_albums_more(request,page,format=None):
 
 
 
-
-
 def mtn_song_album_search_utility(term,page):
 
     # number of songs that are taken into account.
@@ -401,6 +399,7 @@ def mtn_song_album_search_utility(term,page):
         song_albums.add(song.album)
 
     return song_albums
+
 
 
 def mtn_producer_album_search_utility(term,page):

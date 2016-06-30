@@ -3,7 +3,8 @@ from django.core import urlresolvers
 
 from django.contrib.staticfiles.templatetags.staticfiles import static
 
-# Create your models here.
+
+
 class Operator(models.Model):
     name = models.CharField(max_length=10)
 

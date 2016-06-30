@@ -2,6 +2,7 @@ from django.conf.urls import url
 import views
 from rest_framework.urlpatterns import format_suffix_patterns
 
+
 urlpatterns = [
 
     url(r'^register/$',views.register),
@@ -33,6 +34,12 @@ urlpatterns = [
     url(r'^search_album_more/(?P<page>[0-9]+)/$',views.search_album_more),
     url(r'^search_song_albums_more/(?P<page>[0-9]+)/$',views.search_song_albums_more),
     url(r'^search_producer_albums_more/(?P<page>[0-9]+)/$',views.search_producer_albums_more),
+
+
+    # album activation
+    url(r'^activation_request/$',views.activation_request),
+
+
 
     # the purpose of having the following url is not clear.
     url(r'^album_select/',views.album_select),

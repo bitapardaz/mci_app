@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from serializers import SongSerializer,CategorySerializer,AlbumSerializer, CatAdvertSerializer,MainAdvertSerializer
-from userprofile.serializers import UserProfileSerializer
+from userprofile.serializers import UserProfileSerializer,ActivationRequestSerializer
 from userprofile.models import UserProfile
 from forms import AlbumSelectForm
 from django.core import serializers
@@ -124,11 +124,13 @@ def get_category_popular_albums(category,child_list):
     return albums
 
 
+
 def get_category_by_id(cat_list, id):
 
     for cat in cat_list:
         if cat.id == id :
             return cat
+
 
 
 @api_view(['GET'])
@@ -140,6 +142,7 @@ def rbt_cats(request,format=None):
     cat_list = Category.objects.filter(confirmed=True,parent=None)
     serializer = CategorySerializer(cat_list,many=True)
     return Response(serializer.data)
+
 
 
 @api_view(['GET'])
@@ -408,10 +411,6 @@ def search(request,format=None):
 
 
 
-
-
-
-
 @api_view(['GET','POST'])
 def search_album_more(request,page,format=None):
     """
@@ -492,6 +491,32 @@ def search_producer_albums_more(request,page,format=None):
     else:
 
         return Response("POST your search term.")
+
+
+
+@api_view(['POST'])
+def activation_request(request,format=None):
+
+    if request.method == "POST":
+
+            print "you are here , in the post section"
+
+            serializer = ActivationRequestSerializer(data=request.data)
+
+            if serializer.is_valid():
+                mobile = serializer.validated_data['mobile_number']
+                print (mobile)
+
+                result = {}
+                result['outcome']=1
+                return Response(result,status=status.HTTP_201_CREATED)
+
+            else:
+                return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+    else:
+
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
 
 
