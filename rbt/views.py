@@ -531,22 +531,39 @@ def activation_request(request,format=None):
         return Response("Supply song_id and mobile number.")
 
 
-'''
-def activation_request_verify(request):
+@api_view(['POST'])
+def verify_activation_request(request):
 
-    if request.method=="POST"
+
+    if request.method=="POST":
+
         activation_request_id = request.data.get('activation_request_id')
+        activated = request.data.get('activated')
 
+        if activated == "True":
+            activated_bool = True
+        else:
+            activated_bool = False
 
-        mobile_number = request.data.get('mobile_number')
-        where_i_am = request.data.get('where_i_am')
-        activated = False
+        if activated_bool:
 
+            try:
+                activation_request = ActivationRequest.objects.get(id=activation_request_id)
+                activation_request.activated = True
+                activation_request.save()
+                return Response("OK",status=status.HTTP_200_OK)
+
+            except ActivationRequest.DoesNotExist:
+
+                return Response("Not Found",status=status.HTTP_200_OK)
+        else:
+            # the user failed to activate the song.
+            # alert. the music might have been removed from the database.
+            print "alert"
+            return Response("Not Found",status=status.HTTP_200_OK)
 
     else:
         return Response("Supply activation verification.")
-
-'''
 
 
 def song_album_search_utility(term,page):
