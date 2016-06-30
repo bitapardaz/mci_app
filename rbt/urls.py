@@ -38,7 +38,7 @@ urlpatterns = [
 
     # album activation
     url(r'^activation_request/$',views.activation_request),
-
+    url(r'^activation_request_verify/$',views.activation_request_verify),
 
 
     # the purpose of having the following url is not clear.
