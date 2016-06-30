@@ -497,26 +497,27 @@ def search_producer_albums_more(request,page,format=None):
 @api_view(['POST'])
 def activation_request(request,format=None):
 
+
     if request.method == "POST":
 
-            print "you are here , in the post section"
+        song_id = request.data.get('song_id')
+        mobile_number = request.data.get('mobile_number')
+        where_i_am = request.data.get('where_i_am')
 
-            serializer = ActivationRequestSerializer(data=request.data)
+        activated = False
 
-            if serializer.is_valid():
-                mobile = serializer.validated_data['mobile_number']
-                print (mobile)
+        # insert the activation request into the database.
 
-                result = {}
-                result['outcome']=1
-                return Response(result,status=status.HTTP_201_CREATED)
 
-            else:
-                return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+        result = {}
+        result['activation_request_id'] = "done"
+
+        return Response(result,status=status.HTTP_201_CREATED)
 
     else:
+        return Response("Supply song_id and mobile number.")
 
-        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
 
 
 
