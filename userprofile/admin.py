@@ -8,7 +8,7 @@ class ActivationRequestAdmin(admin.ModelAdmin):
 
     model = ActivationRequest
 
-    list_display = ('user_profile', 'song', 'time_stamp', 'activated', 'where_am_i')
+    list_display = ('user_profile', 'song', 'time_stamp', 'activated', 'where_i_am')
     search_fields = ['user_profile__mobile_number', 'song__song_name']
 
 

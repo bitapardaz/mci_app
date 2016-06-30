@@ -19,7 +19,7 @@ class ActivationRequest(models.Model):
 
     # represents the link through which the user reached the
     # albums of interest and pushed the activation button.
-    where_am_i = models.CharField(max_length=100,null=True,blank=True)
+    where_i_am = models.CharField(max_length=100,null=True,blank=True)
 
     # represents whether this songs was actually activated or not
     # after the user sent his request.

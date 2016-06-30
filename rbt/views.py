@@ -503,21 +503,24 @@ def activation_request(request,format=None):
         song_id = request.data.get('song_id')
         mobile_number = request.data.get('mobile_number')
         where_i_am = request.data.get('where_i_am')
-
         activated = False
 
-        # insert the activation request into the database.
+        song = Song.objects.get(id=song_id)
+        user_profile = UserProfile.objects.get(mobile_number=mobile_number)
 
+        # insert the activation request into the database.
+        activation_request = ActivationRequest(song = song,
+                                               user_profile = user_profile,
+                                               where_i_am = where_i_am,
+                                               activated = False)
+        activation_request.save()
 
         result = {}
-        result['activation_request_id'] = "done"
-
+        result['activation_request_id'] = activation_request.id
         return Response(result,status=status.HTTP_201_CREATED)
 
     else:
         return Response("Supply song_id and mobile number.")
-
-
 
 
 
