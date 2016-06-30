@@ -16,7 +16,6 @@ class ActivationRequest(models.Model):
     song = models.ForeignKey(Song)
     time_stamp = models.DateTimeField(auto_now=True, editable=True,blank=True,null=True)
 
-
     # represents the link through which the user reached the
     # albums of interest and pushed the activation button.
     where_i_am = models.CharField(max_length=100,null=True,blank=True)
