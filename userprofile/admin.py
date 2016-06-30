@@ -4,6 +4,15 @@ from django.contrib import admin
 from models import UserProfile, ActivationRequest
 
 
+class UserProfileAdmin(admin.ModelAdmin):
+
+    model = UserProfile
+
+    list_display = ('mobile_number',)
+    search_fields = ['mobile_number']
+
+
+
 class ActivationRequestAdmin(admin.ModelAdmin):
 
     model = ActivationRequest
@@ -12,5 +21,7 @@ class ActivationRequestAdmin(admin.ModelAdmin):
     search_fields = ['user_profile__mobile_number', 'song__song_name']
 
 
-admin.site.register(UserProfile)
+
+
+admin.site.register(UserProfile,UserProfileAdmin)
 admin.site.register(ActivationRequest,ActivationRequestAdmin)
