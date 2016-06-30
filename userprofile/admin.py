@@ -13,5 +13,5 @@ class ActivationRequestAdmin(admin.ModelAdmin):
 
 
 admin.site.register(UserProfile)
-#admin.site.register(ActivationRequest,ActivationRequestAdmin)
-admin.site.register(ActivationRequest)
+admin.site.register(ActivationRequest,ActivationRequestAdmin)
+#admin.site.register(ActivationRequest)
