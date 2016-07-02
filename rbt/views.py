@@ -416,6 +416,7 @@ def search_2(request,format=None):
         based_on_song = len(search_dict.get('song_albums'))
         based_on_album = len(search_dict.get('albums'))
         based_on_producer = len(search_dict.get('producer_albums'))
+        
         # checking if the result is empty
         if not ( based_on_album == 0  & based_on_song == 0 & based_on_producer == 0 ):
             result_has_album = True
