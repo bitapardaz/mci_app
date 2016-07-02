@@ -39,6 +39,10 @@ urlpatterns = [
     url(r'^search_result_admin_internal_use/(?P<term>(.+))/$',views.search_result_admin_internal_use),
 
 
+    # album activation
+    url(r'^activation_request/$',views.activation_request),
+    #url(r'^verify_activation_request/$',views.verify_activation_request),
+
 
 ]
 

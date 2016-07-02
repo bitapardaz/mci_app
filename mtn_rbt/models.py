@@ -7,8 +7,6 @@ from django.contrib.staticfiles.templatetags.staticfiles import static
 
 
 # Create your models here.
-
-
 class MTN_Producer(models.Model):
 
     name = models.CharField(max_length=200)
@@ -19,7 +17,6 @@ class MTN_Producer(models.Model):
 
     class Meta:
         ordering=['name']
-
 
 
 class MTN_MusicStudio(models.Model):

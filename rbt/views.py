@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from serializers import SongSerializer,CategorySerializer,AlbumSerializer, CatAdvertSerializer,MainAdvertSerializer
-from userprofile.serializers import UserProfileSerializer,ActivationRequestSerializer
+from userprofile.serializers import UserProfileSerializer
 from userprofile.models import UserProfile, ActivationRequest
 from forms import AlbumSelectForm
 from django.core import serializers
@@ -541,14 +541,11 @@ def activation_request(request,format=None):
         where_i_am = request.data.get('where_i_am')
         activated = False
 
-        print "adding a new activation request"
 
 
         song = Song.objects.get(id=song_id)
-        print song
 
         user_profile = UserProfile.objects.get(mobile_number=mobile_number)
-        print user_profile
 
 
         # insert the activation request into the database.
@@ -557,7 +554,6 @@ def activation_request(request,format=None):
                                                where_i_am = where_i_am,
                                                activated = False)
         activation_request.save()
-        print "activation request was added with id: %d" % activation_request.id
 
         result = {}
         result['activation_request_id'] = activation_request.id

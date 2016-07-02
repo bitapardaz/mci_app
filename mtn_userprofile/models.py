@@ -10,9 +10,21 @@ class MTN_UserProfile(models.Model):
         return str(self.mobile_number)
 
 
-class MTN_RBT_Activation(models.Model):
+class MTN_ActivationRequest(models.Model):
+
+    user_profile = models.ForeignKey(MTN_UserProfile)
     song = models.ForeignKey(MTN_Song)
-    user = models.ForeignKey(MTN_UserProfile)
+    time_stamp = models.DateTimeField(auto_now=True, editable=True,blank=True,null=True)
+
+    # represents the link through which the user reached the
+    # albums of interest and pushed the activation button.
+    where_i_am = models.CharField(max_length=100,null=True,blank=True)
+
+    # represents whether this songs was actually activated or not
+    # after the user sent his request.
+    # on iOS it is always False
+    activated = models.BooleanField(default=False,blank=True)
+
 
     def __unicode__(self):
-        return self.song.__unicode__() + ' -- ' + self.user.__unicode__()
+        return self.user_profile.__unicode__() + " - " + self.song.__unicode__()
