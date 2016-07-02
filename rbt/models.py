@@ -159,6 +159,20 @@ class MainAdvert(models.Model):
 class Search_Activity(models.Model):
     search_term = models.CharField(max_length=20)
     time_stamp = models.DateTimeField(auto_now=True,editable=True)
+    mobile_number = models.CharField(max_length=20,default=0,null=True)
+    result_has_album = models.NullBooleanField(default=False)
+    based_on_album = models.IntegerField(default=0,null=True)
+    based_on_song = models.IntegerField(default=0,null=True)
+    based_on_producer = models.IntegerField(default=0,null=True)
+    location = models.CharField(max_length=200,null=True,blank=True)
+
 
     def __unicode__(self):
         return self.search_term
+
+    def result_page_link(self):
+        link="/mcirbt/search_result_admin_internal_use/" + self.search_term + "/"
+        return u'<a href="%s">%s</a>' % (link,"Result")
+
+    result_page_link.allow_tags = True
+    result_page_link.short_description = 'Result'

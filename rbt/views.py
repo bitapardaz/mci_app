@@ -11,6 +11,7 @@ from userprofile.models import UserProfile, ActivationRequest
 from forms import AlbumSelectForm
 from django.core import serializers
 import itertools
+import urllib,urllib2
 
 @api_view(['GET'])
 def homepage(request,format=None):
@@ -372,43 +373,96 @@ def filter_albums_per_cat(request,format=None):
 @api_view(['GET','POST'])
 def search(request,format=None):
     """
-    search functionality.
-    Album name.
+    simple search functionality.
     """
-
     if request.method == 'POST':
 
         term = request.data.get('term')
-
+        # gather search result
+        search_dict = search_meat(term)
         # inset search term in Search_Activity Table
         search = Search_Activity.objects.create(search_term=term)
-
-        # gather search result
-
-        dict = {}
-
-        # search based on album title
-        albums = Album.objects.filter(confirmed=True, farsi_name__contains = term).order_by('-date_published')[0:20]
-        serializer = AlbumSerializer(albums,many=True)
-        dict['albums'] = serializer.data
-
-
-        # search based on song_name and then return the albums
-        song_albums = song_album_search_utility(term,page=0)
-        serializer = AlbumSerializer(song_albums,many=True)
-        dict['song_albums'] = serializer.data
-
-        # search based on producer name of the songs
-        producer_albums = producer_album_search_utility(term,page=0)
-        serializer = AlbumSerializer(producer_albums,many=True)
-        dict['producer_albums'] = serializer.data
-
-        response = Response(dict)
+        response = Response(search_dict)
         return response
 
     else:
         return Response("POST your search term.")
 
+@api_view(['GET','POST'])
+def search_2(request,format=None):
+    """
+    search functionality.
+    version2. receives search term and mobile number from client
+    checks if the result returned was empty.
+    """
+
+    if request.method == 'POST':
+
+        term = request.data.get('term')
+        mobile_number = request.data.get('mobile_number')
+        location = request.data.get('location')
+
+        result_has_albums = False
+        based_on_album = 0
+        based_on_song = 0
+        based_on_producer = 0
+
+        # gather search result
+        search_dict = search_meat(term)
+
+        # inset search term in Search_Activity Table
+        search = Search_Activity.objects.create(search_term=term,mobile_number=mobile_number)
+
+        based_on_song = len(search_dict.get('song_albums'))
+        based_on_album = len(search_dict.get('albums'))
+        based_on_producer = len(search_dict.get('producer_albums'))
+        # checking if the result is empty
+        if not ( based_on_album == 0  & based_on_song == 0 & based_on_producer == 0 ):
+            result_has_album = True
+
+        # Save Search Result
+        search.result_has_album = result_has_album
+        search.based_on_album = based_on_album
+        search.based_on_song = based_on_song
+        search.based_on_producer = based_on_producer
+        if location: search.location=location
+        search.save()
+
+        response = Response(search_dict)
+        return response
+
+    else:
+        return Response("POST your search term.")
+
+def search_meat(term):
+
+    dict = {}
+
+    # search based on album title
+    albums = Album.objects.filter(confirmed=True, farsi_name__contains = term).order_by('-date_published')[0:20]
+    serializer = AlbumSerializer(albums,many=True)
+    dict['albums'] = serializer.data
+
+
+    # search based on song_name and then return the albums
+    song_albums = song_album_search_utility(term,page=0)
+    serializer = AlbumSerializer(song_albums,many=True)
+    dict['song_albums'] = serializer.data
+
+    # search based on the name of the producer
+    producer_albums = producer_album_search_utility(term,page=0)
+    serializer = AlbumSerializer(producer_albums,many=True)
+    dict['producer_albums'] = serializer.data
+
+    return dict
+
+
+@api_view(['GET'])
+def search_result_admin_internal_use(request,term,format=None):
+
+    search_dict = search_meat(term)
+    response = Response(search_dict)
+    return response
 
 
 @api_view(['GET','POST'])
@@ -559,7 +613,10 @@ def verify_activation_request(request):
         else:
             # the user failed to activate the song.
             # alert. the music might have been removed from the database.
+
             print "alert"
+            # send an email to Ali and Alireza and alert them that
+            # the code might have been cancelled by mci.
             return Response("Not Found",status=status.HTTP_200_OK)
 
     else:

@@ -70,8 +70,6 @@ class CategoryFeaturedAdmin(admin.ModelAdmin):
     list_display = ('category','album','date_published')
     list_filter = (CategoryFilter,)
 
-
-
     class Media:
         js = ("rbt/js/filter_albums.js",)
 
@@ -93,18 +91,8 @@ class ProducerAdmin(admin.ModelAdmin):
 
 
 class SearchActivityAdmin(admin.ModelAdmin):
-    list_display=('search_term','time_stamp',)
-    search_fields=['search_term']
-
-
-
-
-#######################################################
-### MTN Admin classes
-#######################################################
-
-
-
+    list_display=('search_term','mobile_number','time_stamp','result_has_album','result_page_link','based_on_album','based_on_song','based_on_producer','location')
+    search_fields=['search_term','mobile_number']
 
 
 
