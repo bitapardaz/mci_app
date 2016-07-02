@@ -399,7 +399,6 @@ def search(request,format=None):
 
         # checking if the result is empty
         if ( based_on_album == 0  & based_on_song == 0 & based_on_producer == 0 ):
-            print "does not have any albums"
             result_has_album = False
 
         # Save Search Result
