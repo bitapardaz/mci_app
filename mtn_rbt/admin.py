@@ -85,6 +85,11 @@ class MTN_ProducerAdmin(admin.ModelAdmin):
     inlines = [MTN_SongInlineProducer]
 
 
+class MTN_SearchActivityAdmin(admin.ModelAdmin):
+    list_display=('search_term','mobile_number','time_stamp','result_has_album','result_page_link','based_on_album','based_on_song','based_on_producer','location')
+    search_fields=['search_term','mobile_number']
+
+
 # Register your models here.
 admin.site.register(MTN_Song,MTN_SongAdmin)
 admin.site.register(MTN_Category,MTN_CategoryAdmin)
@@ -95,4 +100,4 @@ admin.site.register(MTN_MainAdvert,MTN_MainAdvertAdmin)
 admin.site.register(MTN_MainPageFeatured)
 admin.site.register(MTN_Category_Featured, MTN_CategoryFeaturedAdmin)
 admin.site.register(MTN_Producer, MTN_ProducerAdmin)
-admin.site.register(MTN_Search_Activity)
+admin.site.register(MTN_Search_Activity,MTN_SearchActivityAdmin)

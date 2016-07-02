@@ -16,7 +16,6 @@ import itertools
 
 
 # Create your views here.
-
 @api_view(['POST'])
 def register(request,format=None):
     """
@@ -266,35 +265,78 @@ def search(request,format=None):
     if request.method == 'POST':
 
         term = request.data.get('term')
+        mobile_number = request.data.get('mobile_number')
+        location = request.data.get('location')
 
-        # inset search term in Search_Activity Table
-        search = MTN_Search_Activity.objects.create(search_term=term)
+        result_has_album = True
+        based_on_album = 0
+        based_on_song = 0
+        based_on_producer = 0
 
         # gather search result
-
-        dict = {}
-
-        # search based on album title
-        albums = MTN_Album.objects.filter(confirmed=True, farsi_name__contains = term).order_by('-date_published')[0:20]
-        serializer = MTN_AlbumSerializer(albums,many=True)
-        dict['albums'] = serializer.data
+        search_dict = search_meat(term)
 
 
-        # search based on song_name and then return the albums
-        song_albums = mtn_song_album_search_utility(term,page=0)
-        serializer = MTN_AlbumSerializer(song_albums,many=True)
-        dict['song_albums'] = serializer.data
+        based_on_song = len(search_dict.get('song_albums'))
+        based_on_album = len(search_dict.get('albums'))
+        based_on_producer = len(search_dict.get('producer_albums'))
 
-        # search based on producer name of the songs
-        producer_albums = mtn_producer_album_search_utility(term,page=0)
-        serializer = MTN_AlbumSerializer(producer_albums,many=True)
-        dict['producer_albums'] = serializer.data
+        print "you are here"
+        print based_on_album
+        print based_on_song
+        print based_on_producer
 
-        response = Response(dict)
+        # checking if the result is empty
+        if (based_on_album == 0  and based_on_song == 0 and based_on_producer == 0):
+            result_has_album = False
+
+
+        # inset search term in Search_Activity Table
+        search = MTN_Search_Activity.objects.create(search_term=term,mobile_number=mobile_number)
+
+        search.result_has_album = result_has_album
+        search.based_on_album = based_on_album
+        search.based_on_song = based_on_song
+        search.based_on_producer = based_on_producer
+        if location: search.location=location
+        search.save()
+
+        response = Response(search_dict)
         return response
 
     else:
         return Response("POST your search term.")
+
+
+
+def search_meat(term):
+
+    dict = {}
+
+    # search based on album title
+    albums = MTN_Album.objects.filter(confirmed=True, farsi_name__contains = term).order_by('-date_published')[0:20]
+    serializer = MTN_AlbumSerializer(albums,many=True)
+    dict['albums'] = serializer.data
+
+    # search based on song_name and then return the albums
+    song_albums = mtn_song_album_search_utility(term,page=0)
+    serializer = MTN_AlbumSerializer(song_albums,many=True)
+    dict['song_albums'] = serializer.data
+
+    # search based on the name of the producer
+    producer_albums = mtn_producer_album_search_utility(term,page=0)
+    serializer = MTN_AlbumSerializer(producer_albums,many=True)
+    dict['producer_albums'] = serializer.data
+
+    return dict
+
+
+@api_view(['GET'])
+def search_result_admin_internal_use(request,term,format=None):
+
+    search_dict = search_meat(term)
+    response = Response(search_dict)
+    return response
 
 
 

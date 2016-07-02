@@ -381,7 +381,7 @@ def search(request,format=None):
         mobile_number = request.data.get('mobile_number')
         location = request.data.get('location')
 
-        result_has_albums = False
+        result_has_album = True
         based_on_album = 0
         based_on_song = 0
         based_on_producer = 0
@@ -389,19 +389,20 @@ def search(request,format=None):
         # gather search result
         search_dict = search_meat(term)
 
-        # inset search term in Search_Activity Table
-        search = Search_Activity.objects.create(search_term=term,mobile_number=mobile_number)
 
         based_on_song = len(search_dict.get('song_albums'))
         based_on_album = len(search_dict.get('albums'))
         based_on_producer = len(search_dict.get('producer_albums'))
 
-
         # checking if the result is empty
-        if ( based_on_album == 0  & based_on_song == 0 & based_on_producer == 0 ):
+        if ( based_on_album==0 and based_on_song == 0 and based_on_producer==0 ):
+            print "Result has album now becomes false"
             result_has_album = False
 
         # Save Search Result
+        # inset search term in Search_Activity Table
+        search = Search_Activity.objects.create(search_term=term,mobile_number=mobile_number)
+
         search.result_has_album = result_has_album
         search.based_on_album = based_on_album
         search.based_on_song = based_on_song
