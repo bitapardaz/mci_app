@@ -378,27 +378,6 @@ def search(request,format=None):
     if request.method == 'POST':
 
         term = request.data.get('term')
-        # gather search result
-        search_dict = search_meat(term)
-        # inset search term in Search_Activity Table
-        search = Search_Activity.objects.create(search_term=term)
-        response = Response(search_dict)
-        return response
-
-    else:
-        return Response("POST your search term.")
-
-@api_view(['GET','POST'])
-def search_2(request,format=None):
-    """
-    search functionality.
-    version2. receives search term and mobile number from client
-    checks if the result returned was empty.
-    """
-
-    if request.method == 'POST':
-
-        term = request.data.get('term')
         mobile_number = request.data.get('mobile_number')
         location = request.data.get('location')
 
@@ -410,17 +389,15 @@ def search_2(request,format=None):
         # gather search result
         search_dict = search_meat(term)
 
+
         # inset search term in Search_Activity Table
         search = Search_Activity.objects.create(search_term=term,mobile_number=mobile_number)
-
         based_on_song = len(search_dict.get('song_albums'))
         based_on_album = len(search_dict.get('albums'))
         based_on_producer = len(search_dict.get('producer_albums'))
-        
         # checking if the result is empty
         if not ( based_on_album == 0  & based_on_song == 0 & based_on_producer == 0 ):
             result_has_album = True
-
         # Save Search Result
         search.result_has_album = result_has_album
         search.based_on_album = based_on_album
@@ -428,6 +405,7 @@ def search_2(request,format=None):
         search.based_on_producer = based_on_producer
         if location: search.location=location
         search.save()
+
 
         response = Response(search_dict)
         return response
