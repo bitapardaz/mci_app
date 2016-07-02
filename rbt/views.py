@@ -389,15 +389,19 @@ def search(request,format=None):
         # gather search result
         search_dict = search_meat(term)
 
-
         # inset search term in Search_Activity Table
         search = Search_Activity.objects.create(search_term=term,mobile_number=mobile_number)
+
         based_on_song = len(search_dict.get('song_albums'))
         based_on_album = len(search_dict.get('albums'))
         based_on_producer = len(search_dict.get('producer_albums'))
+
+
         # checking if the result is empty
-        if not ( based_on_album == 0  & based_on_song == 0 & based_on_producer == 0 ):
-            result_has_album = True
+        if ( based_on_album == 0  & based_on_song == 0 & based_on_producer == 0 ):
+            print "does not have any albums"
+            result_has_album = False
+
         # Save Search Result
         search.result_has_album = result_has_album
         search.based_on_album = based_on_album
@@ -405,7 +409,6 @@ def search(request,format=None):
         search.based_on_producer = based_on_producer
         if location: search.location=location
         search.save()
-
 
         response = Response(search_dict)
         return response
