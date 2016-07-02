@@ -528,7 +528,7 @@ def verify_activation_request(request):
             print "alert"
             # send an email to Ali and Alireza and alert them that
             # the code might have been cancelled by mci.
-            return Response("Not Found",status=status.HTTP_200_OK)
+            return Response("Alert",status=status.HTTP_200_OK)
 
     else:
         return Response("Supply activation verification.")
