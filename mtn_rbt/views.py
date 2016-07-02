@@ -493,3 +493,42 @@ def activation_request(request,format=None):
 
     else:
         return Response("Supply song_id and mobile number.")
+
+
+
+@api_view(['POST'])
+def verify_activation_request(request):
+
+
+    if request.method=="POST":
+
+        activation_request_id = request.data.get('activation_request_id')
+        activated = request.data.get('activated')
+
+        if activated == "True":
+            activated_bool = True
+        else:
+            activated_bool = False
+
+        if activated_bool:
+
+            try:
+                activation_request = MTN_ActivationRequest.objects.get(id=activation_request_id)
+                activation_request.activated = True
+                activation_request.save()
+                return Response("OK",status=status.HTTP_200_OK)
+
+            except MTN_ActivationRequest.DoesNotExist:
+
+                return Response("Not Found",status=status.HTTP_200_OK)
+        else:
+            # the user failed to activate the song.
+            # alert. the music might have been removed from the database.
+
+            print "alert"
+            # send an email to Ali and Alireza and alert them that
+            # the code might have been cancelled by mci.
+            return Response("Not Found",status=status.HTTP_200_OK)
+
+    else:
+        return Response("Supply activation verification.")

@@ -41,7 +41,7 @@ urlpatterns = [
 
     # album activation
     url(r'^activation_request/$',views.activation_request),
-    #url(r'^verify_activation_request/$',views.verify_activation_request),
+    url(r'^verify_activation_request/$',views.verify_activation_request),
 
 
 ]
