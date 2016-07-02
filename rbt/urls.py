@@ -35,7 +35,6 @@ urlpatterns = [
     url(r'^search_producer_albums_more/(?P<page>[0-9]+)/$',views.search_producer_albums_more),
 
     # search second verrsion
-    url(r'^search_2/$',views.search_2),
     url(r'^search_result_admin_internal_use/(?P<term>(.+))/$',views.search_result_admin_internal_use),
 
 
