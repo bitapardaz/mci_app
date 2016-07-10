@@ -97,7 +97,7 @@ def add_song_to_db(tone_id,song_name,price,singer_name,tone_valid_day,activation
     album,created = MTN_Album.objects.get_or_create(farsi_name=f_album,category=category)
 
     # send song file to the storage server
-    #upload_file_to_ftp_server(tone_id,ftp_session,audio_file_path,file_name)
+    upload_file_to_ftp_server(tone_id,ftp_session,audio_file_path,file_name)
 
     # save the song
     mtn_song = MTN_Song(tone_id = tone_id,
