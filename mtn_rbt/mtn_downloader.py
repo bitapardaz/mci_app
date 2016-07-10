@@ -14,6 +14,11 @@ import ftplib
 def run_downloader(start_page,end_page):
 
     all_valid_tones = get_all_valid_tone_codes(start_page,end_page)
+    db_tones = MTN_Song.objects.values_list('tone_id',flat=True)
+    db_tones_int = [int(item) for item in db_tones]
+
+    new_tones = [ tone for tone in all_valid_tones if tone not in db_tones_int]
+    excess_tones = [tone for tone in db_tones_int if tone not in all_valid_tones]
 
     # open the ftp session to pishahangstorage.com
     host = "46.4.87.118"
@@ -22,8 +27,10 @@ def run_downloader(start_page,end_page):
     ftp_session = ftplib.FTP(host,username,password)
     print "ftp_session established"
 
+
+    # adding new_tones
     counter = 0
-    for tone_id in all_valid_tones:
+    for tone_id in new_tones:
 
         counter = counter + 1
         print("\n\n%s- song %d out of %d " % (tone_id,counter,len(all_valid_tones)))
@@ -49,8 +56,17 @@ def run_downloader(start_page,end_page):
             else:
                 print("%s- invalid code" % tone_id)
 
+
     print "quiting ftp_session"
     ftp_session.quit()
+
+    print "Number of Newly added songs: %d" % len(new_tones)
+    # removing excess_tones
+    for tone_id in excess_tones:
+        song = MTN_Song.objects.get(tone_id=str(tone_id))
+        #song.delete()
+        print "EXCESS SONG: tone_id: %s" % song.tone_id
+
 
 def add_song_to_db(tone_id,song_name,price,singer_name,tone_valid_day,activation_code,f_album,f_category,f_music_studio,file_name,audio_file_path, audio_file_ftp_server, ftp_session):
     '''
@@ -81,7 +97,7 @@ def add_song_to_db(tone_id,song_name,price,singer_name,tone_valid_day,activation
     album,created = MTN_Album.objects.get_or_create(farsi_name=f_album,category=category)
 
     # send song file to the storage server
-    upload_file_to_ftp_server(tone_id,ftp_session,audio_file_path,file_name)
+    #upload_file_to_ftp_server(tone_id,ftp_session,audio_file_path,file_name)
 
     # save the song
     mtn_song = MTN_Song(tone_id = tone_id,
