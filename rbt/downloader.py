@@ -27,16 +27,15 @@ def run_downloader(start_page,end_page):
     print "new tones = %d" % len(new_tones)
     #print "excess tones = %d" % len(excess_tones)
 
-    command = input("Press 1 to continue: ")
-    if command == 1:
-        print "yeay"
-    elif command ==2:
-        print new_tones
-        return None
-    else:
-        print "Nay"
-        return None
-
+    command = 0
+    while command != 1 :
+        command = input("Press 1 to continue, 2 to print new_tones")
+        if command == 1:
+            print "yeay"
+        elif command ==2:
+            print new_tones
+        else:
+            print "bad command"
 
     for id in new_tones:
 
