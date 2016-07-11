@@ -5,77 +5,55 @@ import requests
 import ssl
 from functools import wraps
 
+#################################################
+### running the downloader
+#################################################
 
-def get_all_valid_codes(start_page,end_page):
-    '''
-    returns the codes that corresponds to the valid songs on rbt.mci.ir
-    '''
+def run_downloader(start_page,end_page):
 
     # on the website, the selector has the range (1,...,5700)
     # however, the urls are sent to an index page_number-1
     start_page = start_page - 1
     end_page = end_page - 1
 
-    all_codes = []
-    for page in range(start_page,end_page):
-        new_codes = get_valid_codes(page)
-        all_codes = all_codes + new_codes
-    return all_codes
+    all_codes_string = get_all_valid_codes(start_page,end_page)
+    all_codes_int = [ int(code_string) for code_string in all_codes_string]
+
+    db_tones = Song.objects.values_list('activation_code',flat=True)
+
+    new_tones = [ tone for tone in all_codes_int if tone not in db_tones]
+    excess_tones = [tone for tone in db_tones if tone not in all_codes_int]
+
+    for id in new_tones:
+
+        print("\n%s" % id),
+
+        html_page = download_song_html(id)
+        if is_song_valid(html_page):
+
+            # get the information from mci site
+            (code,name,producer_farsi,album_farsi,category_farsi) = derive_song_information(html_page)
+
+            # check if the song already exists in the database
+            try:
+                song = Song.objects.get(activation_code=int(code))
+                # the song already exists in the database.
+                # Do nothing.
+            except Song.DoesNotExist:
+                add_song_to_db(code,name,producer_farsi,album_farsi,category_farsi)
+                print( "- inserted.")
 
 
+    for id in excess_tones:
 
-def get_valid_codes(page):
-    '''
-    returns the list of valid codes defined in one page
-    '''
-    response = get_html_song_table(page)
-    soup = BeautifulSoup(response.content,'html.parser')
-    all_rows = soup.find_all('tr')
-    valid_rows = filter_rows(all_rows)
-    page_codes = []
-    for row in valid_rows:
-        code_string = row.find_all('td')[0].string.strip()
-        page_codes = page_codes + [code_string]
-    return page_codes
+        song = Song.objects.get(activation_code=id)
+        #song.delete()
+        print "EXCESS SONG: activation code: %s" % song.activation_code
 
 
-
-def filter_rows(all_rows):
-    valid_rows = []
-    for row in all_rows:
-        if row['class'] == [u'even'] or row['class']==[u'odd']:
-            valid_rows = valid_rows + [row]
-    return valid_rows
-
-
-
-def get_html_song_table(page):
-
-    url = "https://rbt.mci.ir/AJAX/latestTones.jsp?pgs=%d" % page
-    headers = { 'User-Agent' : 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:47.0) Gecko/20100101 Firefox/47.0',
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8/json',
-                'Accept-Encoding':'gzip, deflate, br',
-                'Connection': 'keep-alive',
-                'Host': 'rbt.mci.ir',
-                'Referer':'https://rbt.mci.ir/userindex.jsp',
-                #'Cookie':'JSESSIONID=GfxUDmc4AT5FTcCARmB+uHDV.undefined; cookiesession1=9PKTK1LB6USNJIQ4SJU34S63LEUTMF8H; _ga=GA1.2.76051626.1468215694; _gat=1',
-                'Content-Length':'0'
-            }
-
-    response = requests.post(url,headers=headers)
-    return response
-
-
-def check_html_class(tag):
-
-        if tag['class']!= None:
-            c = tag['class']
-            if c == [u'even']:
-                return True
-            if c == [u'odd']:
-                return True
-
-        return False
+    print "Number of newly added songs: %d" % len(new_tones)
+    # removing excess_tones
+    print "Number of songs in excess: %d" % len(excess_tones)
 
 
 def derive_song_information(html_page):
@@ -148,27 +126,58 @@ def add_song_to_db(code,name,producer_farsi,album_farsi,category_farsi):
     song.save()
 
 
-#################################################
-### running the downloader
-#################################################
 
-def run_downloader():
+def get_all_valid_codes(start_page,end_page):
+    '''
+    returns the codes that corresponds to the valid songs on rbt.mci.ir
+    '''
 
-    for id in range(30241,30242):
+    all_codes = []
+    for page in range(start_page,end_page):
+        print "page %d" % page
+        new_codes = get_valid_codes(page)
+        all_codes = all_codes + new_codes
+    return all_codes
 
-        print("\n%s" % id),
 
-        html_page = download_song_html(id)
-        if is_song_valid(html_page):
 
-            # get the information from mci site
-            (code,name,producer_farsi,album_farsi,category_farsi) = derive_song_information(html_page)
+def get_valid_codes(page):
+    '''
+    returns the list of valid codes defined in one page
+    '''
+    response = get_html_song_table(page)
+    soup = BeautifulSoup(response.content,'html.parser')
+    all_rows = soup.find_all('tr')
+    valid_rows = filter_rows(all_rows)
+    page_codes = []
+    for row in valid_rows:
+        code_string = row.find_all('td')[0].string.strip()
+        page_codes = page_codes + [code_string]
+    return page_codes
 
-            # check if the song already exists in the database
-            try:
-                song = Song.objects.get(activation_code=int(code))
-                # the song already exists in the database.
-                # Do nothing.
-            except Song.DoesNotExist:
-                add_song_to_db(code,name,producer_farsi,album_farsi,category_farsi)
-                print( "- inserted.")
+
+
+def filter_rows(all_rows):
+    valid_rows = []
+    for row in all_rows:
+        if row['class'] == [u'even'] or row['class']==[u'odd']:
+            valid_rows = valid_rows + [row]
+    return valid_rows
+
+
+
+def get_html_song_table(page):
+
+    url = "https://rbt.mci.ir/AJAX/latestTones.jsp?pgs=%d" % page
+    headers = { 'User-Agent' : 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:47.0) Gecko/20100101 Firefox/47.0',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8/json',
+                'Accept-Encoding':'gzip, deflate, br',
+                'Connection': 'keep-alive',
+                'Host': 'rbt.mci.ir',
+                'Referer':'https://rbt.mci.ir/userindex.jsp',
+                #'Cookie':'JSESSIONID=GfxUDmc4AT5FTcCARmB+uHDV.undefined; cookiesession1=9PKTK1LB6USNJIQ4SJU34S63LEUTMF8H; _ga=GA1.2.76051626.1468215694; _gat=1',
+                'Content-Length':'0'
+            }
+
+    response = requests.post(url,headers=headers)
+    return response
