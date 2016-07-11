@@ -22,7 +22,17 @@ def run_downloader(start_page,end_page):
     db_tones = Song.objects.values_list('activation_code',flat=True)
 
     new_tones = [ tone for tone in all_codes_int if tone not in db_tones]
-    excess_tones = [tone for tone in db_tones if tone not in all_codes_int]
+    #excess_tones = [tone for tone in db_tones if tone not in all_codes_int]
+
+    print "new tones = %d" % len(new_tones)
+    #print "excess tones = %d" % len(excess_tones)
+
+    command = input("Press 1 to continue: ")
+    if command == 1:
+        print "yeay"
+    else:
+        print "Nay"
+
 
     for id in new_tones:
 
