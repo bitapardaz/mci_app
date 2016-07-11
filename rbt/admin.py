@@ -74,7 +74,7 @@ class CategoryFeaturedAdmin(admin.ModelAdmin):
         js = ("rbt/js/filter_albums.js",)
 
 class SongAdmin(admin.ModelAdmin):
-    list_display = ('song_name', 'producer', 'album')
+    list_display = ('song_name', 'producer', 'album','activation_code')
     search_fields=['song_name', 'activation_code','producer__name']
 
 class SongInlineProducer(admin.TabularInline):
