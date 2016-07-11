@@ -1,6 +1,81 @@
 from bs4 import BeautifulSoup
-import urllib2
+import urllib2,urllib
 from models import Song, Category, Producer, Album
+import requests
+import ssl
+from functools import wraps
+
+
+def get_all_valid_codes(start_page,end_page):
+    '''
+    returns the codes that corresponds to the valid songs on rbt.mci.ir
+    '''
+
+    # on the website, the selector has the range (1,...,5700)
+    # however, the urls are sent to an index page_number-1
+    start_page = start_page - 1
+    end_page = end_page - 1
+
+    all_codes = []
+    for page in range(start_page,end_page):
+        new_codes = get_valid_codes(page)
+        all_codes = all_codes + new_codes
+    return all_codes
+
+
+
+def get_valid_codes(page):
+    '''
+    returns the list of valid codes defined in one page
+    '''
+    response = get_html_song_table(page)
+    soup = BeautifulSoup(response.content,'html.parser')
+    all_rows = soup.find_all('tr')
+    valid_rows = filter_rows(all_rows)
+    page_codes = []
+    for row in valid_rows:
+        code_string = row.find_all('td')[0].string.strip()
+        page_codes = page_codes + [code_string]
+    return page_codes
+
+
+
+def filter_rows(all_rows):
+    valid_rows = []
+    for row in all_rows:
+        if row['class'] == [u'even'] or row['class']==[u'odd']:
+            valid_rows = valid_rows + [row]
+    return valid_rows
+
+
+
+def get_html_song_table(page):
+
+    url = "https://rbt.mci.ir/AJAX/latestTones.jsp?pgs=%d" % page
+    headers = { 'User-Agent' : 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:47.0) Gecko/20100101 Firefox/47.0',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8/json',
+                'Accept-Encoding':'gzip, deflate, br',
+                'Connection': 'keep-alive',
+                'Host': 'rbt.mci.ir',
+                'Referer':'https://rbt.mci.ir/userindex.jsp',
+                #'Cookie':'JSESSIONID=GfxUDmc4AT5FTcCARmB+uHDV.undefined; cookiesession1=9PKTK1LB6USNJIQ4SJU34S63LEUTMF8H; _ga=GA1.2.76051626.1468215694; _gat=1',
+                'Content-Length':'0'
+            }
+
+    response = requests.post(url,headers=headers)
+    return response
+
+
+def check_html_class(tag):
+
+        if tag['class']!= None:
+            c = tag['class']
+            if c == [u'even']:
+                return True
+            if c == [u'odd']:
+                return True
+
+        return False
 
 
 def derive_song_information(html_page):
