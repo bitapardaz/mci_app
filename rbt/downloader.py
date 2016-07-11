@@ -30,8 +30,12 @@ def run_downloader(start_page,end_page):
     command = input("Press 1 to continue: ")
     if command == 1:
         print "yeay"
+    elif command ==2:
+        print new_tones
+        return None
     else:
         print "Nay"
+        return None
 
 
     for id in new_tones:
@@ -49,6 +53,7 @@ def run_downloader(start_page,end_page):
                 song = Song.objects.get(activation_code=int(code))
                 # the song already exists in the database.
                 # Do nothing.
+                print "- already exists"
             except Song.DoesNotExist:
                 add_song_to_db(code,name,producer_farsi,album_farsi,category_farsi)
                 print( "- inserted.")
