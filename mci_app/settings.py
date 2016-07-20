@@ -42,7 +42,8 @@ INSTALLED_APPS = (
     'userprofile',
     'website',
     'mtn_rbt',
-    'mtn_userprofile'
+    'mtn_userprofile',
+    'download_center',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -111,6 +112,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-MEDIA_ROOT = "/home/pishahang_image_storage/"
+#MEDIA_ROOT = "/home/pishahang_image_storage/"
+MEDIA_ROOT = "/home/npdroid/pishahang_image_storage/"
 #os.path.join(BASE_DIR,"media/")
 MEDIA_URL = '/media/'
