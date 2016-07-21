@@ -13,6 +13,8 @@ from django.core import serializers
 import itertools
 import urllib,urllib2
 
+from django.contrib.auth.models import User
+
 @api_view(['GET'])
 def homepage(request,format=None):
 
@@ -287,23 +289,32 @@ def register(request,format=None):
         serializer = UserProfileSerializer(data=request.data)
         if serializer.is_valid():
 
+            result = {}
+
             # extract mobile number
             mobile_number = serializer.validated_data['mobile_number']
-            obj, created = UserProfile.objects.get_or_create(mobile_number=mobile_number)
 
-            token = serializer.validated_data['token']
-            if token != "":
-                obj.token = token
-                obj.save()
+            #new version: check if any user with the phone number exists
+            try:
+                new_user = User.objects.create_user(username = mobile_number)
 
-            result = {}
-            if created:
-                result['outcome'] = "new_customer"
-                return Response(result,status=status.HTTP_201_CREATED)
-
+            except IntegrityError:
+                return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+                
             else:
-                result['outcome'] = "returning_customer"
-                return Response(result, status=status.HTTP_200_OK)
+
+                obj, created = UserProfile.objects.get_or_create(mobile_number=mobile_number)
+                token = serializer.validated_data['token']
+
+                if token != "":
+                    obj.token = token
+                    obj.save()
+                    result['outcome'] = "new_customer"
+                    return Response(result,status=status.HTTP_201_CREATED)
+
+                else:
+                    result['outcome'] = "returning_customer"
+                    return Response(result, status=status.HTTP_200_OK)
 
         else:
             return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
