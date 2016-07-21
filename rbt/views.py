@@ -14,6 +14,7 @@ import itertools
 import urllib,urllib2
 
 from django.contrib.auth.models import User
+from general_user_profile.models import GeneralProfile
 
 @api_view(['GET'])
 def homepage(request,format=None):
@@ -297,14 +298,21 @@ def register(request,format=None):
             #new version: check if any user with the phone number exists
             try:
                 new_user = User.objects.create_user(username = mobile_number)
+            except Exception:
+                result['outcome'] = "returning_customer"
+                return Response(result, status=status.HTTP_200_OK)
 
-            except IntegrityError:
-                return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-                
             else:
 
-                obj, created = UserProfile.objects.get_or_create(mobile_number=mobile_number)
+                print "creating general profile"
+                new_general_profile = GeneralProfile.objects.get_or_create(user=new_user,operator="MCI")
+                print "general profile object created"
+                print new_general_profile.operator
+
+                obj, created = UserProfile.objects.get_or_create(general_profile=new_general_profile,mobile_number=mobile_number)
+                print "mci profile object created"
                 token = serializer.validated_data['token']
+
 
                 if token != "":
                     obj.token = token
@@ -313,6 +321,7 @@ def register(request,format=None):
                     return Response(result,status=status.HTTP_201_CREATED)
 
                 else:
+                    obj.save()
                     result['outcome'] = "returning_customer"
                     return Response(result, status=status.HTTP_200_OK)
 

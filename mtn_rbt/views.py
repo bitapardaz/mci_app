@@ -13,6 +13,7 @@ from mtn_userprofile.models import MTN_UserProfile, MTN_ActivationRequest
 #from forms import AlbumSelectForm
 from django.core import serializers
 import itertools
+from django.contrib.auth.models import User
 
 
 # Create your views here.
@@ -26,23 +27,41 @@ def register(request,format=None):
         serializer = MTN_UserProfileSerializer(data=request.data)
         if serializer.is_valid():
 
+            result = {}
+
             # extract mobile number
             mobile_number = serializer.validated_data['mobile_number']
-            obj, created = MTN_UserProfile.objects.get_or_create(mobile_number=mobile_number)
 
-            token = serializer.validated_data['token']
-            if token != "":
-                obj.token = token
-                obj.save()
+            #
+            try:
+                print "creating new user"
+                new_user = User.objects.create_user(username = mobile_number)
 
-            result = {}
-            if created:
-                result['outcome'] = "new_customer"
-                return Response(result,status=status.HTTP_201_CREATED)
+            except Exception:
+
+                result['outcome'] = "returning_customer"
+                print "There is an error"
+                return Response(result, status=status.HTTP_200_OK)
 
             else:
-                result['outcome'] = "returning_customer"
-                return Response(result, status=status.HTTP_200_OK)
+                print "There is an error"
+
+
+                obj, created = MTN_UserProfile.objects.get_or_create(mobile_number=mobile_number)
+                token = serializer.validated_data['token']
+
+                if token != "":
+                    obj.token = token
+                    obj.user = new_user
+                    obj.save()
+                    result['outcome'] = "new_customer"
+                    return Response(result,status=status.HTTP_201_CREATED)
+
+                else:
+                    obj.user = new_user
+                    obj.save()
+                    result['outcome'] = "returning_customer"
+                    return Response(result, status=status.HTTP_200_OK)
 
         else:
             return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)

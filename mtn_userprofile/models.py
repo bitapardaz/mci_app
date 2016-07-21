@@ -1,10 +1,13 @@
 from django.db import models
 from mtn_rbt.models import MTN_Song
+from django.contrib.auth.models import User
+
 
 # Create your models here.
 class MTN_UserProfile(models.Model):
     mobile_number = models.CharField(max_length=20)
     token = models.CharField(max_length=160, null=True,blank=True)
+
 
     def __unicode__(self):
         return str(self.mobile_number)
