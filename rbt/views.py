@@ -305,7 +305,8 @@ def register(request,format=None):
             else:
 
                 print "creating general profile"
-                new_general_profile = GeneralProfile.objects.get_or_create(user=new_user,operator="MCI")
+                new_general_profile = GeneralProfile(user=new_user,operator="MCI")
+                new_general_profile.save()
                 print "general profile object created"
                 print new_general_profile.operator
 

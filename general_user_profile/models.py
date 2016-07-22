@@ -16,3 +16,6 @@ class GeneralProfile(models.Model):
     )
 
     operator = models.CharField(max_length=10,choices=operators,default=MCI)
+
+    def __unicode__(self):
+        return self.user.username
