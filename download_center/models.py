@@ -1,5 +1,7 @@
 from django.db import models
 
+
+
 class MusicStudio(models.Model):
     name = models.CharField(max_length=200,default="name")
 
@@ -53,7 +55,14 @@ class Track(models.Model):
         return self.title
 
 
-class MainAdvert(models.Model):
+class TopAdvert(models.Model):
+    album = models.ForeignKey(Album,null=True,blank=True)
+    miscellaneous = models.ImageField(upload_to='',null=True,blank=True)
+    url = models.URLField(null=True,blank=True)
+    ranking = models.IntegerField(default=0)
+
+
+class MiddleAdvert(models.Model):
     album = models.ForeignKey(Album,null=True,blank=True)
     miscellaneous = models.ImageField(upload_to='',null=True,blank=True)
     url = models.URLField(null=True,blank=True)

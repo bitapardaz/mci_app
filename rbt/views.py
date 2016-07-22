@@ -1,4 +1,3 @@
-from rest_framework import status
 from django.shortcuts import render
 from django.http import HttpResponse
 from models import Song,Category,Album,CatAdvert,MainAdvert,MainPageFeatured, Category_Featured, Search_Activity

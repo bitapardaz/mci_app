@@ -25,6 +25,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^mcirbt/',include('rbt.urls')),
     url(r'^mtnrbt/',include('mtn_rbt.urls')),
+    url(r'^download_center/',include('download_center.urls')),
     url(r'^google450805d50c86330d.html$', website_views.google_index ),
     url(r'^$',website_views.homepage),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

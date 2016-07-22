@@ -1,5 +1,5 @@
 from django.contrib import admin
-from models import Album, MusicStudio,Singer,Track,MainAdvert,TopChart
+from models import Album, MusicStudio,Singer,Track,TopChart,MiddleAdvert,TopAdvert
 
 
 class SingerAdmin(admin.ModelAdmin):
@@ -12,9 +12,15 @@ class TrackAlbumInline(admin.TabularInline):
     extra = 0
 
 
-class MainAdvertAdmin(admin.ModelAdmin):
+class MiddleAdvertAdmin(admin.ModelAdmin):
 
     list_display = ('album','ranking','miscellaneous','url')
+
+
+class TopAdvertAdmin(admin.ModelAdmin):
+
+    list_display = ('album','ranking','miscellaneous','url')
+
 
 
 class AlbumAdmin(admin.ModelAdmin):
@@ -44,4 +50,5 @@ admin.site.register(MusicStudio)
 admin.site.register(Album,AlbumAdmin)
 admin.site.register(Singer,SingerAdmin)
 admin.site.register(Track,TrackAdmin)
-admin.site.register(MainAdvert,MainAdvertAdmin)
+admin.site.register(MiddleAdvert,MiddleAdvertAdmin)
+admin.site.register(TopAdvert,TopAdvertAdmin)
