@@ -24,9 +24,15 @@ def create_bulk_user_from_user_profiles():
 
         username = profile.mobile_number
 
-        new_user = User.objects.create_user(username)
-        new_general_profile = GeneralProfile.objects.create(user=new_user,operator='MCI')
+        try:
 
+            user = User.objects.get(username=username)
 
-        profile.general_profile = new_general_profile
-        profile.save()
+        except User.DoesNotExist:
+            #the user does not exist. we should add it
+            
+            new_user = User.objects.create_user(username)
+            new_general_profile = GeneralProfile.objects.create(user=new_user,operator='MCI')
+
+            profile.general_profile = new_general_profile
+            profile.save()
