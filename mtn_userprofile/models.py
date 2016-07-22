@@ -8,7 +8,6 @@ from general_user_profile.models import GeneralProfile
 class MTN_UserProfile(models.Model):
     mobile_number = models.CharField(max_length=20)
     token = models.CharField(max_length=160, null=True,blank=True)
-
     general_profile = models.ForeignKey(GeneralProfile,null=True,blank=True)
 
 

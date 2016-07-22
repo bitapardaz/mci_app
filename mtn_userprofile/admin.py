@@ -13,6 +13,7 @@ class MTN_UserProfileAdmin(admin.ModelAdmin):
 
     list_display = ('mobile_number',)
     search_fields = ['mobile_number']
+    
 
 
 class MTN_ActivationRequestAdmin(admin.ModelAdmin):

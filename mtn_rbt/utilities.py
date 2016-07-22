@@ -43,6 +43,6 @@ def create_bulk_user_from_user_profiles():
 
             new_user = User.objects.create_user(username)
             new_general_profile = GeneralProfile.objects.create(user=new_user,operator='MTN')
-
             profile.general_profile = new_general_profile
+
             profile.save()

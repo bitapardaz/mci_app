@@ -10,7 +10,8 @@ class UserProfileAdmin(admin.ModelAdmin):
 
     list_display = ('mobile_number',)
     search_fields = ['mobile_number']
-
+    fields = ('mobile_number','token')
+    exclude = ('general_profile',)
 
 
 class ActivationRequestAdmin(admin.ModelAdmin):
@@ -23,5 +24,5 @@ class ActivationRequestAdmin(admin.ModelAdmin):
 
 
 
-admin.site.register(UserProfile)
+admin.site.register(UserProfile,UserProfileAdmin)
 admin.site.register(ActivationRequest,ActivationRequestAdmin)
