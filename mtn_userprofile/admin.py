@@ -13,7 +13,8 @@ class MTN_UserProfileAdmin(admin.ModelAdmin):
 
     list_display = ('mobile_number',)
     search_fields = ['mobile_number']
-    
+    fields = ('mobile_number','token')
+    exclude = ('general_profile',)
 
 
 class MTN_ActivationRequestAdmin(admin.ModelAdmin):
