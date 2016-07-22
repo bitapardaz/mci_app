@@ -298,22 +298,19 @@ def register(request,format=None):
             #new version: check if any user with the phone number exists
             try:
                 new_user = User.objects.create_user(username = mobile_number)
+
             except Exception:
                 result['outcome'] = "returning_customer"
+                #check if the customer has sent a new token?
                 return Response(result, status=status.HTTP_200_OK)
 
             else:
 
-                print "creating general profile"
                 new_general_profile = GeneralProfile(user=new_user,operator="MCI")
                 new_general_profile.save()
-                print "general profile object created"
-                print new_general_profile.operator
 
                 obj, created = UserProfile.objects.get_or_create(general_profile=new_general_profile,mobile_number=mobile_number)
-                print "mci profile object created"
                 token = serializer.validated_data['token']
-
 
                 if token != "":
                     obj.token = token
@@ -323,7 +320,7 @@ def register(request,format=None):
 
                 else:
                     obj.save()
-                    result['outcome'] = "returning_customer"
+                    result['outcome'] = "new_customer_empty_token"
                     return Response(result, status=status.HTTP_200_OK)
 
         else:

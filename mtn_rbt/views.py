@@ -14,6 +14,7 @@ from mtn_userprofile.models import MTN_UserProfile, MTN_ActivationRequest
 from django.core import serializers
 import itertools
 from django.contrib.auth.models import User
+from general_user_profile.models import GeneralProfile
 
 
 # Create your views here.
@@ -40,27 +41,26 @@ def register(request,format=None):
             except Exception:
 
                 result['outcome'] = "returning_customer"
-                print "There is an error"
+                #check if the customer has sent a new token?
                 return Response(result, status=status.HTTP_200_OK)
 
             else:
-                print "There is an error"
 
+                new_general_profile = GeneralProfile(user=new_user,operator="MTN")
+                new_general_profile.save()
 
-                obj, created = MTN_UserProfile.objects.get_or_create(mobile_number=mobile_number)
+                obj, created = MTN_UserProfile.objects.get_or_create(general_profile=new_general_profile,mobile_number=mobile_number)
                 token = serializer.validated_data['token']
 
                 if token != "":
                     obj.token = token
-                    obj.user = new_user
                     obj.save()
                     result['outcome'] = "new_customer"
                     return Response(result,status=status.HTTP_201_CREATED)
 
                 else:
-                    obj.user = new_user
                     obj.save()
-                    result['outcome'] = "returning_customer"
+                    result['outcome'] = "returning_customer_empty_token"
                     return Response(result, status=status.HTTP_200_OK)
 
         else:
