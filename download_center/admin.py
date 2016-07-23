@@ -24,13 +24,13 @@ class TopAdvertAdmin(admin.ModelAdmin):
 
 
 class AlbumAdmin(admin.ModelAdmin):
-    list_display = ('title','download_link','dj_image','banner_image','thumbnail','date_published','singer')
+    list_display = ('title','dj_image','banner_image','thumbnail','date_published','singer')
     search_fields=['title',]
     inlines = (TrackAlbumInline,)
 
 
 class TrackAdmin(admin.ModelAdmin):
-    list_display = ('title','date_published','music_studio','played','downloaded','liked')
+    list_display = ('title','download_link','date_published','music_studio','played','downloaded','liked')
     search_fields=['title',]
     inlines = (TrackAlbumInline,)
     exclude=('album',)
