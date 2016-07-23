@@ -42,6 +42,8 @@ class Track(models.Model):
     date_published = models.DateTimeField(auto_now=True, editable=True,null=True)
     album = models.ManyToManyField(Album)
     music_studio = models.ForeignKey(MusicStudio,null=True)
+    download_link = models.URLField(max_length=500,null=True,blank=True)
+
 
     photo = models.ImageField(upload_to='',null=True, blank=True)
     wide_photo = models.ImageField(upload_to='',null=True, blank=True)
