@@ -23,6 +23,7 @@ class Album(models.Model):
     title = models.CharField(max_length=100,default="title")
     banner_image = models.ImageField(upload_to='',null=True, blank=True)
     dj_image = models.ImageField(upload_to='',null=True, blank=True)
+
     thumbnail = models.ImageField(upload_to='',null=True, blank=True)
     date_published = models.DateTimeField(auto_now=True, editable=True,null=True)
     singer = models.OneToOneField(Singer,null=True,blank=True)
@@ -31,6 +32,7 @@ class Album(models.Model):
     # fields required for deriving the top charts
     view = models.IntegerField(default = 0)
     expert_opinion = models.IntegerField(default=0)
+    total_download = models.IntegerField(default=0)
 
     def __unicode__(self):
         return self.title
