@@ -45,6 +45,7 @@ INSTALLED_APPS = (
     'mtn_userprofile',
     'download_center',
     'general_user_profile',
+    'tci',
 )
 
 MIDDLEWARE_CLASSES = (
