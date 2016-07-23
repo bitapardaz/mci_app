@@ -24,7 +24,7 @@ class TopAdvertAdmin(admin.ModelAdmin):
 
 
 class AlbumAdmin(admin.ModelAdmin):
-    list_display = ('title','dj_image','banner_image','thumbnail','date_published','singer')
+    list_display = ('title','download_link','dj_image','banner_image','thumbnail','date_published','singer')
     search_fields=['title',]
     inlines = (TrackAlbumInline,)
 
