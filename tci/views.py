@@ -8,12 +8,16 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.core import serializers
 
+import Crypto
+from Crypto.PublicKey import RSA
 
 
 @api_view(['POST'])
 def pay_one_bill(request):
 
     if request.method == "POST":
+
+        return Response("Thanks for sending your data")
 
         mobile_no = request.data.get('mobile_no')
         print "mobile_no:%s" % mobile_no
@@ -33,10 +37,13 @@ def pay_one_bill(request):
         pec_request = {}
         pec_request['MobileNo'] = mobile_no
         pec_request['PayInfo'] = generate_pay_info(pan,pin2)
-        pec_request['Token'] = ' '
+        pec_request['Token'] = ''
         pec_request['BillId'] = bill_id
         pec_request['PayId'] = pay_id
-        pec_request['TerminalPin'] = ' Get from mr Mohammadi'
+        pec_request['TerminalPin'] = "84y80M17HW810Y2j0434"
+
+        url = "https://app.pec.ir/api/Payment/BillPaymentGeneral"
+
 
         # processing payment using pec_request
         print "-------------------------------------"
@@ -75,7 +82,7 @@ def get_bill_info_single_number(request):
 
         bill_info = get_bill_info_internal_query(tel_no)
         print bill_info
-        
+
         output['bill_info'] = bill_info
         response =  Response(output)
         return response
@@ -112,3 +119,28 @@ def get_bill_info_internal_query(number):
     output['message'] = j_response['Message']
 
     return output
+
+
+def generate_rsa_representation():
+    key_string = "sDUFxOscSdkJmarPjvsQRe9mNuEVR2Y4rz7YAlHFFypCcjYPrlu27kIxh2i3HVihR+O+Qi68nwFPVcgOTFUL5A6MEW2kjMl9YnKHZCxXHyEoPrC2cFN61+yQ317hzGcUFPmYu1u85gNDOYtdXDI/tyl6zWZhhTzEIqhBo1O74qc="
+    key = RSA.importKey(key_string,passphrase=None)
+    #Encrypt something with public key and print to console
+    encrypted = pub_key.encrypt('hello world', None) # the second param None here is useless
+    print(encrypted)
+
+def test_RAS(text):
+
+    #private_key = RSA.generate(1024)
+    #print(private_key.exportKey())
+
+    private_key_string = 'sDUFxOscSdkJmarPjvsQRe9mNuEVR2Y4rz7YAlHFFypCcjYPrlu27kIxh2i3HVihR+O+Qi68nwFPVcgOTFUL5A6MEW2kjMl9YnKHZCxXHyEoPrC2cFN61+yQ317hzGcUFPmYu1u85gNDOYtdXDI/tyl6zWZhhTzEIqhBo1O74qc='
+    private_key = RSA.importKey(private_key_string,passphrase=None)
+
+    public_key = private_key.publickey()
+    print(public_key.exportKey())
+
+    encrypted = public_key.encrypt('hello world', None)
+    print("Encrypted Text is: %s" % encrypted)
+
+    text2 = private_key.decrypt(encrypted)
+    print("original decrypted file was: %s" % text)
