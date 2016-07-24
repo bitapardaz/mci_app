@@ -70,13 +70,12 @@ def get_bill_info_single_number(request):
     if request.method=="POST":
 
         output = {}
+        tel_no_string = request.data.get('tel_no')
+        tel_no = long(tel_no_string)
 
-        tel_no = request.data.get('tel_no')
+        return Response(tel_no)
         bill_info = get_bill_info_internal_query(tel_no)
-
         output['bill_info'] = bill_info
-
-        # turn bill_info into json and return
         response =  Response(output)
         return response
 
