@@ -8,26 +8,6 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.core import serializers
 
-@api_view(['POST'])
-def get_bill_info_single_number(request):
-
-    if request.method=="POST":
-
-        output = {}
-
-        tel_no = request.data.get('tel_no')
-        bill_info = get_bill_info_internal_query(tel_no)
-
-        output['bill_info'] = bill_info
-
-        # turn bill_info into json and return
-        response =  Response(output)
-        return response
-
-
-    else:
-        return Response("POST REQUESTS ONLY",status=status.HTTP_400_BAD_REQUEST)
-
 
 
 @api_view(['POST'])
@@ -84,6 +64,28 @@ def generate_pay_info():
     return "pay_info_content"
 
 
+@api_view(['POST'])
+def get_bill_info_single_number(request):
+
+    if request.method=="POST":
+
+        output = {}
+
+        tel_no = request.data.get('tel_no')
+        bill_info = get_bill_info_internal_query(tel_no)
+
+        output['bill_info'] = bill_info
+
+        # turn bill_info into json and return
+        response =  Response(output)
+        return response
+
+
+    else:
+        return Response("POST REQUESTS ONLY",status=status.HTTP_400_BAD_REQUEST)
+
+
+
 def get_bill_info_internal_query(number):
 
     url = 'https://Services.pec.ir/api/Telecom/Bill/GetBillInfo'
@@ -96,21 +98,17 @@ def get_bill_info_internal_query(number):
     request.add_header("Authorization", "Basic %s" % base64string)
     request.add_header("Content-Type","application/json")
 
-    print '------ request object --------------------'
-    print request
-    print '--------------------------'
-
     data = json.dumps({'TelNo':number})
-    print '------ data object --------------------'
-    print data
-    print '--------------------------'
-
     result = urllib2.urlopen(request,data)
 
     j_response = json.loads(result.read().strip())
-    amount = j_response['Amount']
 
+    output = {}
+    output['telNo'] = j_response['TelNo']
+    output['billId'] = j_response['BillId']
+    output['payId'] = j_response['PayId']
+    output['amount'] = j_response['Amount']
+    output['status'] = j_response['Status']
+    output['message'] = j_response['Message']
 
-    return amount
-
-    #return JSON
+    return output
