@@ -2,7 +2,7 @@ from django.conf.urls import url
 from download_center import views
 from rest_framework.urlpatterns import format_suffix_patterns
 
-import views
+from tci import views
 
 urlpatterns = [
     # URLs related to homepage

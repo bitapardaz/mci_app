@@ -16,32 +16,34 @@ from Crypto.PublicKey import RSA
 def pay_one_bill(request):
 
     if request.method == "POST":
-        print "you are here"
-
-        return Response("Thanks for sending your data")
 
         mobile_no = request.data.get('mobile_no')
-        print "mobile_no:%s" % mobile_no
+        #print "mobile_no:%s" % mobile_no
 
         bill_id = request.data.get('bill_id')
-        print "bill_id:%s" % bill_id
+        #print "bill_id:%s" % bill_id
 
         pay_id = request.data.get('pay_id')
-        print "pay_id:%s" % pay_id
+        #print "pay_id:%s" % pay_id
 
-        pan = request.data.get('card_number')
-        print "pan:%s" % pan
+        pan = request.data.get('pan')
+        #print "pan:%s" % pan
 
         pin2 = request.data.get('pin2')
-        print "pin2:%s" % pin2
+        #print "pin2:%s" % pin2
 
         pec_request = {}
         pec_request['MobileNo'] = mobile_no
         pec_request['PayInfo'] = generate_pay_info(pan,pin2)
-        pec_request['Token'] = ''
+        pec_request['Token'] = ' '
         pec_request['BillId'] = bill_id
         pec_request['PayId'] = pay_id
         pec_request['TerminalPin'] = "84y80M17HW810Y2j0434"
+
+        print "-------------------"
+        print "pec request"
+        print pec_request
+        print "-------------------"
 
         url = "https://app.pec.ir/api/Payment/BillPaymentGeneral"
 
@@ -53,11 +55,11 @@ def pay_one_bill(request):
 
         # based on the response from pec, send these
         client_response  = {}
-        client_response['Status'] = ' '
-        client_response['Message'] = ' '
+        client_response['Status'] = 0
+        client_response['Message'] = 'Successful Payment'
         client_response['Score'] = ' '
-        client_response['TraceNo'] = ' '
-        client_response['InvoiceNumber'] = ' '
+        client_response['TraceNo'] = '12312432432'
+        client_response['InvoiceNumber'] = '0982093842'
 
         # turn bill_info into json and return
         response =  Response(client_response)
@@ -68,7 +70,7 @@ def pay_one_bill(request):
         return Response("POST REQUESTS ONLY",status=status.HTTP_400_BAD_REQUEST)
 
 
-def generate_pay_info():
+def generate_pay_info(pan,pin2):
     return "pay_info_content"
 
 
