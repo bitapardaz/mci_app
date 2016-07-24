@@ -44,7 +44,7 @@ def get_bill_info_internal_query(number):
     output['Message'] = "Hello TCI"
     return output
 
-    url = 'https://Services.pec.ir/api/Telecom/BillGetBillInfo'
+    url = 'https://Services.pec.ir/api/Telecom/Bill/GetBillInfo'
 
     username = 'aryan'
     password = '123123@'
@@ -53,7 +53,7 @@ def get_bill_info_internal_query(number):
     base64string = base64.encodestring('%s:%s' % (username, password)).replace('\n', '')
     request.add_header("Authorization", "Basic %s" % base64string)
 
-    data = json.dumps({'number':number})
+    data = json.dumps({'TelNo':number})
     print data
 
     result = urllib2.urlopen(request,data,{'Content-Type': 'application/json'})
