@@ -30,19 +30,61 @@ def get_bill_info_single_number(request):
 
 
 
-    return Response("here you are ")
+@api_view(['POST'])
+def pay_one_bill(request):
+
+    if request.method == "POST":
+
+        mobile_no = request.data.get('mobile_no')
+        print "mobile_no:%s" % mobile_no
+
+        bill_id = request.data.get('bill_id')
+        print "bill_id:%s" % bill_id
+
+        pay_id = request.data.get('pay_id')
+        print "pay_id:%s" % pay_id
+
+        pan = request.data.get('card_number')
+        print "pan:%s" % pan
+
+        pin2 = request.data.get('pin2')
+        print "pin2:%s" % pin2
+
+        pec_request = {}
+        pec_request['MobileNo'] = mobile_no
+        pec_request['PayInfo'] = generate_pay_info(pan,pin2)
+        pec_request['Token'] = ' '
+        pec_request['BillId'] = bill_id
+        pec_request['PayId'] = pay_id
+        pec_request['TerminalPin'] = ' Get from mr Mohammadi'
+
+        # processing payment using pec_request
+        print "-------------------------------------"
+        print "Processing Payment Step"
+        print "-------------------------------------"
+
+        # based on the response from pec, send these
+        client_response  = {}
+        client_response['Status'] = ' '
+        client_response['Message'] = ' '
+        client_response['Score'] = ' '
+        client_response['TraceNo'] = ' '
+        client_response['InvoiceNumber'] = ' '
+
+        # turn bill_info into json and return
+        response =  Response(client_response)
+        return response
+
+
+    else:
+        return Response("POST REQUESTS ONLY",status=status.HTTP_400_BAD_REQUEST)
+
+
+def generate_pay_info():
+    return "pay_info_content"
 
 
 def get_bill_info_internal_query(number):
-
-    output = {}
-    output['TelNo'] = number
-    output['BillID'] = '2222222'
-    output['PayID'] = '333333'
-    output['Amount'] = '444444'
-    output['Status'] = '1'
-    output['Message'] = "Hello TCI"
-    return output
 
     url = 'https://Services.pec.ir/api/Telecom/Bill/GetBillInfo'
 
@@ -57,6 +99,6 @@ def get_bill_info_internal_query(number):
     print data
 
     result = urllib2.urlopen(request,data,{'Content-Type': 'application/json'})
-    print result
+    return result
 
     #return JSON
