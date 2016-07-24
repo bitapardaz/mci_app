@@ -106,6 +106,11 @@ def get_bill_info_internal_query(number):
     print '--------------------------'
 
     result = urllib2.urlopen(request,data)
-    return result
+
+    j_response = json.loads(result.read().strip())
+    amount = j_response['Amount']
+
+
+    return amount
 
     #return JSON
