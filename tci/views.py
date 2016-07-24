@@ -105,8 +105,8 @@ def get_bill_info_internal_query(number):
 
     output = {}
     output['telNo'] = j_response['TelNo']
-    output['billId'] = j_response['BillId']
-    output['payId'] = j_response['PayId']
+    output['billId'] = j_response['BillID']
+    output['payId'] = j_response['PayID']
     output['amount'] = j_response['Amount']
     output['status'] = j_response['Status']
     output['message'] = j_response['Message']
