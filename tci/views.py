@@ -95,8 +95,14 @@ def get_bill_info_internal_query(number):
     base64string = base64.encodestring('%s:%s' % (username, password)).replace('\n', '')
     request.add_header("Authorization", "Basic %s" % base64string)
 
+    print '------ request object --------------------'
+    print request
+    print '--------------------------'
+
     data = json.dumps({'TelNo':number})
+    print '------ data object --------------------'
     print data
+    print '--------------------------'
 
     result = urllib2.urlopen(request,data,{'Content-Type': 'application/json'})
     return result
