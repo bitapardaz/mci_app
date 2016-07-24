@@ -73,8 +73,9 @@ def get_bill_info_single_number(request):
         tel_no_string = request.data.get('tel_no')
         tel_no = long(tel_no_string)
 
-        return Response(tel_no)
         bill_info = get_bill_info_internal_query(tel_no)
+        print bill_info
+        
         output['bill_info'] = bill_info
         response =  Response(output)
         return response
