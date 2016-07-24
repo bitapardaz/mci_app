@@ -16,6 +16,7 @@ from Crypto.PublicKey import RSA
 def pay_one_bill(request):
 
     if request.method == "POST":
+        print "you are here"
 
         return Response("Thanks for sending your data")
 
