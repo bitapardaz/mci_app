@@ -40,10 +40,6 @@ def pay_one_bill(request):
         pin2 = request.data.get('pin2')
         print "pin2:%s" % pin2
 
-        print "___________"
-        print "you are here"
-        print "-----------"
-        return Request("you are here")
 
 
         print "-------------------------------------"
@@ -58,6 +54,12 @@ def pay_one_bill(request):
         pec_request['BillId'] = bill_id
         pec_request['PayId'] = pay_id
         pec_request['TerminalPin'] = "84y80M17HW810Y2j0434"
+
+        print "___________"
+        print "you are here"
+        print "-----------"
+        return Request("you are here")
+
 
         url = "https://app.pec.ir/api/Payment/BillPaymentGeneral"
         username = 'Pishahang'
