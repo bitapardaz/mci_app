@@ -2,7 +2,6 @@ from django.shortcuts import render
 import urllib2
 import base64
 import json
-from django.shortcuts import render
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -13,8 +12,6 @@ from cryptography.hazmat.primitives.serialization import load_pem_public_key
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives import hashes
-import base64
-import json
 
 from django.conf import settings
 
@@ -55,7 +52,6 @@ def pay_one_bill(request):
         pec_request['BillId'] = bill_id
         pec_request['PayId'] = pay_id
         pec_request['TerminalPin'] = "84y80M17HW810Y2j0434"
-
 
         url = "https://app.pec.ir/api/Payment/BillPaymentGeneral"
         username = 'Pishahang'
@@ -125,6 +121,7 @@ def generate_pay_info(pan,pin2):
 
     public_key_content = public_key_file.read()
     print "generate_pay_info- public key content: %s " % public_key_content
+    public_key_file.close()
 
     public_key = serialization.load_pem_public_key(public_key_content,default_backend())
     print "generate_pay_info- public key : %s " % public_key
