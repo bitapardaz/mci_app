@@ -25,6 +25,8 @@ def pay_one_bill(request):
 
     if request.method == "POST":
 
+        return "you are here"
+        
         mobile_no = request.data.get('mobile_no')
         print "mobile_no:%s" % mobile_no
 
