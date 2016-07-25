@@ -72,19 +72,26 @@ def pay_one_bill(request):
         print data
         print "----------------------------------"
 
-        #result = urllib2.urlopen(request,data)
+        result = urllib2.urlopen(request,data)
+        print "---------------------"
+        print "result received from the server:"
+        print result
+        print "---------------------"
 
+        j_result = json.loads(result.read().strip())
+        status = j_response["Status"]
+        message = j_response["Message"]
+        Data = j_response["Data"]
 
+        print "--------------------"
+        print "Result turned into the format"
+        print j_result
+        print "--------------------"
 
-
-        #parse the result and get the components out.
         # Client Response
         client_response  = {}
-        client_response['Status'] = 0
-        client_response['Message'] = 'Successful Payment'
-        client_response['Score'] = ' '
-        client_response['TraceNo'] = '12312432432'
-        client_response['InvoiceNumber'] = '0982093842'
+        client_response['Status'] = status
+        client_response['Message'] = message
 
         # turn bill_info into json and return
         response =  Response(client_response)
