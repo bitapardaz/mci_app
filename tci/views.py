@@ -8,8 +8,16 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.core import serializers
 
-import Crypto
-from Crypto.PublicKey import RSA
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives.serialization import load_pem_public_key
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.asymmetric import padding
+from cryptography.hazmat.primitives import hashes
+import base64
+import json
+
+from cryptography.hazmat.primitives.asymmetric.padding import PKCS1v15
+
 
 
 @api_view(['POST'])
@@ -18,42 +26,55 @@ def pay_one_bill(request):
     if request.method == "POST":
 
         mobile_no = request.data.get('mobile_no')
-        #print "mobile_no:%s" % mobile_no
+        print "mobile_no:%s" % mobile_no
 
         bill_id = request.data.get('bill_id')
-        #print "bill_id:%s" % bill_id
+        print "bill_id:%s" % bill_id
 
         pay_id = request.data.get('pay_id')
-        #print "pay_id:%s" % pay_id
+        print "pay_id:%s" % pay_id
 
         pan = request.data.get('pan')
-        #print "pan:%s" % pan
+        print "pan:%s" % pan
 
         pin2 = request.data.get('pin2')
-        #print "pin2:%s" % pin2
+        print "pin2:%s" % pin2
 
-        pec_request = {}
-        pec_request['MobileNo'] = mobile_no
-        pec_request['PayInfo'] = generate_pay_info(pan,pin2)
-        pec_request['Token'] = ' '
-        pec_request['BillId'] = bill_id
-        pec_request['PayId'] = pay_id
-        pec_request['TerminalPin'] = "84y80M17HW810Y2j0434"
-
-        print "-------------------"
-        print "pec request"
-        print pec_request
-        print "-------------------"
-
-        url = "https://app.pec.ir/api/Payment/BillPaymentGeneral"
-
-
-        # processing payment using pec_request
+        # Processing payment using pec_request
         print "-------------------------------------"
         print "Processing Payment Step"
         print "-------------------------------------"
 
-        # based on the response from pec, send these
+        pec_request = {}
+        pec_request['MobileNo'] = mobile_no
+        pec_request['PayInfo'] = generate_pay_info(pan,pin2)
+        pec_request['Token'] = '0'
+        pec_request['BillId'] = bill_id
+        pec_request['PayId'] = pay_id
+        pec_request['TerminalPin'] = "84y80M17HW810Y2j0434"
+
+        url = "https://app.pec.ir/api/Payment/BillPaymentGeneral"
+        username = 'Pishahang'
+        password = 'P!$h@h@ng0502'
+        request = urllib2.Request(url)
+        base64string = base64.encodestring('%s:%s' % (username, password)).replace('\n', '')
+        request.add_header("Authorization", "Basic %s" % base64string)
+        request.add_header("Content-Type","application/json")
+
+        data = json.dumps(pec_request)
+        print "-------------------"
+        print "json data sent to pec:"
+        print "-------------------"
+        print data
+        print "----------------------------------"
+
+        #result = urllib2.urlopen(request,data)
+
+
+
+
+        #parse the result and get the components out.
+        # Client Response
         client_response  = {}
         client_response['Status'] = 0
         client_response['Message'] = 'Successful Payment'
@@ -70,8 +91,29 @@ def pay_one_bill(request):
         return Response("POST REQUESTS ONLY",status=status.HTTP_400_BAD_REQUEST)
 
 
+
 def generate_pay_info(pan,pin2):
-    return "pay_info_content"
+
+    message = {}
+    message['PAN'] = pan
+    message['Pin2'] = pin2
+    message['ExpY'] = "0000"
+    message['ExpM'] = "0000"
+    message['CV'] = "0000"
+
+    print "Generating encrypted pay info"
+
+    j_message = json.dumps(message)
+
+    public_key_file = open("key.pem","rb")
+    public_key = serialization.load_pem_public_key(public_key_file.read(),default_backend())
+
+    ciphertext = public_key.encrypt(j_message,PKCS1v15())
+    ciphertext_base_64 = base64.encodestring(ciphertext)
+
+    print "Ciphertext in base 64 \n%s" % ciphertext_base_64
+    return ciphertext_base_64
+
 
 
 @api_view(['POST'])
