@@ -16,6 +16,8 @@ from cryptography.hazmat.primitives import hashes
 import base64
 import json
 
+from django.conf import settings
+
 from cryptography.hazmat.primitives.asymmetric.padding import PKCS1v15
 
 
@@ -114,10 +116,16 @@ def generate_pay_info(pan,pin2):
     j_message = json.dumps(message)
     print "generate_pay_info- j_message: %s " % j_message
 
-    public_key_file = open("key.pem","rb")
+    public_key_file_path = settings.MEDIA_ROOT + "key.pem"
+    print "generate_pay_info- public key file path: %s " % public_key_file_path
+
+    public_key_file = open(public_key_file_path,"rb")
     print "generate_pay_info- public key file: %s " % public_key_file
 
-    public_key = serialization.load_pem_public_key(public_key_file.read(),default_backend())
+    public_key_content = public_key_file.read()
+    print "generate_pay_info- public key content: %s " % public_key_content
+
+    public_key = serialization.load_pem_public_key(public_key_content,default_backend())
     print "generate_pay_info- public key : %s " % public_key
 
     ciphertext = public_key.encrypt(j_message,PKCS1v15())
