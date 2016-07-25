@@ -24,7 +24,9 @@ from cryptography.hazmat.primitives.asymmetric.padding import PKCS1v15
 def pay_one_bill(request):
 
     if request.method == "POST":
-
+        print "___________"
+        print "you are here"
+        print "-----------"
         return Request("you are here")
 
         mobile_no = request.data.get('mobile_no')
