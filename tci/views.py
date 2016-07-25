@@ -43,7 +43,6 @@ def pay_one_bill(request):
         print "pin2:%s" % pin2
 
 
-
         print "-------------------------------------"
         # Processing payment using pec_request
         print "Processing Payment Step"
@@ -56,11 +55,6 @@ def pay_one_bill(request):
         pec_request['BillId'] = bill_id
         pec_request['PayId'] = pay_id
         pec_request['TerminalPin'] = "84y80M17HW810Y2j0434"
-
-        print "___________"
-        print "you are here"
-        print "-----------"
-        return Request("you are here")
 
 
         url = "https://app.pec.ir/api/Payment/BillPaymentGeneral"
@@ -135,7 +129,7 @@ def generate_pay_info(pan,pin2):
     print "generate_pay_info- ciphertext_base_64 \n%s" % ciphertext_base_64
 
     print "Generating Pay Info Completed."
-    return ciphertext_base_64
+    return ciphertext_base_64.rstrip()
 
 
 
@@ -187,14 +181,6 @@ def get_bill_info_internal_query(number):
     output['message'] = j_response['Message']
 
     return output
-
-
-def generate_rsa_representation():
-    key_string = "sDUFxOscSdkJmarPjvsQRe9mNuEVR2Y4rz7YAlHFFypCcjYPrlu27kIxh2i3HVihR+O+Qi68nwFPVcgOTFUL5A6MEW2kjMl9YnKHZCxXHyEoPrC2cFN61+yQ317hzGcUFPmYu1u85gNDOYtdXDI/tyl6zWZhhTzEIqhBo1O74qc="
-    key = RSA.importKey(key_string,passphrase=None)
-    #Encrypt something with public key and print to console
-    encrypted = pub_key.encrypt('hello world', None) # the second param None here is useless
-    print(encrypted)
 
 def test_RAS(text):
 
