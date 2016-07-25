@@ -112,14 +112,21 @@ def generate_pay_info(pan,pin2):
     print "Generating encrypted pay info"
 
     j_message = json.dumps(message)
+    print "generate_pay_info- j_message: %s " % j_message
 
     public_key_file = open("key.pem","rb")
+    print "generate_pay_info- public key file: %s " % public_key_file
+
     public_key = serialization.load_pem_public_key(public_key_file.read(),default_backend())
+    print "generate_pay_info- public key : %s " % public_key
 
     ciphertext = public_key.encrypt(j_message,PKCS1v15())
-    ciphertext_base_64 = base64.encodestring(ciphertext)
+    print "generate_pay_info- cypher text : %s " % ciphertext
 
-    print "Ciphertext in base 64 \n%s" % ciphertext_base_64
+    ciphertext_base_64 = base64.encodestring(ciphertext)
+    print "generate_pay_info- ciphertext_base_64 \n%s" % ciphertext_base_64
+
+    print "Generating Pay Info Completed."
     return ciphertext_base_64
 
 
