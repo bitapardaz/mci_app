@@ -24,10 +24,6 @@ from cryptography.hazmat.primitives.asymmetric.padding import PKCS1v15
 def pay_one_bill(request):
 
     if request.method == "POST":
-        print "___________"
-        print "you are here"
-        print "-----------"
-        return Request("you are here")
 
         mobile_no = request.data.get('mobile_no')
         print "mobile_no:%s" % mobile_no
@@ -44,8 +40,14 @@ def pay_one_bill(request):
         pin2 = request.data.get('pin2')
         print "pin2:%s" % pin2
 
-        # Processing payment using pec_request
+        print "___________"
+        print "you are here"
+        print "-----------"
+        return Request("you are here")
+
+
         print "-------------------------------------"
+        # Processing payment using pec_request
         print "Processing Payment Step"
         print "-------------------------------------"
 
