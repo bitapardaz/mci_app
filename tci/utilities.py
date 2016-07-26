@@ -97,6 +97,12 @@ request.add_header("Authorization", "Basic %s" % base64string)
 request.add_header("Content-Type","application/json")
 request.add_header("appVersion","1.7")
 
+print "-------------------"
+print "Header Items
+print "-------------------"
+print request.header_items()
+
+
 data = json.dumps(pec_request)
 print "-------------------"
 print "json data sent to pec:"
