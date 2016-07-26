@@ -114,7 +114,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-MEDIA_ROOT = "/home/pishahang_image_storage/" # on the server
-#MEDIA_ROOT = "/home/npdroid/pishahang_image_storage/" # on alireza's computer
+#MEDIA_ROOT = "/home/pishahang_image_storage/" # on the server
+MEDIA_ROOT = "/home/npdroid/pishahang_image_storage/" # on alireza's computer
 #os.path.join(BASE_DIR,"media/")
 MEDIA_URL = '/media/'

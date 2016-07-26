@@ -22,9 +22,9 @@ def generate_pay_info(pan,pin2):
     message = {}
     message['PAN'] = pan
     message['Pin2'] = pin2
-    message['ExpY'] = "0000"
-    message['ExpM'] = "0000"
-    message['CV'] = "0000"
+    message['ExpY'] = "00"
+    message['ExpM'] = "00"
+    message['CV'] = "000"
 
     print "Generating encrypted pay info"
 
@@ -48,11 +48,16 @@ def generate_pay_info(pan,pin2):
     print "generate_pay_info- cypher text : %s " % ciphertext
 
     ciphertext_base_64 = base64.encodestring(ciphertext)
-    ciphertext_base_64 = ciphertext_base_64.strip()
-    print "generate_pay_info- ciphertext_base_64 \n%s" % ciphertext_base_64
+    ciphertext_base_64_updated = ''.join(ciphertext_base_64.strip().split("\n"))
+    #base64_path = settings.MEDIA_ROOT + "base64.txt"
+    #base64_file = open(base64_path,'w')
+    #base64_file.write(ciphertext_base_64_updated)
+    #base64_file.close()
+
+    print "generate_pay_info- ciphertext_base_64 \n%s" % ciphertext_base_64_updated
 
     print "Generating Pay Info Completed."
-    return ciphertext_base_64
+    return ciphertext_base_64_updated
 
 
 class SafeString(str):
