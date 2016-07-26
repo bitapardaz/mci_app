@@ -17,8 +17,6 @@ from django.conf import settings
 
 from cryptography.hazmat.primitives.asymmetric.padding import PKCS1v15
 
-
-
 def generate_pay_info(pan,pin2):
 
     message = {}
@@ -80,6 +78,23 @@ pin2 = "14725"
 print "pin2:%s" % pin2
 
 
+pec_request = {}
+pec_request['MobileNo'] = mobile_no
+pec_request['PayInfo'] = generate_pay_info(pan,pin2)
+pec_request['Token'] = '0'
+pec_request['BillId'] = bill_id
+pec_request['PayId'] = pay_id
+pec_request['TerminalPin'] = "84y80M17HW810Y2j0434"
+
+data = json.dumps(pec_request)
+print "-------------------"
+print "json data sent to pec:"
+print "-------------------"
+print data
+print "----------------------------------"
+
+
+
 print "-------------------------------------"
 # Processing payment using pec_request
 print "Processing Payment Step"
@@ -100,21 +115,6 @@ print "Header Items"
 print "-------------------"
 print request.header_items()
 
-pec_request = {}
-pec_request['MobileNo'] = mobile_no
-pec_request['PayInfo'] = generate_pay_info(pan,pin2)
-pec_request['Token'] = '0'
-pec_request['BillId'] = bill_id
-pec_request['PayId'] = pay_id
-pec_request['TerminalPin'] = "84y80M17HW810Y2j0434"
-
-
-data = json.dumps(pec_request)
-print "-------------------"
-print "json data sent to pec:"
-print "-------------------"
-print data
-print "----------------------------------"
 
 result = urllib2.urlopen(request,data)
 print "---------------------"

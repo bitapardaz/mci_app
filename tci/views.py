@@ -17,19 +17,13 @@ from django.conf import settings
 
 from cryptography.hazmat.primitives.asymmetric.padding import PKCS1v15
 
-@api_view(['GET','POST'])
-def test_header(request):
-
-    print request.META
-    return Response("hello")
-
-
 class SafeString(str):
     def title(self):
         return self
 
     def capitalize(self):
         return self
+
 
 
 @api_view(['POST'])
@@ -149,6 +143,14 @@ def generate_pay_info(pan,pin2):
 
     print "Generating Pay Info Completed."
     return ciphertext_base_64.rstrip()
+
+
+
+
+def confirmation_pay(bill_id,pay_id,rrn):
+    pass
+
+
 
 
 
