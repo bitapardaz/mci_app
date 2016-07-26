@@ -17,6 +17,19 @@ from django.conf import settings
 
 from cryptography.hazmat.primitives.asymmetric.padding import PKCS1v15
 
+@api_view(['GET','POST'])
+def test_header(request):
+
+    print request.META
+    return Response("hello")
+
+
+class SafeString(str):
+    def title(self):
+        return self
+
+    def capitalize(self):
+        return self
 
 
 @api_view(['POST'])
@@ -60,6 +73,8 @@ def pay_one_bill(request):
         base64string = base64.encodestring('%s:%s' % (username, password)).replace('\n', '')
         request.add_header("Authorization", "Basic %s" % base64string)
         request.add_header("Content-Type","application/json")
+        request.add_header(SafeString("appVersion"),"1.7")
+
 
         data = json.dumps(pec_request)
         print "-------------------"

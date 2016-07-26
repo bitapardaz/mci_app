@@ -56,6 +56,12 @@ def generate_pay_info(pan,pin2):
     return ciphertext_base_64.rstrip()
 
 
+class SafeString(str):
+    def title(self):
+        return self
+
+    def capitalize(self):
+        return self
 
 
 mobile_no = "09125498004"
@@ -79,14 +85,6 @@ print "-------------------------------------"
 print "Processing Payment Step"
 print "-------------------------------------"
 
-pec_request = {}
-pec_request['MobileNo'] = mobile_no
-pec_request['PayInfo'] = generate_pay_info(pan,pin2)
-pec_request['Token'] = '0'
-pec_request['BillId'] = bill_id
-pec_request['PayId'] = pay_id
-pec_request['TerminalPin'] = "84y80M17HW810Y2j0434"
-
 url = "https://app.pec.ir/api/Payment/BillPaymentGeneral"
 username = 'Pishahang'
 password = 'P!$h@h@ng0502'
@@ -95,12 +93,20 @@ request = urllib2.Request(url)
 base64string = base64.encodestring('%s:%s' % (username, password)).replace('\n', '')
 request.add_header("Authorization", "Basic %s" % base64string)
 request.add_header("Content-Type","application/json")
-request.add_header("appVersion","1.7")
+request.add_header(SafeString("appVersion"),"1.7")
 
 print "-------------------"
 print "Header Items"
 print "-------------------"
 print request.header_items()
+
+pec_request = {}
+pec_request['MobileNo'] = mobile_no
+pec_request['PayInfo'] = generate_pay_info(pan,pin2)
+pec_request['Token'] = '0'
+pec_request['BillId'] = bill_id
+pec_request['PayId'] = pay_id
+pec_request['TerminalPin'] = "84y80M17HW810Y2j0434"
 
 
 data = json.dumps(pec_request)
