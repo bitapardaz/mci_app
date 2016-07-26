@@ -151,7 +151,7 @@ def pay():
 ### confirm payment
 ####################################################
 
-url = 'https://Services.pec.ir/api/Telecom/Bill/PayInfoRequest'
+url = 'https://Services.pec.ir/api/Telecom/Bill/SetPayInfo'
 username = 'aryan'
 password = '123123@'
 
