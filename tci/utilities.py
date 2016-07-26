@@ -48,6 +48,7 @@ def generate_pay_info(pan,pin2):
     print "generate_pay_info- cypher text : %s " % ciphertext
 
     ciphertext_base_64 = base64.encodestring(ciphertext)
+    ciphertext_base_64 = ciphertext_base_64.strip()
     print "generate_pay_info- ciphertext_base_64 \n%s" % ciphertext_base_64
 
     print "Generating Pay Info Completed."
