@@ -95,6 +95,7 @@ request = urllib2.Request(url)
 base64string = base64.encodestring('%s:%s' % (username, password)).replace('\n', '')
 request.add_header("Authorization", "Basic %s" % base64string)
 request.add_header("Content-Type","application/json")
+request.add_hearer("appVersion","1.7")
 
 data = json.dumps(pec_request)
 print "-------------------"
