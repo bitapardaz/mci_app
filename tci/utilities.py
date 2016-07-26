@@ -130,9 +130,9 @@ print result
 print "---------------------"
 
 j_result = json.loads(result.read().strip())
-status = j_response["Status"]
-message = j_response["Message"]
-Data = j_response["Data"]
+status = j_result["Status"]
+message = j_result["Message"]
+Data = j_result["Data"]
 
 print "--------------------"
 print "Result turned into the format"
