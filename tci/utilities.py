@@ -177,4 +177,4 @@ output['message'] = j_response['Message']
 
 print "payment confirmation - output status: %s" % output['status']
 print "payment confirmation - output message: %s" % output['message']
-return output
+print output
