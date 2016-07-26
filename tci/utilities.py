@@ -106,7 +106,8 @@ print "-------------------------------------"
 print "Processing Payment Step"
 print "-------------------------------------"
 
-url = "https://app.pec.ir/api/Payment/BillPaymentGeneral"
+#url = "https://app.pec.ir/api/Payment/BillPaymentGeneral"
+url = "https://testapp.pec.ir/api/Payment/BillPaymentGeneral"
 username = 'Pishahang'
 password = 'P!$h@h@ng0502'
 
