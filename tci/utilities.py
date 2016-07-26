@@ -52,7 +52,7 @@ def generate_pay_info(pan,pin2):
     print "generate_pay_info- ciphertext_base_64 \n%s" % ciphertext_base_64
 
     print "Generating Pay Info Completed."
-    return ciphertext_base_64.rstrip()
+    return ciphertext_base_64
 
 
 class SafeString(str):
