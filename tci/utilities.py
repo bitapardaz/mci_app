@@ -74,7 +74,7 @@ def pay():
     bill_id = "4445152300146"
     print "bill_id:%s" % bill_id
 
-    pay_id = "150166"
+    pay_id = "250110"
     print "pay_id:%s" % pay_id
 
     pan = "6219861024245069"
@@ -151,30 +151,32 @@ def pay():
 ### confirm payment
 ####################################################
 
-url = 'https://Services.pec.ir/api/Telecom/Bill/SetPayInfo'
-username = 'aryan'
-password = '123123@'
+def verify_payment():
 
-request = urllib2.Request(url)
-base64string = base64.encodestring('%s:%s' % (username, password)).replace('\n', '')
-request.add_header("Authorization", "Basic %s" % base64string)
-request.add_header("Content-Type","application/json")
+    url = 'https://Services.pec.ir/api/Telecom/Bill/SetPayInfo'
+    username = 'aryan'
+    password = '123123@'
 
-data = {}
-data['BillId'] = "4445152300146"
-data['PayId'] = "150166"
-data['RRN'] = "703529447612"
+    request = urllib2.Request(url)
+    base64string = base64.encodestring('%s:%s' % (username, password)).replace('\n', '')
+    request.add_header("Authorization", "Basic %s" % base64string)
+    request.add_header("Content-Type","application/json")
 
-j_data = json.dumps(data)
-result = urllib2.urlopen(request,j_data)
+    data = {}
+    data['BillId'] = "4445152300146"
+    data['PayId'] = "150166"
+    data['RRN'] = "703529447612"
 
-# analysis of the response
-j_response = json.loads(result.read().strip())
+    j_data = json.dumps(data)
+    result = urllib2.urlopen(request,j_data)
 
-output = {}
-output['status'] = j_response['Status']
-output['message'] = j_response['Message']
+    # analysis of the response
+    j_response = json.loads(result.read().strip())
 
-print "payment confirmation - output status: %s" % output['status']
-print "payment confirmation - output message: %s" % output['message']
-print output
+    output = {}
+    output['status'] = j_response['Status']
+    output['message'] = j_response['Message']
+
+    print "payment confirmation - output status: %s" % output['status']
+    print "payment confirmation - output message: %s" % output['message']
+    print output
