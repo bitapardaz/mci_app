@@ -14,7 +14,7 @@ from cryptography.hazmat.primitives import hashes
 from django.conf import settings
 from cryptography.hazmat.primitives.asymmetric.padding import PKCS1v15
 
-from utilities import *
+from tci import utilities
 
 
 class SafeString(str):
@@ -30,7 +30,6 @@ def pay_one_bill(request):
 
     if request.method == "POST":
 
-        print "you are here"
 
         mobile_no = request.data.get('mobile_no')
         print "pay_one_bill - mobile_no:%s" % mobile_no
@@ -46,6 +45,8 @@ def pay_one_bill(request):
 
         pin2 = request.data.get('pin2')
         print "pay_one_bill - pin2:%s" % pin2
+        print "you are here"
+
 
         # validation step. Check if the data is validation
         #is_data_valid = validate_payment_info()
