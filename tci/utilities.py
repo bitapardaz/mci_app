@@ -78,7 +78,7 @@ def pay():
     print "pay_one_bill - bill_id:%s" % bill_id
 
     #pay_id = request.data.get('pay_id')
-    pay_id = "550180"
+    pay_id = "650134"
     print "pay_one_bill - pay_id:%s" % pay_id
 
     #pan = request.data.get('pan')
@@ -152,10 +152,10 @@ def pay():
             trace_no = Data['TraceNo']
             print "pay_one_bill - trace_no: %s" % trace_no
 
-            invoice_number = Data['InvoiceNumber']
+            invoice_no = Data['InvoiceNumber']
             print "pay_one_bill - invoice_no: %s" % invoice_no
 
-            #payment_confirmation(bill_id,pay_id,trace_no)
+            payment_confirmation(bill_id,pay_id,trace_no)
             # store a successful transaction in our database
 
 
@@ -179,6 +179,11 @@ def pay():
 ####################################################
 
 def payment_confirmation(bill_id,pay_id,trace_no):
+
+    print "payment_confirmation - bill_id: %s " % bill_id
+    print "payment_confirmation - pay_id: %s " % pay_id
+    print "payment_confirmation - trace_no: %s " % trace_no
+    return "payment_confirmation - Done"
 
     url = 'https://Services.pec.ir/api/Telecom/Bill/SetPayInfo'
     username = 'aryan'
