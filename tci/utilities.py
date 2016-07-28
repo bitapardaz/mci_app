@@ -128,21 +128,24 @@ def pay():
     print "pay_one_bill - result received from the server:"
     print result
     print "---------------------"
+
     j_result = json.loads(result.read().strip())
     status = j_result["Status"]
     message = j_result["Message"]
     Data = j_result["Data"]
+
     print "--------------------"
     print "pay_one_bill - Result turned into the format"
     print j_result
     print "--------------------"
-        # Client Response
+
+    # Client Response
     client_response  = {}
     client_response['Status'] = status
     client_response['Message'] = message
-        # if status = 0,
+    # if status = 0,
     # add payment verification request to the  using celery
-    if status == 0:
+    if status == 0 :
             score = client_response['Data']['Score']
             print "pay_one_bill - score: %s" % score
 
@@ -152,16 +155,17 @@ def pay():
             invoice_number = client_response['Data']['InvoiceNumber']
             print "pay_one_bill - invoice_no: %s" % invoice_no
 
-            #payment_confirmation(bill_id,pay_id,trace_no)
-            # store a successful transaction in our database
-        else:
-            # store a failed transactoin into our database.
-            # send appropriate message to the user
-            # send a message to pec CRM
-            print "***********************************************"
-            print "pay_one_bill - Alert. Status: %s" % trace_no
-            print "pay_one_bill - Alert. Message: %s" % message
-            print "***********************************************"
+
+            
+
+    else:
+        # store a failed transactoin into our database.
+        # send appropriate message to the user
+        # send a message to pec CRM
+        print "***********************************************"
+        print "pay_one_bill - Alert. Status: %s" % trace_no
+        print "pay_one_bill - Alert. Message: %s" % message
+        print "***********************************************"
 
 
     # turn bill_info into json and return
