@@ -105,7 +105,7 @@ def pay_one_bill(request):
 
         # if status = 0,
         # add payment verification request to the  using celery
-        if status = 0:
+        if status == 0:
             score = client_response['Data']['Score']
             trace_no = client_response['Data']['TraceNo']
             invoice_number = client_response['Data']['InvoiceNumber']
