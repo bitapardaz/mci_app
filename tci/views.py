@@ -111,9 +111,16 @@ def pay_one_bill(request):
         # if status = 0,
         # add payment verification request to the  using celery
         if status == 0:
+
             score = client_response['Data']['Score']
+            print "pay_one_bill - score: %s" % score
+
             trace_no = client_response['Data']['TraceNo']
+            print "pay_one_bill - trace_no: %s" % trace_no
+
             invoice_number = client_response['Data']['InvoiceNumber']
+            print "pay_one_bill - invoice_no: %s" % invoice_no
+
             payment_confirmation(bill_id,pay_id,trace_no)
             # store a successful transaction in our database
 
@@ -133,6 +140,8 @@ def pay_one_bill(request):
 
 
 def payment_confirmation(bill_id,pay_id,rrn):
+
+    print "payment confirmation - starting ....."
 
     url = 'https://Services.pec.ir/api/Telecom/Bill/SetPayInfo'
     username = 'aryan'
