@@ -78,7 +78,7 @@ def pay():
     print "pay_one_bill - bill_id:%s" % bill_id
 
     #pay_id = request.data.get('pay_id')
-    pay_id = "350173"
+    pay_id = "550180"
     print "pay_one_bill - pay_id:%s" % pay_id
 
     #pan = request.data.get('pan')
