@@ -30,6 +30,7 @@ def pay_one_bill(request):
 
     if request.method == "POST":
 
+        print "you are here"
 
         mobile_number = request.data.get('mobile_number')
         print "pay_one_bill - mobile_no:%s" % mobile_no
