@@ -144,12 +144,15 @@ def pay():
     # add payment verification request to the  using celery
     if status == 0:
             score = client_response['Data']['Score']
-        print "pay_one_bill - score: %s" % score
+            print "pay_one_bill - score: %s" % score
+
             trace_no = client_response['Data']['TraceNo']
-        print "pay_one_bill - trace_no: %s" % trace_no
+            print "pay_one_bill - trace_no: %s" % trace_no
+
             invoice_number = client_response['Data']['InvoiceNumber']
-        print "pay_one_bill - invoice_no: %s" % invoice_no
-            payment_confirmation(bill_id,pay_id,trace_no)
+            print "pay_one_bill - invoice_no: %s" % invoice_no
+
+            #payment_confirmation(bill_id,pay_id,trace_no)
         # store a successful transaction in our database
         else:
         # store a failed transactoin into our database.
@@ -166,7 +169,7 @@ def pay():
 ### confirm payment
 ####################################################
 
-def verify_payment():
+def payment_confirmation(bill_id,pay_id,trace_no):
 
     url = 'https://Services.pec.ir/api/Telecom/Bill/SetPayInfo'
     username = 'aryan'
@@ -178,9 +181,9 @@ def verify_payment():
     request.add_header("Content-Type","application/json")
 
     data = {}
-    data['BillId'] = "4445152300146"
-    data['PayId'] = "150166"
-    data['RRN'] = "703529447612"
+    data['BillId'] = bill_id
+    data['PayId'] = pay_id
+    data['RRN'] = trace_no
 
     j_data = json.dumps(data)
     result = urllib2.urlopen(request,j_data)
