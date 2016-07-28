@@ -50,7 +50,7 @@ def pay_one_bill(request):
         # validation step. Check if the data is validation
         #is_data_valid = validate_payment_info()
 
-        response = utilities.pay_one_bill(mobile_number,bill_id,pay_id,pan,pin2)
+        response = utilities.pay_one_bill(mobile_no,bill_id,pay_id,pan,pin2)
         return response
 
 
