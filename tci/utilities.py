@@ -158,10 +158,10 @@ def pay():
         # store a failed transactoin into our database.
         # send appropriate message to the user
         # send a message to pec CRM
-        print "***********************************************"
-        print "pay_one_bill - Alert. Status: %s" % trace_no
-        print "pay_one_bill - Alert. Message: %s" % message
-        print "***********************************************"
+            print "***********************************************"
+            print "pay_one_bill - Alert. Status: %s" % trace_no
+            print "pay_one_bill - Alert. Message: %s" % message
+            print "***********************************************"
 
 
     # turn bill_info into json and return
