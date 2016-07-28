@@ -32,7 +32,7 @@ def pay_one_bill(request):
 
         print "you are here"
 
-        mobile_number = request.data.get('mobile_no')
+        mobile_no = request.data.get('mobile_no')
         print "pay_one_bill - mobile_no:%s" % mobile_no
 
         bill_id = request.data.get('bill_id')
