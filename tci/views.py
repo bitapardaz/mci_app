@@ -29,19 +29,24 @@ def pay_one_bill(request):
     if request.method == "POST":
 
 
-        mobile_number = request.data.get('mobile_number')
+        #mobile_number = request.data.get('mobile_number')
+        mobile_number = "09125498004"
         print "pay_one_bill - mobile_no:%s" % mobile_no
 
-        bill_id = request.data.get('bill_id')
+        #bill_id = request.data.get('bill_id')
+        bill_id = "4445152300146"
         print "pay_one_bill - bill_id:%s" % bill_id
 
-        pay_id = request.data.get('pay_id')
+        #pay_id = request.data.get('pay_id')
+        pay_id = "350173"
         print "pay_one_bill - pay_id:%s" % pay_id
 
-        pan = request.data.get('pan')
+        #pan = request.data.get('pan')
+        pan = "5022291041679976"
         print "pay_one_bill - pan:%s" % pan
 
-        pin2 = request.data.get('pin2')
+        #pin2 = request.data.get('pin2')
+        pin2 = "14725"
         print "pay_one_bill - pin2:%s" % pin2
 
         pec_request = {}
