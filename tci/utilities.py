@@ -70,7 +70,7 @@ class SafeString(str):
 def pay():
 
     #mobile_number = request.data.get('mobile_number')
-    mobile_number = "09125498004"
+    mobile_number = "09100015700"
     print "pay_one_bill - mobile_no:%s" % mobile_no
 
     #bill_id = request.data.get('bill_id')
@@ -158,7 +158,11 @@ def pay():
         # store a failed transactoin into our database.
         # send appropriate message to the user
         # send a message to pec CRM
-        pass
+        print "***********************************************"
+        print "pay_one_bill - Alert. Status: %s" % trace_no
+        print "pay_one_bill - Alert. Message: %s" % message
+        print "***********************************************"
+
 
     # turn bill_info into json and return
     response =  Response(client_response)
