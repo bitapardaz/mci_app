@@ -146,13 +146,13 @@ def pay():
     # if status = 0,
     # add payment verification request to the  using celery
     if status == 0 :
-            score = client_response['Data']['Score']
+            score = Data['Score']
             print "pay_one_bill - score: %s" % score
 
-            trace_no = client_response['Data']['TraceNo']
+            trace_no = Data['TraceNo']
             print "pay_one_bill - trace_no: %s" % trace_no
 
-            invoice_number = client_response['Data']['InvoiceNumber']
+            invoice_number = Data['InvoiceNumber']
             print "pay_one_bill - invoice_no: %s" % invoice_no
 
             #payment_confirmation(bill_id,pay_id,trace_no)
