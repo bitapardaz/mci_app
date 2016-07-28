@@ -69,21 +69,25 @@ class SafeString(str):
 
 def pay():
 
-    mobile_no = "09125498004"
-    print "mobile_no:%s" % mobile_no
+    #mobile_number = request.data.get('mobile_number')
+    mobile_number = "09125498004"
+    print "pay_one_bill - mobile_no:%s" % mobile_no
 
+    #bill_id = request.data.get('bill_id')
     bill_id = "4445152300146"
-    print "bill_id:%s" % bill_id
+    print "pay_one_bill - bill_id:%s" % bill_id
 
-    pay_id = "250110"
-    print "pay_id:%s" % pay_id
+    #pay_id = request.data.get('pay_id')
+    pay_id = "350173"
+    print "pay_one_bill - pay_id:%s" % pay_id
 
-    pan = "6219861024245069"
-    print "pan:%s" % pan
+    #pan = request.data.get('pan')
+    pan = "5022291041679976"
+    print "pay_one_bill - pan:%s" % pan
 
+    #pin2 = request.data.get('pin2')
     pin2 = "14725"
-    print "pin2:%s" % pin2
-
+    print "pay_one_bill - pin2:%s" % pin2
 
     pec_request = {}
     pec_request['MobileNo'] = mobile_no
@@ -92,24 +96,21 @@ def pay():
     pec_request['BillId'] = bill_id
     pec_request['PayId'] = pay_id
     pec_request['TerminalPin'] = "84y80M17HW810Y2j0434"
-
     data = json.dumps(pec_request)
     print "-------------------"
-    print "json data sent to pec:"
+    print "pay_one_bill - json data sent to pec:"
     print "-------------------"
     print data
     print "----------------------------------"
-
     print "-------------------------------------"
+
     # Processing payment using pec_request
-    print "Processing Payment Step"
+    print "pay_one_bill - Processing Payment Step"
     print "-------------------------------------"
-
-    #url = "https://app.pec.ir/api/Payment/BillPaymentGeneral"
+        #url = "https://app.pec.ir/api/Payment/BillPaymentGeneral"
     url = "https://testapp.pec.ir/api/Payment/BillPaymentGeneral"
     username = 'Pishahang'
     password = 'P!$h@h@ng0502'
-
     request = urllib2.Request(url)
     base64string = base64.encodestring('%s|%s' % (username, password)).replace('\n', '')
     request.add_header("Authorization", "Basic %s" % base64string)
@@ -117,38 +118,51 @@ def pay():
     request.add_header(SafeString("appVersion"),"1.7")
 
     print "-------------------"
-    print "Header Items"
+    print "pay_one_bill - Header Items"
     print "-------------------"
     print request.header_items()
 
-
+    # connection to pec server
     result = urllib2.urlopen(request,data)
     print "---------------------"
-    print "result received from the server:"
+    print "pay_one_bill - result received from the server:"
     print result
     print "---------------------"
-
     j_result = json.loads(result.read().strip())
     status = j_result["Status"]
     message = j_result["Message"]
     Data = j_result["Data"]
-
     print "--------------------"
-    print "Result turned into the format"
+    print "pay_one_bill - Result turned into the format"
     print j_result
     print "--------------------"
-
-    # Client Response
+        # Client Response
     client_response  = {}
     client_response['Status'] = status
     client_response['Message'] = message
+        # if status = 0,
+    # add payment verification request to the  using celery
+    if status == 0:
+            score = client_response['Data']['Score']
+        print "pay_one_bill - score: %s" % score
+            trace_no = client_response['Data']['TraceNo']
+        print "pay_one_bill - trace_no: %s" % trace_no
+            invoice_number = client_response['Data']['InvoiceNumber']
+        print "pay_one_bill - invoice_no: %s" % invoice_no
+            payment_confirmation(bill_id,pay_id,trace_no)
+        # store a successful transaction in our database
+        else:
+        # store a failed transactoin into our database.
+        # send appropriate message to the user
+        # send a message to pec CRM
+        pass
 
     # turn bill_info into json and return
     response =  Response(client_response)
-    print "Done"
+    print "pay_one_bill - Payment Done!"
+    return response
 
-
-####################################################
+###################################################
 ### confirm payment
 ####################################################
 
