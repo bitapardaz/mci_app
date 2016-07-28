@@ -70,7 +70,7 @@ class SafeString(str):
 def pay():
 
     #mobile_number = request.data.get('mobile_number')
-    mobile_number = "09100015700"
+    mobile_no = "09100015700"
     print "pay_one_bill - mobile_no:%s" % mobile_no
 
     #bill_id = request.data.get('bill_id')
