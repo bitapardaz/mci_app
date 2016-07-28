@@ -69,11 +69,13 @@ class SafeString(str):
 
 def pay_one_bill(mobile_no,bill_id,pay_id,pan,pin2):
 
-    print "pay_one_bill - mobile_no:%s" % mobile_no
-    print "pay_one_bill - bill_id:%s" % bill_id
-    print "pay_one_bill - pay_id:%s" % pay_id
-    print "pay_one_bill - pan:%s" % pan
-    print "pay_one_bill - pin2:%s" % pin2
+    print "utilities - pay_one_bill - Starting .... "
+
+    print "utilities - pay_one_bill - mobile_no:%s" % mobile_no
+    print "utilities - pay_one_bill - bill_id:%s" % bill_id
+    print "utilities - pay_one_bill - pay_id:%s" % pay_id
+    print "utilities - pay_one_bill - pan:%s" % pan
+    print "utilities - pay_one_bill - pin2:%s" % pin2
 
     pec_request = {}
     pec_request['MobileNo'] = mobile_no
