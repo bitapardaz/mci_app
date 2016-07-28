@@ -128,6 +128,7 @@ def pay_one_bill(request):
             # store a failed transactoin into our database.
             # send appropriate message to the user
             # send a message to pec CRM
+            pass
 
 
         # turn bill_info into json and return
