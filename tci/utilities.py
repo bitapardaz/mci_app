@@ -164,7 +164,7 @@ def pay():
         # send appropriate message to the user
         # send a message to pec CRM
         print "***********************************************"
-        print "pay_one_bill - Alert. Status: %s" % trace_no
+        print "pay_one_bill - Alert. Status: %s" % status 
         print "pay_one_bill - Alert. Message: %s" % message
         print "***********************************************"
 
