@@ -155,8 +155,9 @@ def pay():
             invoice_number = client_response['Data']['InvoiceNumber']
             print "pay_one_bill - invoice_no: %s" % invoice_no
 
+            #payment_confirmation(bill_id,pay_id,trace_no)
+            # store a successful transaction in our database
 
-            
 
     else:
         # store a failed transactoin into our database.
