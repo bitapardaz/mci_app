@@ -68,6 +68,7 @@ class SafeString(str):
         return self
 
 def pay():
+
     mobile_no = "09125498004"
     print "mobile_no:%s" % mobile_no
 
