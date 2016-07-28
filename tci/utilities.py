@@ -67,7 +67,7 @@ class SafeString(str):
     def capitalize(self):
         return self
 
-def pay():
+def pay_one_bill():
 
     #mobile_number = request.data.get('mobile_number')
     mobile_no = "09100015700"
@@ -150,9 +150,11 @@ def pay():
             print "pay_one_bill - score: %s" % score
 
             trace_no = Data['TraceNo']
+            client_response['trace_no'] = trace_no
             print "pay_one_bill - trace_no: %s" % trace_no
 
             invoice_no = Data['InvoiceNumber']
+            client_response['invoice_no'] = invoice_no
             print "pay_one_bill - invoice_no: %s" % invoice_no
 
             payment_confirmation(bill_id,pay_id,trace_no)
@@ -164,7 +166,7 @@ def pay():
         # send appropriate message to the user
         # send a message to pec CRM
         print "***********************************************"
-        print "pay_one_bill - Alert. Status: %s" % status 
+        print "pay_one_bill - Alert. Status: %s" % status
         print "pay_one_bill - Alert. Message: %s" % message
         print "***********************************************"
 
