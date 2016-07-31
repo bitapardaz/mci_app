@@ -3,6 +3,7 @@ from download_center import views
 from rest_framework.urlpatterns import format_suffix_patterns
 
 from tci import views
+from tci_userprofile import views as user_profile_views
 
 urlpatterns = [
     # URLs related to homepage
@@ -10,7 +11,8 @@ urlpatterns = [
     url(r'^pay_one_bill/$',views.pay_one_bill),
 
     # user registration
-    url(r'^register/$',views.register),
+    url(r'^register/$',user_profile_views.register),
+    url(r'^registeration_verfication/$',user_profile_views.registeration_verification),
 
 ]
 

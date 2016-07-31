@@ -46,6 +46,7 @@ INSTALLED_APPS = (
     'download_center',
     'general_user_profile',
     'tci',
+    'tci_userprofile',
 )
 
 MIDDLEWARE_CLASSES = (
