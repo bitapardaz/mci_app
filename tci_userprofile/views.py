@@ -25,17 +25,14 @@ def register(request,format=None):
 
             result = {}
 
-            #new version: check if any user with the phone number exists
             try:
-
                 new_user = User.objects.get(username=mobile_number)
-
-                #new_user = User.objects.create_user(username = mobile_number)
             except User.DoesNotExist:
                 # this is a new user
                 print "register - the user is new"
                 (user_profile,mobile_device) = set_up_user(mobile_number,imei,token_string)
                 result['outcome'] = "new_customer"
+                result['sms_code'] = mobile_device.sms_verification_code
                 return Response(result,status=status.HTTP_201_CREATED)
 
             else:
@@ -48,9 +45,9 @@ def register(request,format=None):
                     user_profile = UserProfile.objects.get(user=existing_user)
 
                     print "register - get user mobile device"
-                    mobile_device = MobileDevice.objects.get(user_profile__imei=imei,user_profile=user_profile)
+                    mobile_device = MobileDevice.objects.get(user_profile=user_profile,imei=imei)
 
-                except Token.DoesNotExist:
+                except MobileDevice.DoesNotExist:
                     # user exists, imei does not
                     # the user has changed his phone
                     # and then new imei and token must be stored.
@@ -58,24 +55,29 @@ def register(request,format=None):
                                                  imei = imei,
                                                  token_string = token_string,
                                                  sms_verification_code = generate_sms_verification_code(imei),
-                                                 sms_code_expiery = timezone.now()
+                                                 sms_code_expiery = timezone.now() + datetime.timedelta(minutes=5)
                                                  )
-                    token.save()
+                    mobile_device.save()
+                    result['outcome'] = "returning_customer with new imei (new phone)"
+                    result['sms_code'] = mobile_device.sms_verification_code
 
                 else:
                     # new token for the same mobile phone and user
                     # and has uninstalled/installed the program.
                     mobile_device.token_string = token_string
-                    sms_verification_code = generate_sms_verification_code(imei)
-                    sms_code_expiery = timezone.now()
+                    mobile_device.sms_verification_code = generate_sms_verification_code(imei)
+                    mobile_device.sms_code_expiery = timezone.now() + datetime.timedelta(minutes=5)
                     mobile_device.save()
+                    result['outcome'] = "returning_customer who has unistalled and installed the program (same imei new token)"
+                    result['sms_code'] = mobile_device.sms_verification_code
+
 
                 finally:
-                    result['outcome'] = "returning_customer"
                     return Response(result, status=status.HTTP_200_OK)
 
         else:
             return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
 
 
 def registeration_verification():
@@ -97,7 +99,6 @@ def set_up_user(mobile_number,imei,token_string):
     new_profile = UserProfile(user=new_user)
 
     if imei != None:
-        import pdb; pdb.set_trace()
         new_profile.imei = imei
 
     new_profile.last_visit = timezone.now()
@@ -111,10 +112,9 @@ def set_up_user(mobile_number,imei,token_string):
                                  imei = imei,
                                  token_string = token_string,
                                  sms_verification_code = generate_sms_verification_code(imei),
-                                 sms_code_expiery = timezone.now() + datetime.timedelta(minutes=10)
+                                 sms_code_expiery = timezone.now() + datetime.timedelta(minutes=5)
                                 )
 
-    import pdb; pdb.set_trace()
     mobile_device.save()
     print "set_up_user - creating MobileDevice done, imei:%s" % imei
 
