@@ -49,7 +49,7 @@ def register(request,format=None):
                         user_profile = UserProfile(user=existing_user,
                                                    last_visit = timezone.now(),
                                                    is_active = True)
-                        result['alert'] = "user existed, but the user profile did not"
+                        result['alert'] = "user existed, but the user profile did not, so we created it. "
                         user_profile.save()
 
                     print "register - get user mobile device"
