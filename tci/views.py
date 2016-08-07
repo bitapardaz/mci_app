@@ -26,11 +26,13 @@ def my_bill(request):
 
         phones = Phone.objects.all()
 
+
         # prepare the context
         context = {}
         counter = 0
 
         for phone in phones:
+            print phone
             tel_no_string = phone.tel_no
             tel_no = long(tel_no_string)
 
