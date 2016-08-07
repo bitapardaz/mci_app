@@ -1,0 +1,243 @@
+@import url(fontiran.css); /* لینک فایلی که وظیفه بارگذاری فونت ها را برعهده دارد */
+
+
+/* responsive text queries */
+@media screen and (max-width: 3000px) {
+  #get_bill_button {
+      font-size:200%;
+      font-weight:500;
+  }
+
+  #easy_payment{
+      font-size:400%;
+      font-weight:600;
+  }
+
+
+
+  #get_bill_button_container{
+      margin-top: 10px;
+  }
+
+  .menu_item{
+      font-size: 130%;
+      font-weight: 500;
+  }
+
+  #upper_line,#middle_line,#lower_line{
+      font-size: 450%;
+      font-weight: 500;
+  }
+
+  #middle_line{
+      font-size: 450%;
+      font-weight: 600;
+      color:red;
+  }
+
+  #app_screenshot{
+      padding-top: 100px;
+
+  }
+
+  #bill_app_introduction{
+      padding-top: 30px;
+      font-size: 350%;
+      font-weight: 600;
+      color:white;
+  }
+
+
+    #bill_app_screenshot{
+        padding-top: 50px;
+
+    }
+
+    #get_kitchen_app_button{
+        padding-top: 50px;
+    }
+
+
+
+}
+
+@media screen and (max-width: 1000px) {
+
+
+    #get_kitchen_app_button{
+        padding-top: 30px;
+    }
+
+
+
+    #easy_payment{
+        font-size:200%;
+        font-weight:500;
+    }
+
+    #get_bill_button {
+        font-size:100%;
+        font-weight:500;
+    }
+
+
+    #get_bill_button_container{
+        margin-top: 2px;
+    }
+
+    .menu_item{
+        font-size: 120%;
+        font-weight: 500;
+    }
+
+
+    #upper_line{
+        color:black;
+        padding-top: 60px;
+     }
+
+
+     #middle_line{
+       font-size: 250%;
+       font-weight: 600;
+       color:red;
+       padding-top:20px;
+      }
+
+      #app_screenshot{
+          height:360px;
+
+      }
+
+
+
+      #bill_app_introduction{
+        padding-top: 30px;
+        font-size: 250%;
+        font-weight: 600;
+        color:white;
+       }
+
+
+        #bill_app_screenshot{
+          padding-top: 50px;
+          height:400px;
+
+        }
+
+
+}
+html, body {height: 100%;}
+
+@media screen and (max-width: 400px) {
+
+    #easy_payment{
+        font-size:120%;
+        font-weight:500;
+    }
+
+    #get_bill_button {
+        font-size:70%;
+        font-weight:400;
+    }
+
+    #get_bill_button_container{
+        margin-top: 0px;
+    }
+
+
+    #middle_line{
+       font-size: 180%;
+       font-weight: 600;
+       color:red;
+       padding-top:20px;
+     }
+
+
+
+     #lower_line{
+        font-size: 250%;
+        font-weight: 600;
+        color:red;
+        padding-top:20px;
+      }
+
+      #app_screenshot{
+          height:240px;
+      }
+
+
+
+
+        #bill_app_introduction{
+          padding-top: 30px;
+          font-size: 250%;
+          font-weight: 600;
+          color:white;
+        }
+
+
+         #bill_app_screenshot{
+            padding-top: 50px;
+            height:240px;
+
+          }
+
+
+}
+
+
+
+body {
+    font-family: IRANSans !important;
+    font-weight: 300;
+    background-color: #E2E2E2;
+    margin: 0;
+}
+
+
+.navbar .navbar-nav li a{
+    font-weight: 400;
+    color:white;
+    background-color: transparent;
+    outline: 0;
+}
+
+.navbar .navbar-nav li a:hover{
+    font-weight: 400;
+    color:#c5f390;
+    background-color: transparent;
+}
+
+.navbar .navbar-nav li a:focus{
+  color:#c5f390;
+}
+
+
+
+#navbar_logo {
+    color:white;
+    display: inline-block;
+    /*background: url("/static/bitasync_site/img/navbar_gbg_logo.png") 12px 8px no-repeat;*/
+    height: 40px;
+    font-size: 19px;
+    padding-left: 25px;
+}
+
+#intro_image {
+    float:left;
+    background:url("img/main_image.png" ) no-repeat center center;
+    height: 500px;
+    background-size:cover;
+}
+
+#android_link{
+    background-color:#607d8b;
+    border-radius:8px 8px;
+}
+
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}

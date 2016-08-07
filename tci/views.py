@@ -16,6 +16,32 @@ from cryptography.hazmat.primitives.asymmetric.padding import PKCS1v15
 
 from tci import utilities
 
+from django.http import HttpResponse
+
+from models import Phone
+
+def my_bill(request):
+
+    if request.method=='GET':
+
+        phones = Phone.objects.all()
+
+        # prepare the context
+        context = {}
+        counter = 0
+
+        for phone in phones:
+            tel_no_string = phone.tel_no
+            tel_no = long(tel_no_string)
+
+            bill_details = get_bill_info_internal_query(tel_no)
+            print bill_details
+            return HttpResponse(bill_details)
+
+    if request.method='POST':
+        return HttpResponse("You are here in the post section.")
+
+    return render(request,'tci/my_bill.html')
 
 class SafeString(str):
     def title(self):
@@ -23,6 +49,13 @@ class SafeString(str):
 
     def capitalize(self):
         return self
+
+def kitchen(request):
+    return render(request,'tci/kitchen.html')
+
+
+def web_homepage(request):
+    return render(request,'tci/homepage.html')
 
 
 @api_view(['POST'])

@@ -1,0 +1,266 @@
+
+body {
+	
+min-height: 100%;	
+}
+
+.we-create li {
+	font-size: 170% !important;
+}
+
+.we-create {
+    margin: 35px 0 25px !important;
+}
+.header {
+/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#eeeeee+0,eeeeee+100;Grey+Flat */
+background: rgb(238,238,238); /* Old browsers */
+background: -moz-linear-gradient(top, rgba(238,238,238,1) 0%, rgba(238,238,238,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(238,238,238,1)), color-stop(100%,rgba(238,238,238,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, rgba(238,238,238,1) 0%,rgba(238,238,238,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, rgba(238,238,238,1) 0%,rgba(238,238,238,1) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top, rgba(238,238,238,1) 0%,rgba(238,238,238,1) 100%); /* IE10+ */
+background: linear-gradient(to bottom, rgba(238,238,238,1) 0%,rgba(238,238,238,1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#eeeeee',GradientType=0 ); /* IE6-9 */
+
+ padding: 0px 0 0 !important;
+	
+	
+	height: 100%;
+    position: relative;
+	
+}
+
+.logo {
+   
+    width: 100%  !important;
+	 padding-top: 60px;
+}
+.header h1 {
+    color: peru !important;
+	font-family: 'B mehr',tahoma !important;
+	font-size: 30px !important;
+    line-height: 2  !important;
+}
+
+h1, h2, h3, h4, h5{
+	font-family: 'B mehr',tahoma !important;
+}
+
+h2 {
+font-size: 30px !important;
+}
+
+.link {
+   
+    color: #fff !important;
+   
+    font-family: 'B mehr',tahoma !important;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 25px;
+    margin-bottom: 20px;
+    padding: 10px 17px !important;;
+   
+}
+.main-nav li a{
+    font-family: B mehr !important;
+	font-size: 100%;
+}
+.Portfolio-nav li a {
+    font-family: B mehr !important;
+	font-size: 100%;
+}
+
+.container {
+direction: rtl;
+}
+body {
+   
+    font-family: B roya ,tahoma !important;
+	  font-size: 18px !important;
+}
+
+.featured-work {
+    font-size: 18px;
+}
+
+.featured-box {
+    font-size: 18px;
+}
+
+#download {
+	padding: 90px 0 40px !important;
+}
+.contact-info-box h3 {
+    float: right;
+}
+
+.main-section.team {
+    background-color: #F3F3F3 !important;
+}
+
+
+/*.team-leader img {
+    border-radius: 70% !important;
+   
+    height: 300px;
+    width: 450px;
+}*/
+
+.main-section.alabaster {
+    background: #F3F3F3 none repeat scroll 0 0 !important;
+}
+
+.team-leader-box {
+   height: auto !important;
+}
+
+.icon-howit01 {
+    background: rgba(0, 0, 0, 0) url("../img/icon_howit01.jpg") no-repeat scroll 0 0;
+}
+.icon-howit02 {
+    background: rgba(0, 0, 0, 0) url("../img/icon_howit02.jpg") no-repeat scroll 0 0;
+}
+.icon-howit03 {
+    background: rgba(0, 0, 0, 0) url("../img/icon_howit03.jpg") no-repeat scroll 0 0;
+}
+.icon-howit04 {
+    background: rgba(0, 0, 0, 0) url("../img/icon_howit04.jpg") no-repeat scroll 0 0;
+}
+
+
+.intro span {
+    color: #06979e;
+    display: inline-block;
+    font-size: 60px;
+    height: 114px;
+    margin-bottom: 27px;
+    margin-top: 24px;
+    vertical-align: middle;
+    width: 130px;
+}
+
+body {
+color :darkslategray !important;
+
+}
+
+
+.featured-box-col1 {
+    float: right !important;
+}
+
+
+#pwdresdone .footer {
+   
+    bottom: 0%;
+    position: absolute;
+    width: 100%;
+}
+
+.main-nav li a {
+   
+
+    margin: 17px 15px !important;
+}
+.main-nav {
+   
+    text-align: right !important;
+	z-index:1000;
+	top: 68px !important;
+}
+
+
+.Portfolio-box img {
+    margin-bottom: -5px !important;
+}
+
+.btn-order {
+	cursor:pointer;
+}
+
+.label-order {
+	font-family: b mehr; font-size: 18px; margin-top: 15px;
+}
+.Portfolio-box {
+   
+    height: 400px;
+}
+
+.Portfolio-box h3 {
+margin-top: 20px;
+}
+
+.client-part-haead {
+	
+	font-style:normal !important;	
+}
+	
+.portfolioFilter{
+display:none !important;		
+}
+
+.pricelist{
+font-family: b roya;
+}
+
+
+
+
+footer {
+    padding: 44px 0 0;
+}
+
+footer {
+    background: #222 none repeat scroll 0 0;
+    border-top: 2px solid #444;
+    color: #777;
+}
+footer h1, footer h2, footer h3, footer h4 {
+    color: #ddd;
+    font-weight: 300;
+}
+#footerRights {
+    background-color: #333;
+    border-top: 1px solid #1b1b1b;
+    color: #999;
+}
+ul.socialNetwork li {
+    display: inline-block;
+    list-style-type: none;
+    margin-top: 0.8em;
+}
+#footerRights {
+    color: #999;
+}
+#footerRights {
+    font-size: 10px;
+    text-align: center;
+}
+a {
+    color: #525252;
+}
+.iconList li::before {
+    content:'\02F1';
+    display: inline-block;
+    font-family: "custom-icons";
+    font-size: 10px;
+    line-height: 1em;
+    margin: 0 10px 0 0;
+    padding: 0;
+    text-align: left;
+}
+
+
+a:link, a:visited {
+    text-decoration: none;
+}
+a:hover, a:active {
+    text-decoration: none;
+}
+a:hover {
+	color: #525252;
+}
+
+
+

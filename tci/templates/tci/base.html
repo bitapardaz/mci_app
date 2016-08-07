@@ -1,0 +1,142 @@
+{% load staticfiles %}
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+	<head>
+
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="icon" href="{% static "tci/img/favicon.png" %}" type="image/png">
+
+		<!--
+		<link href="{% static "tci/css/bootstrap.min.css" %}" rel="stylesheet" type="text/css">
+		<script src="{% static "tci/js/jquery.min" %}"></script>
+		<script src="{% static "tci/js/bootstrap.min.js" %}"></script>
+		-->
+
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+		<title>
+			دنیای شگفت انگیز مخابرات
+		</title>
+
+		<link rel="stylesheet" href="{% static "tci/css/mystyle.css" %}">
+
+		<script type="text/javascript">
+			$(function() {
+				$('a[href*="#"]:not([href="#"])').click(function() {
+				if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+				  var target = $(this.hash);
+				  target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+				  if (target.length) {
+					$('html, body').animate({
+					  scrollTop: target.offset().top
+					}, 1000);
+					return false;
+				  }
+				}
+				});
+				});
+		</script>
+
+	</head>
+
+	<body>
+
+
+		<nav  class="navbar navbar-default navbar-fixed-top" style="background-color: #3a536b;  ">
+
+		  <div class="container-fluid">
+
+			 <a class="navbar-brand navbar-right" href="/tci/web_homepage/">
+				 <img src="/static/tci/img/navbar_gbg_logo.png" style="display: inline-block; ;margin-right:20px;width:40px; ">
+			 </a>
+
+		    <div class="navbar-header" style="padding-top:7px;">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+				  <span class="icon-bar"></span>
+				  <span class="icon-bar"></span>
+				  <span class="icon-bar"></span>
+				</button>
+		    </div>
+
+			<div class="collapse navbar-collapse" id="myNavbar">
+				<ul class="nav navbar-nav navbar-right" style="padding-right:35px;padding-top:10px; direction:rtl">
+
+					<li><a href="/tci/kitchen/" class="menu_item">
+						آشپزخونه
+					</a></li>
+
+					<li><a href="/tci/web_homepage/" class="menu_item" >
+						اینترنت پر سرعت
+					</a></li>
+
+	    		</ul>
+
+				<ul class="nav navbar-nav navbar-left" style="padding-top:2px;direction:rtl">
+
+					<li><a href="/tci/accounts/" >
+						<div class="btn-info" style="border-radius:5px;width:150px;text-align:center;height:40px;line-height:40px;font-size:100%;">
+							<span class="glyphicon glyphicon-user"></span>
+							&nbsp
+							<span class="menu_item">
+								حساب کاربری
+							</span>
+
+						</div>
+					</a></li>
+
+					<li><a href="/tci/my_bill/" >
+						<div class="btn-info" style="border-radius:5px;width:125px;text-align:center;height:40px;line-height:40px;font-size:100%;">
+							<span class="glyphicon glyphicon-phone-alt"></span>
+							&nbsp
+							<span class="menu_item">
+							قبض  من
+							</span>
+
+						</div>
+					</a></li>
+
+
+				</ul>
+
+
+			</div>
+
+		  </div>
+
+		</nav>
+
+
+
+		{% block content %} {% endblock %}
+
+		{% block banner %} {% endblock %}
+
+
+
+		{% block footer %}
+
+		        <div class="container-fluid" style="padding-top:40px;background-color:green;padding-bottom:50px">
+
+					<div class="row">
+						<div class="col-xs-12">
+							This is the footer
+						</div>
+
+					</div>
+				</div>
+
+
+		{% endblock %}
+
+	</body>
+
+
+</html>
