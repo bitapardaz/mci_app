@@ -19,34 +19,56 @@ from tci import utilities
 from django.http import HttpResponse
 
 from models import Phone
+from forms import PhoneForm
 
 def my_bill(request):
 
-    if request.method=='GET':
-
-        phones = Phone.objects.all()
-
-
-        # prepare the context
-        context = {}
-        counter = 0
-
-        for phone in phones:
-            print phone
-            tel_no_string = phone.tel_no
-            tel_no = long(tel_no_string)
-
-            bill_details = get_bill_info_internal_query(tel_no)
-            context[ 'item%d' %counter ] = bill_details
-            counter = counter + 1 
-
-        print context
-        return HttpResponse(bill_details)
-
     if request.method=='POST':
-        return HttpResponse("You are here in the post section.")
 
-    return render(request,'tci/my_bill.html')
+        form = PhoneForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            tel_no = form.cleaned_data['tel_no']
+
+            try:
+                phone = Phone.objects.get(tel_no=tel_no)
+            except Phone.DoesNotExist:
+                print "creating new phone"
+                new_phone = Phone(tel_no=tel_no)
+                new_phone.save()
+
+            print "posted data: %s" % tel_no
+
+    else:
+        form = PhoneForm()
+
+    phones = Phone.objects.all()
+
+    # prepare the context
+    context = {}
+    context['form'] = form
+    counter = 0
+    data = {}
+
+    for phone in phones:
+
+        print phone
+        tel_no_string = phone.tel_no
+        tel_no = long(tel_no_string)
+
+        bill_details = get_bill_info_internal_query(tel_no)
+        bill_details['remove_link']="/tci/remove_bill/%s/" % phone.__unicode__()
+        bill_details['payment_link']="tci/pay_bill/%s/" % phone.__unicode__()
+
+
+        data[ 'item%d' %counter ] = bill_details
+
+        counter = counter + 1
+
+    context['data'] = data
+    return render(request,'tci/my_bill.html',context)
+
+
 
 class SafeString(str):
     def title(self):
@@ -157,6 +179,19 @@ def get_bill_info_single_number(request):
 
 def get_bill_info_internal_query(number):
 
+    '''
+    output = {}
+    output['telNo'] = number
+    output['billId'] = "2222222222"
+    output['payId'] = "3333333333"
+    output['amount'] = "444444444"
+    output['status'] = "000000000"
+    output['message'] = "5555555555"
+
+
+    return output
+    '''
+
     url = 'https://Services.pec.ir/api/Telecom/Bill/GetBillInfo'
 
     username = 'aryan'
@@ -172,14 +207,15 @@ def get_bill_info_internal_query(number):
 
     j_response = json.loads(result.read().strip())
 
+
     output = {}
+
     output['telNo'] = j_response['TelNo']
     output['billId'] = j_response['BillID']
     output['payId'] = j_response['PayID']
     output['amount'] = j_response['Amount']
     output['status'] = j_response['Status']
     output['message'] = j_response['Message']
-
     return output
 
 def test_RAS(text):

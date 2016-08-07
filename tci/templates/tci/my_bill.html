@@ -1,20 +1,92 @@
 {% extends 'tci/base.html' %}
 {% load staticfiles %}
-
+{% load tci_extra %}
 
 {% block content%}
 
-<div class="container_fluid">
+<div class="container_fluid" style="padding-top:100px;height:100%">
 
-    <div class="row">
+    <div class="row" style="text-align:center" style="height:100%">
 
-        <div class="col-xs-12 col-sm-5">
-
+        <div class="col-xs-12 col-sm-6" style="height:100%;margin-top:30px;">
+            <img src="{% static "tci/img/payment_app_screenshot.png" %}" style="height:50%;display:block;margin:auto" class="img-responsive">
         </div>
 
-        <div class="col-xs-12 col-sm-7">
 
-        </div>
+
+        <div class="col-xs-12 col-sm-5" style="margin-top:50px;">
+
+            <div class="row " style="background-color:#efefef;padding:20px;border-radius:10px;">
+                <div class="col-xs-12">
+                    <p style="direction:rtl;text-align:center;font-size:120%;font-weight:500">
+                        شماره تلفن مورد نظر را وارد نمایید.
+                    </p>
+                </div>
+                <div class="col-xs-12" style="direction:rtl;">
+                    <form class="form-inline" role="form" action="" method="post">{% csrf_token %}
+                        {{ form.field_errors }}
+                        <div class="row" style="direction:ltr">
+
+                            <div class="col-xs-1 col-sm-1"> </div>
+
+                            <div class="col-xs-3  col-sm-2">
+                                <button type="submit" class="btn btn-default btn-warning btn-lg" style="width:80px" >تایید</button>
+                            </div>
+
+                            <div class="col-xs-0 col-sm-1"> </div>
+
+                            <div class="form-group col-xs-7 col-sm-7" style="">
+                                <input type="text" name="{{ form.tel_no.html_name }}" class="form-control" id="number" style="direction:ltr" placeholder="21">
+                            </div>
+
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+
+
+{% for key,value in data.items %}
+
+            <div class="row" style="margin-top:30px;padding:20px;background-color:#efefef">
+
+                <div class="col-xs-1 col-sm-1"> </div>
+
+                <div class="col-xs-3  col-sm-2" style="margin-right:10px;">
+                    <div><button type="button" class="btn btn-success btn-lg" style="width:80px;" >پرداخت</button></div>
+                    <div><button type="button" class="btn btn-info btn-lg " style="width:80px;margin-top:5px;">حذف</button></div>
+                </div>
+
+                <div class="col-xs-0 col-sm-1"> </div>
+
+                <div class="col-xs-7 col-sm-7" style="direction:rtl;background-color:white;border-radius:10px;">
+                    <table id="bill_table" border="0" style="">
+                      <tr>
+                        <td style="text-align:right;font-size:105%;font-weight:500;">
+                            تلفن
+                        </th>
+                        <td style="text-align:left;font-size:105%;font-weight:400">{{value|get_item:"telNo"}}</th>
+                      </tr>
+
+                      <tr>
+                        <td style="text-align:right;font-size:105%;font-weight:500">
+                            مبلغ
+                        </th>
+                        <td style="text-align:left;font-size:105%;font-weight:400">{{value|get_item:"amount"}}</th>
+                      </tr>
+
+                    </table>
+                </div>
+
+            </div>
+
+
+{% endfor %}
+
+
+        <div class="col-xs-1 col-sm-1"></div>
+
 
     </div>
 
