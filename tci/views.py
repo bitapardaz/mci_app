@@ -179,18 +179,6 @@ def get_bill_info_single_number(request):
 
 def get_bill_info_internal_query(number):
 
-    '''
-    output = {}
-    output['telNo'] = number
-    output['billId'] = "2222222222"
-    output['payId'] = "3333333333"
-    output['amount'] = "444444444"
-    output['status'] = "000000000"
-    output['message'] = "5555555555"
-
-
-    return output
-    '''
 
     url = 'https://Services.pec.ir/api/Telecom/Bill/GetBillInfo'
 
