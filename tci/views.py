@@ -38,7 +38,7 @@ def my_bill(request):
             print bill_details
             return HttpResponse(bill_details)
 
-    if request.method='POST':
+    if request.method=='POST':
         return HttpResponse("You are here in the post section.")
 
     return render(request,'tci/my_bill.html')
