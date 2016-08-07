@@ -37,7 +37,8 @@
   }
 
   #app_screenshot{
-      padding-top: 100px;
+      padding-top: 5%;
+      height: 50%;
 
   }
 
@@ -50,8 +51,8 @@
 
 
     #bill_app_screenshot{
-        padding-top: 50px;
-
+        padding-top: 10px;
+        height:300px;
     }
 
     #get_kitchen_app_button{
@@ -66,7 +67,7 @@
 
 
     #get_kitchen_app_button{
-        padding-top: 30px;
+        padding-top: 15px;
     }
 
 
@@ -102,11 +103,19 @@
        font-size: 250%;
        font-weight: 600;
        color:red;
-       padding-top:20px;
+       padding-top:10px;
       }
 
+      #lower_line{
+        font-size: 240%;
+        font-weight: 600;
+        color:white;
+        padding-top:10px;
+       }
+
       #app_screenshot{
-          height:360px;
+          padding-top: 15px;
+          height:260px;
 
       }
 
@@ -121,8 +130,8 @@
 
 
         #bill_app_screenshot{
-          padding-top: 50px;
-          height:400px;
+          padding-top: 40px;
+          height:300px;
         }
 
 
