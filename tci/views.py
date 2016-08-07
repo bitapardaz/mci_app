@@ -38,6 +38,7 @@ def my_bill(request):
 
             bill_details = get_bill_info_internal_query(tel_no)
             context[ 'item%d' %counter ] = bill_details
+            counter = counter + 1 
 
         print context
         return HttpResponse(bill_details)
