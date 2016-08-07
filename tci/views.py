@@ -35,8 +35,10 @@ def my_bill(request):
             tel_no = long(tel_no_string)
 
             bill_details = get_bill_info_internal_query(tel_no)
-            print bill_details
-            return HttpResponse(bill_details)
+            context[ 'item%d' %counter ] = bill_details
+
+        print context
+        return HttpResponse(bill_details)
 
     if request.method=='POST':
         return HttpResponse("You are here in the post section.")
