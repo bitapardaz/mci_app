@@ -1,0 +1,110 @@
+{% extends 'tci/base.html' %}
+{% load staticfiles %}
+{% load tci_extra %}
+
+{% block content%}
+
+<div class="container_fluid" style="padding-top:100px;height:100%">
+
+    <div class="row" style="text-align:center" style="height:100%">
+
+        <div class="col-xs-12 col-sm-6" style="height:100%;margin-top:30px;">
+            <img src="{% static "tci/img/payment_app_screenshot.png" %}" style="height:50%;display:block;margin:auto" class="img-responsive">
+        </div>
+
+
+        <div class=col-sm-6>
+
+            <div class="row">
+
+                <div class="col-sm-8 col-sm-offset-1" style="margin-top:30px;background-color:white;border-radius:10px;direction:rtl;">
+
+                    <table id="bill_table" border="0" style="margin:0 auto;">
+
+                      <tr>
+                        <td style="text-align:right;font-size:105%;font-weight:500;">
+                            تلفن
+                        </th>
+                        <td style="text-align:left;font-size:105%;font-weight:400">{{phone}}</th>
+                      </tr>
+
+                      <tr>
+                        <td style="text-align:right;font-size:105%;font-weight:500">
+                            مبلغ
+                        </th>
+                        <td style="text-align:left;font-size:105%;font-weight:400">{{amount}}</th>
+                      </tr>
+
+                    </table>
+
+
+                </div>
+
+            </div>
+
+            <div class="row" style="padding-top:20px;">
+
+                <div class="row">
+                    <div class="col-sm-8 col-sm-offset-1" style="background-color:#efefef">
+                        <p style="direction:rtl;text-align:center;font-size:120%;font-weight:500;padding-top:20px;">
+                            شماره کارت و رمز دوم خود را وارد کنید.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row" style="">
+
+                    <div class="col-sm-8 col-sm-offset-1" style="direction:rtl;background-color:#efefef;border-radius:">
+                        <form class="form-inline" role="form" action="" method="post">{% csrf_token %}
+                            {{ form.field_errors }}
+                            <div class="row" style="direction:ltr ; padding-top:20px;">
+
+                                <div class="col-xs-1 col-sm-2"> </div>
+                                <div class="form-group col-xs-8 col-sm-8" style="">
+                                    <input type="text" name="{{ form.pan.html_name }}" class="form-control" id="number" style="direction:ltr;width:100%" placeholder="شماره کارت">
+                                </div>
+
+                            </div>
+
+                            <div class="row" style="direction:ltr;padding-top:20px;">
+
+                                <div class="col-xs-1 col-sm-2"> </div>
+                                <div class="form-group col-xs-7 col-sm-8" style="">
+                                    <input type="text" name="{{ form.pin.html_name }}" class="form-control" id="number" style="direction:ltr;width:100%;;" placeholder="رمز دوم">
+                                </div>
+
+                            </div>
+
+                            <div class="row" style="direction:ltr;padding-top:20px;padding-bottom:20px;">
+
+                                <div class="col-xs-1 col-sm-2"> </div>
+                                <div class="col-xs-3  col-sm-8">
+
+                                    {% if payment_success %}
+                                        <button type="submit" class="btn btn-default btn-success btn-md" style="width:200px;font-size:120%;font-weight:600;" >پرداخت انجام شد</button>
+                                    {% else %}
+                                        <button type="submit" class="btn btn-default btn-warning btn-md" style="width:80px;font-size:120%;font-weight:600;" >پرداخت</button>
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+
+
+                        </form>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+{% endblock %}

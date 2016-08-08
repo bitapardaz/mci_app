@@ -54,8 +54,8 @@
                 <div class="col-xs-1 col-sm-1"> </div>
 
                 <div class="col-xs-3  col-sm-2" style="margin-right:10px;">
-                    <div><button type="button" class="btn btn-success btn-lg" style="width:80px;" >پرداخت</button></div>
-                    <div><button type="button" class="btn btn-info btn-lg " style="width:80px;margin-top:5px;">حذف</button></div>
+                    <div><a href="/tci/pay_single_bill/{{value|get_item:"telNo"}}/{{value|get_item:"amount"}}/"><button type="button" class="btn btn-success btn-lg" style="width:80px;" >پرداخت</button></a></div>
+                    <div><a href="/tci/remove_single_bill/{{value|get_item:"telNo"}}/"><button type="button" class="btn btn-info btn-lg " style="width:80px;margin-top:5px;">حذف</button></a></div>
                 </div>
 
                 <div class="col-xs-0 col-sm-1"> </div>

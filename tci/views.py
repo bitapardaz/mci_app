@@ -19,7 +19,33 @@ from tci import utilities
 from django.http import HttpResponse
 
 from models import Phone
-from forms import PhoneForm
+from forms import PhoneForm,PaymentForm
+
+def pay_single_bill(request,tel_no,amount):
+
+    context={}
+
+    if request.method == "POST":
+        form = PaymentForm(request.POST)
+
+        if form.is_valid():
+
+            pan = form.cleaned_data['pan']
+            pin = form.cleaned_data['pin']
+
+            context['payment_success'] = True
+
+
+    else:
+        form = PaymentForm()
+        context['payment_success'] = False
+
+
+    context['phone'] = tel_no
+    context['amount'] = amount
+    context['form'] = form
+
+    return render(request,'tci/pay_bill.html',context)
 
 def my_bill(request):
 
@@ -179,6 +205,17 @@ def get_bill_info_single_number(request):
 
 def get_bill_info_internal_query(number):
 
+    '''
+    output = {}
+
+    output['telNo'] = number
+    output['billId'] = "11111111"
+    output['payId'] = "22222222"
+    output['amount'] = "33333333"
+    output['status'] = "44444444"
+    output['message'] = "55555555"
+    return output
+    '''
 
     url = 'https://Services.pec.ir/api/Telecom/Bill/GetBillInfo'
 
