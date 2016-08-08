@@ -21,6 +21,10 @@ from django.http import HttpResponse
 from models import Phone
 from forms import PhoneForm,PaymentForm
 
+
+def football(request):
+    return render(request,'tci/football.html')
+
 def pay_single_bill(request,tel_no,amount):
 
     context={}

@@ -10,6 +10,7 @@ urlpatterns = [
     # urls related to website
     url(r'^web_homepage/$',views.web_homepage),
     url(r'^kitchen/$',views.kitchen),
+    url(r'^football/$',views.football),
     url(r'^my_bill/$',views.my_bill),
     url(r'^pay_single_bill/(?P<tel_no>[0-9]+)/(?P<amount>[0-9]+)/$',views.pay_single_bill),
 
