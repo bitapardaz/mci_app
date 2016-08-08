@@ -42,9 +42,7 @@ def pay_single_bill(request,tel_no,amount):
         context['payment_success'] = False
         context['amount'] = amount
 
-
     context['phone'] = tel_no
-
     context['form'] = form
 
     return render(request,'tci/pay_bill.html',context)
