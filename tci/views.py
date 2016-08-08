@@ -34,15 +34,17 @@ def pay_single_bill(request,tel_no,amount):
             pin = form.cleaned_data['pin']
 
             context['payment_success'] = True
+            context['amount'] = 0
 
 
     else:
         form = PaymentForm()
         context['payment_success'] = False
+        context['amount'] = amount
 
 
     context['phone'] = tel_no
-    context['amount'] = amount
+
     context['form'] = form
 
     return render(request,'tci/pay_bill.html',context)
