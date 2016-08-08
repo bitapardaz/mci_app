@@ -3,6 +3,7 @@
 
 /* responsive text queries */
 @media screen and (max-width: 3000px) {
+
   #get_bill_button {
       font-size:200%;
       font-weight:500;
@@ -36,7 +37,8 @@
   }
 
   #app_screenshot{
-      padding-top: 100px;
+      padding-top: 5%;
+      height: 50%;
 
   }
 
@@ -49,8 +51,12 @@
 
 
     #bill_app_screenshot{
-        padding-top: 50px;
+        padding-top: 10px;
+        height:300px;
+    }
 
+    #get_kitchen_app_button{
+        padding-top: 50px;
     }
 
 
@@ -58,6 +64,13 @@
 }
 
 @media screen and (max-width: 1000px) {
+
+
+    #get_kitchen_app_button{
+        padding-top: 15px;
+    }
+
+
 
     #easy_payment{
         font-size:200%;
@@ -90,11 +103,19 @@
        font-size: 250%;
        font-weight: 600;
        color:red;
-       padding-top:20px;
+       padding-top:10px;
       }
 
+      #lower_line{
+        font-size: 240%;
+        font-weight: 600;
+        color:white;
+        padding-top:10px;
+       }
+
       #app_screenshot{
-          height:360px;
+          padding-top: 15px;
+          height:260px;
 
       }
 
@@ -109,9 +130,8 @@
 
 
         #bill_app_screenshot{
-          padding-top: 50px;
-          height:400px;
-
+          padding-top: 40px;
+          height:300px;
         }
 
 
@@ -184,7 +204,14 @@ body {
     margin: 0;
 }
 
+th, td {
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 13px;
+    padding-bottom: 13px;
 
+
+}
 .navbar .navbar-nav li a{
     font-weight: 400;
     color:white;
