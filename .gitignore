@@ -3,4 +3,4 @@ mci_app/*.pyc
 *.*~
 media
 *.pyc
-
+env/*

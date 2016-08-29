@@ -1,3 +1,32 @@
+Install the following packages system-wide: 
 
-install python virtual environment
-install encryption, when installing this, you need to have jdk installed and look at this: 
+$ sudo apt-get install postgresql postgresql-contrib libpq-dev
+$ sudo apt-get install libtiff5-dev libjpeg8-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.6-dev tk8.6-dev python-tk
+
+############################################################################################
+
+
+Creating the database:
+
+$ sudo su postgres
+
+$ psql
+
+postgres=# CREATE ROLE mci_db_user WITH LOGIN;
+
+postgres=# ALTER ROLE mci_db_user WITH PASSWORD 'ali_feri_db_mci';
+
+postgres=# CREATE DATABASE mci_db WITH encoding 'utf-8';
+
+postgres=# GRANT ALL PRIVILEGES ON DATABASE mci_db TO mci_db_user;
+
+postgres=# \c mci_db
+
+postgres=# GRANT ALL PRIVILEGES ON ALL TABLEES IN SCHEMA public TO mci_db_user;
+
+
+############################################################################################
+
+Running the database migrations:
+
+$ python manage.py migrate
