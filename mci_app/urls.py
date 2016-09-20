@@ -15,16 +15,15 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-
 from django.conf.urls.static import static
 from django.conf import settings
-
 from website import views as website_views
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^mcirbt/',include('rbt.urls')),
     url(r'^mtnrbt/',include('mtn_rbt.urls')),
+    url(r'^tci/',include('tci.urls')),
     url(r'^download_center/',include('download_center.urls')),
     url(r'^google450805d50c86330d.html$', website_views.google_index ),
     url(r'^$',website_views.homepage),

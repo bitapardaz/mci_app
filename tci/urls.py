@@ -21,8 +21,10 @@ urlpatterns = [
     # user registration
     url(r'^register/$',user_profile_views.register),
     url(r'^registeration_verfication/$',user_profile_views.registeration_verification),
+    url(r'^registeration_verfication/$',user_profile_views.registeration_verification),
 
-
+    # in app purchase
+    url(r'^in_app_purchase/$',views.in_app_purchase),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

@@ -302,3 +302,23 @@ def generate_pay_info(pan,pin2):
 
     print "Generating Pay Info Completed."
     return ciphertext_base_64.rstrip()
+
+@api_view(['POST'])
+def in_app_purchase(request):
+
+    if request.method == "POST":
+
+        app_name = request.data.get('app_name')
+        print "in_app_purchase - app_name:%s" % app_name
+
+        item = request.data.get('item')
+        print "in_app_purchase - item: %s" % item
+
+        price = request.data.get('price')
+        print "in_app_purchase - price:%s" % price
+
+        output = {}
+        output['status'] = "1"
+        output['message'] = "Payment request received."
+
+        return Response(output)
