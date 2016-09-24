@@ -157,19 +157,19 @@ def pay_one_bill_encrypted(request):
         mobile_no = request.data.get('mobile_no')
         print "pay_one_bill_encrypted - mobile_no:%s" % mobile_no
 
-
         #bill_id = request.data.get('bill_id')
-        bill_id = ""
+        bill_id = "8863974200144"
         print "pay_one_bill_encrypted - bill_id:%s" % bill_id
 
-
-
-
         #pay_id = request.data.get('pay_id')
-        pay_id = ""
+        pay_id="2150233"
         print "pay_one_bill_encrypted - pay_id:%s" % pay_id
 
+        print "pay_one_bill_encrypted - starting the decryption"
+
         pin_pan_encrypted = request.data.get('payload')
+        print "pay_one_bill_encrypted - payload: %s" % pin_pan_encrypted
+
         (pan,pin2) = utilities.extract_pin_pan(pin_pan_encrypted)
         print "pay_one_bill_encrypted - (pan,pin2):(%s,%s)" % (pan,pin2)
 
@@ -179,7 +179,7 @@ def pay_one_bill_encrypted(request):
 
         #response = utilities.pay_one_bill(mobile_no,bill_id,pay_id,pan,pin2)
         #return response
-        return "You are here.
+        return Response("You are here")
 
     else:
         return Response("POST REQUESTS ONLY",status=status.HTTP_400_BAD_REQUEST)

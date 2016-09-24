@@ -211,12 +211,39 @@ def payment_confirmation(bill_id,pay_id,trace_no):
 
 def extract_pin_pan(cipher_text):
 
+    print "extract_pin_pan- cipher_text: %s" % cipher_text
     plaintext = decrypt(cipher_text)
     print "extract_pin_pan: %s" % plaintext
 
     pan = plaintext.split(":")[0][1:]
     pin = plaintext.split(":")[1][1:]
     return (pan,pin)
+
+def decrypt(cipher_text):
+    #cipher_text = "NJVx+CyzLiotD2zmOvASirKpuiXzdGte3n6/lY6DNGCYGqBqEJOO2ayGyduqHUubF23poxNpTFT+wNhhiJ5nghwNux1/0jf65K3fnnEdi8dE6RV13WIHcRZa1pT5sgHULy73fS8Gz3HGLkaKc/DJ+Cz0/eN9D1nYLLP+vVZEZyqeHFlbDIuiTsf6RbGOClassZWCth4Lv+kEW8aexXJOSRqyo/c+EK66Cqp16upLwI5Qu/039bK/xLWCcBiOTTyqZVUuMXK5PkCRqsNlzoCRhobOLgh/6ty6Xwi1aEjDTeP/CTV9yCHZwx2KQrjel2zXgLFYM777Uzr+oO4ikdS1TA=="
+    ciphertext_byte = base64.b64decode(cipher_text)
+    print "decrypt- ciphertext_byte:%s" % ciphertext_byte
+
+    with open("private_key.pem", "rb") as private_key_file:
+         private_key = serialization.load_pem_private_key(
+             private_key_file.read(),
+             password=None,
+             backend=default_backend()
+         )
+
+    print "decrypt- ciphertext_byte: the actual decryption"
+    plaintext = private_key.decrypt(
+         ciphertext_byte,
+         padding.OAEP(
+             mgf=padding.MGF1(algorithm=hashes.SHA1()),
+             algorithm=hashes.SHA1(),
+             label=None
+         )
+    )
+
+    print "decrypt- ciphertext_byte:%s" % plaintext
+    return plaintext
+
 
 def generate_public_private_pair():
 
@@ -239,28 +266,6 @@ def generate_public_private_pair():
         public_key_file.write(line)
         public_key_file.write("\n")
     public_key_file.close()
-
-def decrypt(cipher_text):
-    #cipher_text = "NJVx+CyzLiotD2zmOvASirKpuiXzdGte3n6/lY6DNGCYGqBqEJOO2ayGyduqHUubF23poxNpTFT+wNhhiJ5nghwNux1/0jf65K3fnnEdi8dE6RV13WIHcRZa1pT5sgHULy73fS8Gz3HGLkaKc/DJ+Cz0/eN9D1nYLLP+vVZEZyqeHFlbDIuiTsf6RbGOClassZWCth4Lv+kEW8aexXJOSRqyo/c+EK66Cqp16upLwI5Qu/039bK/xLWCcBiOTTyqZVUuMXK5PkCRqsNlzoCRhobOLgh/6ty6Xwi1aEjDTeP/CTV9yCHZwx2KQrjel2zXgLFYM777Uzr+oO4ikdS1TA=="
-    ciphertext_byte = base64.b64decode(cipher_text)
-
-    with open("private_key.pem", "rb") as private_key_file:
-         private_key = serialization.load_pem_private_key(
-             private_key_file.read(),
-             password=None,
-             backend=default_backend()
-         )
-
-    plaintext = private_key.decrypt(
-         ciphertext_byte,
-         padding.OAEP(
-             mgf=padding.MGF1(algorithm=hashes.SHA1()),
-             algorithm=hashes.SHA1(),
-             label=None
-         )
-    )
-
-    print plaintext
 
 def test():
 
