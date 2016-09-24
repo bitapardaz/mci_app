@@ -14,9 +14,11 @@ urlpatterns = [
     url(r'^my_bill/$',views.my_bill),
     url(r'^pay_single_bill/(?P<tel_no>[0-9]+)/(?P<amount>[0-9]+)/$',views.pay_single_bill),
 
+
     # URLs related to homepage
     url(r'^get_bill_info_single_number/$',views.get_bill_info_single_number),
     url(r'^pay_one_bill/$',views.pay_one_bill),
+    url(r'^pay_one_bill_encrypted/$',views.pay_one_bill_encrypted),
 
     # user registration
     url(r'^register/$',user_profile_views.register),

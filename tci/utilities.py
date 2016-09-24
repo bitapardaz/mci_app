@@ -16,6 +16,8 @@ from cryptography.hazmat.primitives import hashes
 from django.conf import settings
 
 from cryptography.hazmat.primitives.asymmetric.padding import PKCS1v15
+from cryptography.hazmat.primitives.asymmetric import rsa
+
 
 def generate_pay_info(pan,pin2):
 
@@ -202,3 +204,97 @@ def payment_confirmation(bill_id,pay_id,trace_no):
     print "payment confirmation - output status: %s" % output['status']
     print "payment confirmation - output message: %s" % output['message']
     print output
+
+###########################################################
+### functions for creating client side (APP) ecryption ####
+###########################################################
+
+def extract_pin_pan(cipher_text):
+
+    plaintext = decrypt(cipher_text)
+    print "extract_pin_pan: %s" % plaintext
+
+    pan = plaintext.split(":")[0][1:]
+    pin = plaintext.split(":")[1][1:]
+    return (pan,pin)
+
+def generate_public_private_pair():
+
+    # generate private key
+    private_key = rsa.generate_private_key(public_exponent=65537,key_size=1024,backend=default_backend())
+    pem = private_key.private_bytes(encoding=serialization.Encoding.PEM,format=serialization.PrivateFormat.TraditionalOpenSSL,encryption_algorithm=serialization.NoEncryption())
+    lines = pem.splitlines()
+    private_key_file = open("private_key.pem", "w")
+    for line in lines:
+        private_key_file.write(line)
+        private_key_file.write("\n")
+    private_key_file.close()
+
+    # generate public key
+    public_key = private_key.public_key()
+    pem = public_key.public_bytes(encoding=serialization.Encoding.PEM,format=serialization.PublicFormat.SubjectPublicKeyInfo)
+    lines = pem.splitlines()
+    public_key_file = open("public_key.pem", "w")
+    for line in lines:
+        public_key_file.write(line)
+        public_key_file.write("\n")
+    public_key_file.close()
+
+def decrypt(cipher_text):
+    #cipher_text = "NJVx+CyzLiotD2zmOvASirKpuiXzdGte3n6/lY6DNGCYGqBqEJOO2ayGyduqHUubF23poxNpTFT+wNhhiJ5nghwNux1/0jf65K3fnnEdi8dE6RV13WIHcRZa1pT5sgHULy73fS8Gz3HGLkaKc/DJ+Cz0/eN9D1nYLLP+vVZEZyqeHFlbDIuiTsf6RbGOClassZWCth4Lv+kEW8aexXJOSRqyo/c+EK66Cqp16upLwI5Qu/039bK/xLWCcBiOTTyqZVUuMXK5PkCRqsNlzoCRhobOLgh/6ty6Xwi1aEjDTeP/CTV9yCHZwx2KQrjel2zXgLFYM777Uzr+oO4ikdS1TA=="
+    ciphertext_byte = base64.b64decode(cipher_text)
+
+    with open("private_key.pem", "rb") as private_key_file:
+         private_key = serialization.load_pem_private_key(
+             private_key_file.read(),
+             password=None,
+             backend=default_backend()
+         )
+
+    plaintext = private_key.decrypt(
+         ciphertext_byte,
+         padding.OAEP(
+             mgf=padding.MGF1(algorithm=hashes.SHA1()),
+             algorithm=hashes.SHA1(),
+             label=None
+         )
+    )
+
+    print plaintext
+
+def test():
+
+
+    with open("private_key.pem", "rb") as private_key_file:
+         private_key = serialization.load_pem_private_key(
+             private_key_file.read(),
+             password=None,
+             backend=default_backend()
+         )
+
+    with open("public_key.pem", "rb") as public_key_file:
+         public_key = serialization.load_pem_public_key(
+             public_key_file.read(),
+             backend=default_backend()
+         )
+
+    message = "you can win"
+    ciphertext = public_key.encrypt(
+         message,
+         padding.OAEP(
+             mgf=padding.MGF1(algorithm=hashes.SHA1()),
+             algorithm=hashes.SHA1(),
+             label=None
+         )
+    )
+
+    plaintext = private_key.decrypt(
+         ciphertext,
+         padding.OAEP(
+             mgf=padding.MGF1(algorithm=hashes.SHA1()),
+             algorithm=hashes.SHA1(),
+             label=None
+         )
+    )
+
+    print message == plaintext

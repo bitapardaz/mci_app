@@ -120,7 +120,6 @@ def pay_one_bill(request):
 
     if request.method == "POST":
 
-
         mobile_no = request.data.get('mobile_no')
         print "pay_one_bill - mobile_no:%s" % mobile_no
 
@@ -147,6 +146,45 @@ def pay_one_bill(request):
 
     else:
         return Response("POST REQUESTS ONLY",status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+def pay_one_bill_encrypted(request):
+
+    if request.method == "POST":
+
+
+        mobile_no = request.data.get('mobile_no')
+        print "pay_one_bill_encrypted - mobile_no:%s" % mobile_no
+
+
+        #bill_id = request.data.get('bill_id')
+        bill_id = ""
+        print "pay_one_bill_encrypted - bill_id:%s" % bill_id
+
+
+
+
+        #pay_id = request.data.get('pay_id')
+        pay_id = ""
+        print "pay_one_bill_encrypted - pay_id:%s" % pay_id
+
+        pin_pan_encrypted = request.data.get('payload')
+        (pan,pin2) = utilities.extract_pin_pan(pin_pan_encrypted)
+        print "pay_one_bill_encrypted - (pan,pin2):(%s,%s)" % (pan,pin2)
+
+
+        # validation step. Check if the data is validation
+        #is_data_valid = validate_payment_info()
+
+        #response = utilities.pay_one_bill(mobile_no,bill_id,pay_id,pan,pin2)
+        #return response
+        return "You are here.
+
+    else:
+        return Response("POST REQUESTS ONLY",status=status.HTTP_400_BAD_REQUEST)
+
+
 
 
 def payment_confirmation(bill_id,pay_id,rrn):
