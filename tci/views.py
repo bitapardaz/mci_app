@@ -177,9 +177,9 @@ def pay_one_bill_encrypted(request):
         # validation step. Check if the data is validation
         #is_data_valid = validate_payment_info()
 
-        #response = utilities.pay_one_bill(mobile_no,bill_id,pay_id,pan,pin2)
-        #return response
-        return Response("You are here")
+        response = utilities.pay_one_bill(mobile_no,bill_id,pay_id,pan,pin2)
+        return response
+
 
     else:
         return Response("POST REQUESTS ONLY",status=status.HTTP_400_BAD_REQUEST)
