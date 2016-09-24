@@ -215,8 +215,8 @@ def extract_pin_pan(cipher_text):
     plaintext = decrypt(cipher_text)
     print "extract_pin_pan: %s" % plaintext
 
-    pan = plaintext.split(":")[0][1:]
-    pin = plaintext.split(":")[1][1:]
+    pan = plaintext.split(":")[0]
+    pin = plaintext.split(":")[1]
     return (pan,pin)
 
 def decrypt(cipher_text):
