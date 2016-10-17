@@ -12,9 +12,9 @@ def pfm_download(request):
             return redirect("/pfm_promotion/download_page/")
 
     if request.method=="GET":
-        return render(request,'pfm_promotion/pfm_download.html')
+        return render(request,'pfm_promotion/pfm_download_2.html')
 
 
 def download_page(request):
 
-    return render(request,'pfm_promotion/pfm_download_final.html')
+    return render(request,'pfm_promotion/pfm_download_final_2.html')
