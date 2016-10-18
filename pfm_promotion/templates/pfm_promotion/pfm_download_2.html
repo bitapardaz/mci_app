@@ -1,16 +1,35 @@
 {% load staticfiles %}
 
+<html>
+
+<head>
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-56771694-3', 'auto');
+    ga('send', 'pageview');
+
+    </script>
+</head>
+
+<body>
 
 <div class="container-fluid"style="height:65%;background: url({% static "tci/img/capsule.jpg" %}) center center no-repeat;background-size:cover;padding-top:50px;">
 </div>
 <div class="container">
-<form action="" method="post">{% csrf_token %}
+<form method="post">{% csrf_token %}
+
     <div class="row control-group" style="padding-top: 50px;">
         <div class="form-group col-xs-12" style="text-align: center;">
             <input id="inputdefault" name="mobile_no" type="text" placeholder="لطفا شماره موبایل خود را وارد کنید (اختیاری)"
-			style="font-size: 18px;line-height: 3;padding-left: 15px; padding-right: 15px; border: 2px solid #e1e1e1;width: 400px;">
+			style="font-size: 18px;line-height: 3;padding-left: 15px; padding-right: 15px; border: 2px solid #e1e1e1;width: 400px;direction:rtl">
         </div>
 	</div>
+
+
 	<div class="row control-group" style="padding-top: 50px;">
 		<div class="form-group col-xs-12" style="text-align: center;">
 			<a href="/pfm_promotion/download_page" onclick="">
@@ -18,5 +37,13 @@
             </a>
         </div>
     </div>
+
+    <input type="submit" value="submit">
+
 </form>
 </div>
+
+
+</body>
+
+</html>
