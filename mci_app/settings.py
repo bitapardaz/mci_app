@@ -47,6 +47,7 @@ INSTALLED_APPS = (
     'general_user_profile',
     'tci',
     'pfm_promotion',
+    'millione',
 )
 
 MIDDLEWARE_CLASSES = (

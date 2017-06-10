@@ -27,5 +27,6 @@ urlpatterns = [
     url(r'^download_center/',include('download_center.urls')),
     url(r'^google450805d50c86330d.html$', website_views.google_index ),
     url(r'^pfm_promotion/',include('pfm_promotion.urls')),
+    url(r'^millione/',include('millione.urls')),
     url(r'^$',website_views.homepage),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
