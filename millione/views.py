@@ -27,7 +27,13 @@ def sign_up(request):
     print "we are here."
     mobile_number = request.data.get('mobile')
     verification_code = request.data.get('code')
+
+    print "printing mobile_number"
+    print mobile_number
+
+    print "printing verification code"
     print verification_code
+
     output = utilities.send_sign_up_sms(mobile_number,verification_code)
     print output
     return Response(output)
