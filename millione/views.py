@@ -26,7 +26,9 @@ def sign_up(request):
     """
     mobile_number = request.data.get('mobile_number')
     verification_code = request.data.get('verification_code')
+    print verification_code
     output = utilities.send_sign_up_sms(mobile_number,verification_code)
+    print output
     return Response(output)
 
 class Top_up_edit(APIView):
