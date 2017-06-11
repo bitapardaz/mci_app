@@ -1,11 +1,18 @@
 from rest_framework.decorators import api_view
-from rest_framework.response import Response
+
 import json
 from . import utilities
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+
+
 @api_view(['POST',])
 def top_up(request,format=None):
-
+    """
+    Air time redemption
+    """
     amount = request.data.get('amount')
     mobile_number = request.data.get('mobile_number')
     operator = request.data.get('operator')
@@ -14,7 +21,16 @@ def top_up(request,format=None):
 
 @api_view(['POST',])
 def sign_up(request):
-    
+    """
+    sends verification sms that verifies users phone number.
+    """
     mobile_number = request.data.get('mobile_number')
     output = utilities.send_sign_up_sms(mobile_number)
     return Response(output)
+
+class Top_up_edit(APIView):
+    """
+    test doc
+    """
+    def post(self,request,format=None):
+        return Response({"message":"OK"})

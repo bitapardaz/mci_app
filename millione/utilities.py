@@ -23,7 +23,7 @@ def top_up_air_time(amount,mobile_number,operator):
 
     return output
 
-def send_sign_up_sms(phone_number)
+def send_sign_up_sms(phone_number):
 
     secret = "23497c89-35c4-4a81-be10-ed8fa68b6983"
     data = {}

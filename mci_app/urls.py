@@ -19,6 +19,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 from website import views as website_views
 
+
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^mcirbt/',include('rbt.urls')),
@@ -29,4 +30,5 @@ urlpatterns = [
     url(r'^pfm_promotion/',include('pfm_promotion.urls')),
     url(r'^millione/',include('millione.urls')),
     url(r'^$',website_views.homepage),
+    url(r'^docs/', include('rest_framework_docs.urls')),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
