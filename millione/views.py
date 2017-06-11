@@ -24,8 +24,8 @@ def sign_up(request):
     """
     sends verification sms that verifies users phone number.
     """
-    mobile_number = request.data.get('mobile_number')
-    verification_code = request.data.get('verification_code')
+    mobile_number = request.data.get('mobile')
+    verification_code = request.data.get('code')
     print verification_code
     output = utilities.send_sign_up_sms(mobile_number,verification_code)
     print output
