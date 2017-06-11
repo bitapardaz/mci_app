@@ -13,11 +13,9 @@ def top_up_air_time(amount,mobile_number,operator):
 
     ddata = json.dumps(data)
 
-    url = 'http://m.paygear.org/api/TopUp/'
+    url = 'https://m.paygear.org/api/TopUp/'
     headers = {'Content-Type': 'application/json'}
     result = requests.post(url,ddata,headers=headers)
-
-
 
     output = {}
     output['message'] = json.loads(result.text)['message']
